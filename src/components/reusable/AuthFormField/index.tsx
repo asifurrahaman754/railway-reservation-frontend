@@ -4,7 +4,7 @@ type Props = {
   type?: string;
   name: string;
   sx?: any;
-  onChange?: () => any;
+  onChange?: () => void;
 };
 
 export default function AuthFormField({

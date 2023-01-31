@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material/styles";
 import { SimplePaletteColorOptions } from "@mui/material/styles/createPalette";
-import { FontStyle } from "@mui/material/styles/createTypography";
 
 const theme = createTheme({
   typography: {
@@ -32,6 +31,9 @@ const theme = createTheme({
     defaultColor: {
       main: "#000",
     },
+    errorColor: {
+      main: "#ff0000",
+    },
   },
 });
 
@@ -40,6 +42,7 @@ interface CustomColors {
   AuthbodyBg: SimplePaletteColorOptions;
   defaultBg: SimplePaletteColorOptions;
   defaultColor: SimplePaletteColorOptions;
+  errorColor: SimplePaletteColorOptions;
 }
 
 interface customFontWeight {

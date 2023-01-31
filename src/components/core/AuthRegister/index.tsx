@@ -1,35 +1,50 @@
+import { Grid, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import { useTheme } from "@mui/system/";
 import AuthFormField from "components/reusable/AuthFormField";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
-import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
-import { Formik, Form } from "formik";
+import { Form, Formik } from "formik";
+
+type formValuesType = {
+  email: string;
+  fullName: string;
+};
 
 export default function AuthRegister() {
+  const theme = useTheme();
+  const initialValue: formValuesType = { email: "", fullName: "" };
+
+  const validation = (values: formValuesType) => {
+    let errors: formValuesType = initialValue;
+
+    if (!values.email) {
+      errors.email = "Email is required!";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!values.fullName) {
+      errors.fullName = "Full Name is required!";
+    }
+
+    if (!values.fullName) {
+      errors.fullName = "Full Name is required!";
+    }
+
+    return errors;
+  };
+
+  const submitHandler = (values: any, { setSubmitting }: any) => {
+    console.log(values);
+  };
+
   return (
     <>
       <AuthFormHeader title="Register" />
       <Formik
-        initialValues={{ email: "", password: "" }}
-        validate={(values) => {
-          const errors = {};
-
-          if (!values.email) {
-            errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-
-            setSubmitting(false);
-          }, 400);
-        }}
+        initialValues={initialValue}
+        validate={validation}
+        onSubmit={submitHandler}
       >
         {({
           values,
@@ -44,16 +59,24 @@ export default function AuthRegister() {
           <Form>
             <Grid container spacing={2} marginBottom="1rem">
               <Grid item xs={12} sm={6}>
-                <AuthFormField name="Full Name" onChange={handleChange} />
-                {errors.email && <p>error in full name</p>}
+                <AuthFormField name="full Name" onChange={() => handleChange} />
+                {errors.fullName && (
+                  <Typography color={theme.palette.errorColor.main}>
+                    {errors.fullName}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <AuthFormField
                   type="email"
-                  onChange={handleChange}
-                  name="Email"
+                  onChange={() => handleChange}
+                  name="email"
                 />
-                {errors.email && <p>error in full name</p>}
+                {errors.email && (
+                  <Typography color={theme.palette.errorColor.main}>
+                    {errors.email}
+                  </Typography>
+                )}
               </Grid>
               <Grid item xs={12} sm={6}>
                 <AuthFormField type="tel" name="Mobile" />
