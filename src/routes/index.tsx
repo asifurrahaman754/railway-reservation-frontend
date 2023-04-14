@@ -1,7 +1,8 @@
-import { useRoutes } from "react-router-dom";
-import routesConfig from "./routerConfig";
+const routes = {
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+  },
+};
 
-export default function Router() {
-  const content = useRoutes(routesConfig);
-  return content;
-}
+export default routes;

@@ -1,22 +1,28 @@
-import loadable from "@loadable/component";
 import Auth from "pages/Auth";
+import React from "react";
+import { Navigate } from "react-router-dom";
+import routes from "routes";
 
-const AuthLogin = loadable(() => import("components/core/AuthLogin"));
-const AuthRegister = loadable(() => import("components/core/AuthRegister"));
+const AuthLogin = React.lazy(() => import("components/core/AuthLogin"));
+const AuthRegister = React.lazy(() => import("components/core/AuthRegister"));
 
 const routesConfig = [
   {
     element: <Auth />,
     children: [
       {
-        path: "/auth/login",
+        path: routes.auth.login,
         element: <AuthLogin />,
       },
       {
-        path: "/auth/register",
+        path: routes.auth.register,
         element: <AuthRegister />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <Navigate to={routes.auth.login} replace />,
   },
 ];
 
