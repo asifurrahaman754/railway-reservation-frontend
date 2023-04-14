@@ -5,6 +5,7 @@ type Props = {
   name: string;
   sx?: any;
   onChange?: () => void;
+  value: any;
 };
 
 export default function AuthFormField({
@@ -12,6 +13,7 @@ export default function AuthFormField({
   name,
   sx,
   onChange,
+  value,
   ...props
 }: Props) {
   return (
