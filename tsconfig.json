@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./src",
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -15,8 +15,23 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "utils/*": ["utils/*"],
+      "components/*": ["components/*"],
+      "core_components/*": ["core_components/*"],
+      "icons/*": ["icons/*"],
+      "hooks/*": ["hooks/*"],
+      "store/*": ["store/*"],
+      "layouts/*": ["layouts/*"],
+      "libs/*": ["libs/*"],
+      "routes/*": ["routes/*"],
+      "test_utils/*": ["test_utils/*"],
+      "theme/*": ["theme/*"],
+      "pages/*": ["pages/*"],
+      "types/*": ["types/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

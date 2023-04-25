@@ -2,9 +2,12 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
 import { Form, Formik } from "formik";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "store/features/auth/authApi";
 import * as Yup from "yup";
 
-type formValuesType = {
+type registerformValuesType = {
   email: string;
   username: string;
   password: string;
@@ -13,8 +16,10 @@ type formValuesType = {
 };
 
 export default function AuthRegister() {
+  const navigate = useNavigate();
   const theme = useTheme();
-  const initialValue: formValuesType = {
+  const [register, { isSuccess, isError }] = useRegisterMutation();
+  const initialValue: registerformValuesType = {
     email: "",
     username: "",
     password: "",
@@ -22,9 +27,16 @@ export default function AuthRegister() {
     nid_no: "",
   };
 
-  const submitHandler = (values: any, { setSubmitting }: any) => {
-    setSubmitting(false);
+  const submitHandler = (values: any) => {
+    register(values);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/login", { replace: true });
+    } else if (isError) {
+    }
+  }, [isSuccess]);
 
   return (
     <>
@@ -36,12 +48,10 @@ export default function AuthRegister() {
             .email("Invalid email address")
             .nullable()
             .required("Email is required"),
-          username: Yup.string().nullable().required("Full name is required"),
-          password: Yup.string().nullable().required("Password is required"),
-          mobile: Yup.string().nullable().required("Mobile number is required"),
-          nid_no: Yup.string()
-            .nullable()
-            .required("National ID number is required"),
+          username: Yup.string().required("Full name is required"),
+          password: Yup.string().required("Password is required"),
+          mobile: Yup.string().required("Mobile number is required"),
+          nid_no: Yup.string().required("National ID number is required"),
         })}
         onSubmit={submitHandler}
       >
@@ -116,7 +126,7 @@ export default function AuthRegister() {
                   fullWidth
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  type="tel"
+                  type="password"
                   name="password"
                   label="Password"
                   variant="outlined"

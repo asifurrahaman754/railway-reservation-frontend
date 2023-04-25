@@ -2,7 +2,9 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
 import { Form, Formik } from "formik";
+import { useEffect } from "react";
 import * as Yup from "yup";
+import { useLoginMutation } from "../../../store/features/auth/authApi";
 
 type formValuesType = {
   password: string;
@@ -11,6 +13,7 @@ type formValuesType = {
 
 export default function AuthLogin() {
   const theme = useTheme();
+  const [login, { isSuccess }] = useLoginMutation();
 
   const initialValue: formValuesType = {
     password: "",
@@ -18,10 +21,14 @@ export default function AuthLogin() {
   };
 
   const submitHandler = (values: any, { setSubmitting }: any) => {
-    console.log(values);
-
-    setSubmitting(false);
+    login(values);
   };
+
+  useEffect(() => {
+    // if (isSuccess) {
+    //   alert("Login success");
+    // }
+  }, [isSuccess]);
 
   return (
     <>
@@ -30,8 +37,8 @@ export default function AuthLogin() {
       <Formik
         initialValues={initialValue}
         validationSchema={Yup.object().shape({
-          password: Yup.string().nullable().required("Password is required"),
-          mobile: Yup.string().nullable().required("Mobile number is required"),
+          password: Yup.string().required("Password is required"),
+          mobile: Yup.string().required("Mobile number is required"),
         })}
         onSubmit={submitHandler}
       >
