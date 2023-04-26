@@ -1,9 +1,8 @@
 import { Button, Grid } from "@mui/material";
-import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
 import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
-import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "store/features/auth/authApi";
 import * as Yup from "yup";
@@ -18,8 +17,7 @@ type registerformValuesType = {
 
 export default function AuthRegister() {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const [register, { isSuccess, isError }] = useRegisterMutation();
+  const [register] = useRegisterMutation();
   const initialValue: registerformValuesType = {
     email: "",
     username: "",
@@ -28,16 +26,21 @@ export default function AuthRegister() {
     nid_no: "",
   };
 
-  const submitHandler = (values: any) => {
-    register(values);
-  };
+  const submitHandler = async (values: any, { setSubmitting }: any) => {
+    try {
+      const { data } = await register(values);
 
-  useEffect(() => {
-    if (isSuccess) {
-      navigate("/login", { replace: true });
-    } else if (isError) {
+      if (!data?.success) {
+        toast.error(data?.message);
+      } else {
+        toast.success("Registration successfull!");
+        navigate("/login", { replace: true });
+      }
+    } catch (error) {
+      toast.error("Registration failed!");
     }
-  }, [isSuccess]);
+    setSubmitting(false);
+  };
 
   return (
     <>
