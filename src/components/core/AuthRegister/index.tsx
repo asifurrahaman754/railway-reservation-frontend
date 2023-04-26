@@ -1,6 +1,7 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
+import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +47,6 @@ export default function AuthRegister() {
         validationSchema={Yup.object().shape({
           email: Yup.string()
             .email("Invalid email address")
-            .nullable()
             .required("Email is required"),
           username: Yup.string().required("Full name is required"),
           password: Yup.string().required("Password is required"),
@@ -55,108 +55,49 @@ export default function AuthRegister() {
         })}
         onSubmit={submitHandler}
       >
-        {({
-          values,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          touched,
-        }) => (
-          <Form onSubmit={handleSubmit}>
+        {(formikProps) => (
+          <Form onSubmit={formikProps.handleSubmit}>
             <Grid container spacing={2} marginBottom="1rem">
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                <AuthTextField
                   name="username"
                   label="Full Name"
-                  variant="outlined"
-                  value={values.username}
-                  disabled={isSubmitting}
+                  {...formikProps}
                 />
-                {touched.username && errors.username && (
-                  <Typography color={theme.palette.errorColor.main}>
-                    {errors.username}
-                  </Typography>
-                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  type="email"
+                <AuthTextField
                   name="email"
-                  label="Email"
-                  variant="outlined"
-                  value={values.email}
-                  disabled={isSubmitting}
+                  type="email"
+                  label="email"
+                  {...formikProps}
                 />
-                {touched.email && errors.email && (
-                  <Typography color={theme.palette.errorColor.main}>
-                    {errors.email}
-                  </Typography>
-                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  type="tel"
+                <AuthTextField
                   name="mobile"
+                  type="tel"
                   label="Mobile"
-                  variant="outlined"
-                  value={values.mobile}
-                  disabled={isSubmitting}
+                  {...formikProps}
                 />
-                {touched.mobile && errors.mobile && (
-                  <Typography color={theme.palette.errorColor.main}>
-                    {errors.mobile}
-                  </Typography>
-                )}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  type="password"
+                <AuthTextField
                   name="password"
+                  type="password"
                   label="Password"
-                  variant="outlined"
-                  value={values.password}
-                  disabled={isSubmitting}
+                  {...formikProps}
                 />
-                {touched.password && errors.password && (
-                  <Typography color={theme.palette.errorColor.main}>
-                    {errors.password}
-                  </Typography>
-                )}
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  type="text"
+                <AuthTextField
                   name="nid_no"
-                  label="NID/Birth registration numbe"
-                  variant="outlined"
-                  value={values.nid_no}
-                  disabled={isSubmitting}
+                  label="NID number"
+                  {...formikProps}
                 />
-                {touched.nid_no && errors.nid_no && (
-                  <Typography color={theme.palette.errorColor.main}>
-                    {errors.nid_no}
-                  </Typography>
-                )}
               </Grid>
             </Grid>
 

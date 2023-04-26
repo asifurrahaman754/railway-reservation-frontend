@@ -1,10 +1,11 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
+import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
+import { useLoginMutation } from "store/features/auth/authApi";
 import * as Yup from "yup";
-import { useLoginMutation } from "../../../store/features/auth/authApi";
 
 type formValuesType = {
   password: string;
@@ -42,52 +43,23 @@ export default function AuthLogin() {
         })}
         onSubmit={submitHandler}
       >
-        {({
-          values,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          touched,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Box sx={{ marginBottom: "1rem" }}>
-              <TextField
-                fullWidth
-                onChange={handleChange}
-                type="tel"
-                onBlur={handleBlur}
-                name="mobile"
-                label="Mobile"
-                variant="outlined"
-                value={values.mobile}
-                disabled={isSubmitting}
-              />
-              {touched.mobile && errors.mobile && (
-                <Typography color={theme.palette.errorColor.main}>
-                  {errors.mobile}
-                </Typography>
-              )}
-            </Box>
-            <Box sx={{ marginBottom: "1rem" }}>
-              <TextField
-                fullWidth
-                onChange={handleChange}
-                type="password"
-                onBlur={handleBlur}
-                name="password"
-                label="Password"
-                variant="outlined"
-                value={values.password}
-                disabled={isSubmitting}
-              />
-              {touched.password && errors.password && (
-                <Typography color={theme.palette.errorColor.main}>
-                  {errors.password}
-                </Typography>
-              )}
-            </Box>
+        {(formikProps) => (
+          <Form onSubmit={formikProps.handleSubmit}>
+            <AuthTextField
+              sx={{ marginBottom: theme.spacing(2) }}
+              name="mobile"
+              type="tel"
+              label="Mobile"
+              {...formikProps}
+            />
+
+            <AuthTextField
+              sx={{ marginBottom: theme.spacing(2) }}
+              name="password"
+              type="password"
+              label="Password"
+              {...formikProps}
+            />
 
             <Button type="submit" fullWidth variant="contained">
               Submit

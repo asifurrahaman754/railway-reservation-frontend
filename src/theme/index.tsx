@@ -35,6 +35,15 @@ const theme = createTheme({
       main: "#ff0000",
     },
   },
+  components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          fontSize: "0.75rem",
+        },
+      },
+    },
+  },
 });
 
 //these are the custom colors
