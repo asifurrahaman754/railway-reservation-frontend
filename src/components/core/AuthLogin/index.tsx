@@ -5,6 +5,8 @@ import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
 import { useLoginMutation } from "store/features/auth/authApi";
 import { setUser } from "store/features/auth/authSlice";
 import * as Yup from "yup";
@@ -15,6 +17,7 @@ type formValuesType = {
 };
 
 export default function AuthLogin() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -37,6 +40,7 @@ export default function AuthLogin() {
         // TODO: input field should focus
       } else {
         toast.success("Login success!");
+        navigate(routes.home);
         dispatch(setUser(data?.user));
         localStorage.setItem("user", JSON.stringify(data?.user));
       }

@@ -2,11 +2,16 @@ import Auth from "pages/Auth";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import routes from "routes";
+import Home from "../pages/Home";
 
 const AuthLogin = React.lazy(() => import("components/core/AuthLogin"));
 const AuthRegister = React.lazy(() => import("components/core/AuthRegister"));
 
 const routesConfig = [
+  {
+    path: routes.home,
+    element: <Home />,
+  },
   {
     element: <Auth />,
     children: [
@@ -20,6 +25,7 @@ const routesConfig = [
       },
     ],
   },
+
   {
     path: "*",
     element: <Navigate to={routes.auth.login} replace />,

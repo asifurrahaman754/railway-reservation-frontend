@@ -1,4 +1,4 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
 import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
@@ -104,6 +104,15 @@ export default function AuthRegister() {
               </Grid>
             </Grid>
 
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              fontWeight="500"
+              marginBottom="1rem"
+            >
+              Note: after successfull registration you will be redirect to the
+              login page. But it will take 12 hours to verify you NID.
+            </Typography>
             <Button type="submit" variant="contained">
               SIGN UP
             </Button>
