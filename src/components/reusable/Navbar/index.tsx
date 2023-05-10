@@ -1,3 +1,4 @@
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,6 +24,7 @@ const style = {
   bigMenuStyle: {
     marginLeft: "auto",
     display: { xs: "none", sm: "flex" },
+    alignItems: "center",
   },
   bigMenuItemStyle: { my: 2, display: "block", fontSize: ".9rem" },
 };
@@ -98,6 +100,13 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
+          <IconButton
+            size="large"
+            color="inherit"
+            sx={{ width: "50px", height: "50px" }}
+          >
+            <LogoutIcon />
+          </IconButton>
         </Toolbar>
       </Container>
     </AppBar>

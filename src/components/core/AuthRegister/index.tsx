@@ -28,7 +28,7 @@ export default function AuthRegister() {
 
   const submitHandler = async (values: any, { setSubmitting }: any) => {
     try {
-      const { data } = await register(values);
+      const { data }: any = await register(values);
 
       if (!data?.success) {
         toast.error(data?.message);

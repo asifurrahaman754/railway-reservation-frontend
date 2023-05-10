@@ -6,13 +6,13 @@ type Props = {
 };
 
 export default function AuthFormHeader({ title }: Props) {
-  const theme = useTheme();
+  const themeBold = useTheme().typography.bold;
 
   return (
     <Typography
       variant="h4"
       textAlign="center"
-      fontWeight={theme.typography.bold}
+      fontWeight={themeBold}
       margin="1rem 0 2rem 0"
     >
       {title}

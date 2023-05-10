@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
 import AuthTextField from "components/reusable/AuthTextField";
@@ -19,7 +19,7 @@ type formValuesType = {
 export default function AuthLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const theme = useTheme();
+  const spacing = useTheme().spacing(2);
 
   const [login] = useLoginMutation();
 
@@ -33,7 +33,7 @@ export default function AuthLogin() {
     { setSubmitting, setFieldError }: any
   ) => {
     try {
-      const { data } = await login(values);
+      const { data }: any = await login(values);
 
       if (!data?.success) {
         setFieldError(data?.field?.name, data?.field?.message);
@@ -65,7 +65,7 @@ export default function AuthLogin() {
         {(formikProps) => (
           <Form onSubmit={formikProps.handleSubmit}>
             <AuthTextField
-              sx={{ marginBottom: theme.spacing(2) }}
+              sx={{ marginBottom: spacing }}
               name="mobile"
               type="tel"
               label="Mobile"
@@ -73,7 +73,7 @@ export default function AuthLogin() {
             />
 
             <AuthTextField
-              sx={{ marginBottom: theme.spacing(2) }}
+              sx={{ marginBottom: spacing }}
               name="password"
               type="password"
               label="Password"
