@@ -1,16 +1,18 @@
-import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { IMG_PATH } from "config/img_path";
-import navigation from "config/navigation";
+import navigation, { dropDownNavigation } from "config/navigation";
 import { useState } from "react";
 
 const style = {
@@ -52,6 +54,7 @@ export default function Navbar() {
         <Toolbar disableGutters>
           <img src={`${IMG_PATH}/logo.png`} alt="logo" width="60px" />
 
+          {/* menu for mobile */}
           <Box sx={{ ...style.smallMenuStyle }}>
             <IconButton
               size="large"
@@ -89,6 +92,7 @@ export default function Navbar() {
             </Menu>
           </Box>
 
+          {/* menu for desktop */}
           <Box sx={{ ...style.bigMenuStyle }}>
             {navigation.map(({ name }) => (
               <Button
@@ -100,13 +104,60 @@ export default function Navbar() {
               </Button>
             ))}
           </Box>
-          <IconButton
-            size="large"
-            color="inherit"
-            sx={{ width: "50px", height: "50px" }}
-          >
-            <LogoutIcon />
-          </IconButton>
+
+          {/* menu for user profile  */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="user profile">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Asifur" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{
+                mt: "45px",
+              }}
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <Typography
+                padding="1rem"
+                textAlign="center"
+                variant="h5"
+                fontWeight={500}
+              >
+                Asifur Rahamn
+              </Typography>
+              <Divider />
+
+              {dropDownNavigation.map(({ name, icon }) => (
+                <MenuItem
+                  key={name}
+                  onClick={handleCloseNavMenu}
+                  sx={{ py: ".8rem" }}
+                >
+                  <Box
+                    color="#000000ab"
+                    marginRight="1rem"
+                    display="flex"
+                    alignItems="center"
+                  >
+                    {icon}
+                  </Box>
+                  <Typography textAlign="center">{name}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

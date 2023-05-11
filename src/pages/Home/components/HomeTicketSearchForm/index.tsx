@@ -7,6 +7,10 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 export default function HomeTicketSearchForm() {
+  const today = new Date();
+  const tenDaysFromToday = new Date();
+  tenDaysFromToday.setDate(today.getDate() + 10);
+
   const submitHandler = async (
     values: any,
     { setSubmitting, setFieldError }: any
@@ -25,7 +29,16 @@ export default function HomeTicketSearchForm() {
       validationSchema={Yup.object().shape({
         from: Yup.string().required("from destination is required!"),
         to: Yup.string().required("to destination is required!"),
-        journeyDate: Yup.string().required("Date of journey is required!"),
+        journeyDate: Yup.date()
+          .max(
+            tenDaysFromToday.toISOString().split("T")[0],
+            "Date should be at least 10 days from today"
+          )
+          .min(
+            today.toISOString().split("T")[0],
+            "Date should be at least today"
+          )
+          .required("Date of Journey is required"),
         seat: Yup.string().required("Seat is required!"),
       })}
       onSubmit={submitHandler}
@@ -93,6 +106,10 @@ export default function HomeTicketSearchForm() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  inputProps={{
+                    min: today.toISOString().split("T")[0],
+                    max: tenDaysFromToday.toISOString().split("T")[0],
+                  }}
                   helperText={touched.journeyDate && errors.journeyDate}
                   error={touched.journeyDate && !!errors.journeyDate}
                 />
@@ -109,13 +126,9 @@ export default function HomeTicketSearchForm() {
                   disabled={isSubmitting}
                   size="small"
                   select
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                   helperText={touched.seat && errors.seat}
                   error={touched.seat && !!errors.seat}
                 >
-                  <MenuItem value="">Choose a Class</MenuItem>
                   <MenuItem value="Option 1">Option 1</MenuItem>
                 </TextField>
               </Grid>

@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
-import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
+import AuthTextField from "pages/Auth/components/AuthTextField";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "store/features/auth/authApi";

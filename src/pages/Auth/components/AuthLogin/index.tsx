@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/system/";
 import AuthFormHeader from "components/reusable/AuthFormHeader";
-import AuthTextField from "components/reusable/AuthTextField";
 import { Form, Formik } from "formik";
+import AuthTextField from "pages/Auth/components/AuthTextField";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

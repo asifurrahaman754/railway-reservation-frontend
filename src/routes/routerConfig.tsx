@@ -4,8 +4,10 @@ import { Navigate } from "react-router-dom";
 import routes from "routes";
 import Home from "../pages/Home";
 
-const AuthLogin = React.lazy(() => import("components/core/AuthLogin"));
-const AuthRegister = React.lazy(() => import("components/core/AuthRegister"));
+const AuthLogin = React.lazy(() => import("pages/Auth/components/AuthLogin"));
+const AuthRegister = React.lazy(
+  () => import("pages/Auth/components/AuthRegister")
+);
 
 const routesConfig = [
   {
