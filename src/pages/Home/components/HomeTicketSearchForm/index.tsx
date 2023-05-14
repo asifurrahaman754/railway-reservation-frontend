@@ -4,28 +4,48 @@ import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
 import * as Yup from "yup";
 
+type formInitialValuesType = {
+  from: string;
+  to: string;
+  journeyDate: string;
+  seat: string;
+};
+const formInitialValues: formInitialValuesType = {
+  from: "",
+  to: "",
+  journeyDate: "",
+  seat: "",
+};
+
 export default function HomeTicketSearchForm() {
+  const navigate = useNavigate();
   const today = new Date();
   const tenDaysFromToday = new Date();
   tenDaysFromToday.setDate(today.getDate() + 10);
 
   const submitHandler = async (
-    values: any,
-    { setSubmitting, setFieldError }: any
+    values: formInitialValuesType,
+    { setSubmitting }: any
   ) => {
-    console.log("values", values);
-    setSubmitting(false);
+    const { from, journeyDate, seat, to } = values;
+
+    // set the query params in the url using new URLSearchParams()
+    const params = new URLSearchParams();
+    params.append("fromCity", from);
+    params.append("toCity", to);
+    params.append("date", journeyDate);
+    params.append("seat", seat);
+
+    navigate(`${routes.booking}?${params.toString()}`);
   };
+
   return (
     <Formik
-      initialValues={{
-        from: "",
-        to: "",
-        journeyDate: "",
-        seat: "",
-      }}
+      initialValues={formInitialValues}
       validationSchema={Yup.object().shape({
         from: Yup.string().required("from destination is required!"),
         to: Yup.string().required("to destination is required!"),

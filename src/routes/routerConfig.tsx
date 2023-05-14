@@ -1,13 +1,12 @@
 import Auth from "pages/Auth";
-import React from "react";
+import { lazy, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 import routes from "routes";
-import Home from "../pages/Home";
 
-const AuthLogin = React.lazy(() => import("pages/Auth/components/AuthLogin"));
-const AuthRegister = React.lazy(
-  () => import("pages/Auth/components/AuthRegister")
-);
+const AuthLogin = lazy(() => import("pages/Auth/components/AuthLogin"));
+const AuthRegister = lazy(() => import("pages/Auth/components/AuthRegister"));
+const Home = lazy(() => import("pages/Home"));
+const TrainInfo = lazy(() => import("pages/TrainInfo"));
 
 const routesConfig = [
   {
@@ -27,7 +26,14 @@ const routesConfig = [
       },
     ],
   },
-
+  {
+    path: routes.booking,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <TrainInfo />
+      </Suspense>
+    ),
+  },
   {
     path: "*",
     element: <Navigate to={routes.auth.login} replace />,

@@ -1,15 +1,14 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
-import Navbar from "components/reusable/Navbar";
+import UserLayout from "layouts/UserLayout";
 import HomeTicketSearchForm from "./components/HomeTicketSearchForm";
 
 export default function Home() {
   const primaryColor = useTheme().palette.primary.main;
 
   return (
-    <>
-      <Navbar />
+    <UserLayout>
       <Box>
         <Typography
           sx={{
@@ -26,6 +25,6 @@ export default function Home() {
         </Typography>
         <HomeTicketSearchForm />
       </Box>
-    </>
+    </UserLayout>
   );
 }

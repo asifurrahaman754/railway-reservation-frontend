@@ -23,7 +23,6 @@
       "icons/*": ["icons/*"],
       "hooks/*": ["hooks/*"],
       "store/*": ["store/*"],
-      "layouts/*": ["layouts/*"],
       "libs/*": ["libs/*"],
       "routes/*": ["routes/*"],
       "test_utils/*": ["test_utils/*"],
