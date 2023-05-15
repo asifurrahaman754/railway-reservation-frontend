@@ -6,14 +6,9 @@ import TextField from "@mui/material/TextField";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import routes from "routes/index";
+import { formInitialValuesType } from "types/bookTicketFormType";
 import * as Yup from "yup";
 
-type formInitialValuesType = {
-  from: string;
-  to: string;
-  journeyDate: string;
-  seat: string;
-};
 const formInitialValues: formInitialValuesType = {
   from: "",
   to: "",
