@@ -10,40 +10,45 @@ export default function TrainListItemHeader() {
 
   return (
     <Grid container alignItems="center" paddingY="1rem">
-      <Grid item xs={true}>
-        <Grid container spacing={2} alignItems="center" paddingY="10px">
+      <Grid item sm={true} xs={12}>
+        <Grid
+          container
+          spacing={{ xs: 1, sm: 2 }}
+          alignItems="center"
+          paddingY="10px"
+        >
           <Grid item xs={3}>
             <Typography
               variant="h6"
               fontWeight="bold"
-              fontSize=".9rem"
-              align="right"
+              fontSize={{ xs: ".8rem", sm: ".9rem" }}
+              textAlign={{ xs: "left", sm: "right" }}
             >
               20 May, 07:00 am
             </Typography>
-            <Typography variant="body1" align="right">
+            <Typography variant="body1" textAlign={{ xs: "left", sm: "right" }}>
               Dhaka
             </Typography>
           </Grid>
           <Grid fontSize=".9rem" item xs={6} textAlign="center">
-            <Divider light={true}>05h 15m</Divider>
+            <Divider>05h 15m</Divider>
           </Grid>
-          <Grid item>
+          <Grid item xs={3}>
             <Typography
               variant="h6"
               fontWeight="bold"
-              fontSize=".9rem"
-              align="left"
+              fontSize={{ xs: ".8rem", sm: ".9rem" }}
+              textAlign={{ xs: "right", sm: "left" }}
             >
               20 May, 12:15 pm
             </Typography>
-            <Typography variant="body1" align="left">
+            <Typography variant="body1" textAlign={{ xs: "right", sm: "left" }}>
               Chattogram
             </Typography>
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={2} display="flex" justifyContent="center">
+      <Grid item sm={2} xs={12} display="flex" justifyContent="center">
         <Button sx={{ display: "flex", flexDirection: "column" }}>
           <TrainIcon sx={{ color: primaryColor }} />
           <Typography

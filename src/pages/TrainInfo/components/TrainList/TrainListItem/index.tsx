@@ -26,7 +26,12 @@ export default function TrainListItem() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography textTransform="uppercase" fontWeight="bold" variant="h5">
+          <Typography
+            textTransform="uppercase"
+            fontWeight="bold"
+            variant="h5"
+            fontSize={{ xs: "1rem", sm: "1.2rem" }}
+          >
             SONAR BANGLA EXPRESS (788)
           </Typography>
         </AccordionSummary>

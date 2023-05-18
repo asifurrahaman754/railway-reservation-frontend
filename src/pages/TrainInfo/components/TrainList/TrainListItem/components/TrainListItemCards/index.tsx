@@ -1,17 +1,18 @@
 import Grid from "@mui/material/Grid";
-import TrainListItemCardItem from "./TrainListItemCardItem";
+import TrainListItemCard from "./TrainListItemCard";
+import { TrainListItemCardContainerStyle } from "./style";
 
 export default function TrainListItemCards() {
   return (
-    <Grid padding="1rem 0 2rem 0" container spacing={2}>
+    <Grid container spacing={2} sx={TrainListItemCardContainerStyle}>
       <Grid item>
-        <TrainListItemCardItem isActive={true} />
+        <TrainListItemCard isActive={true} />
       </Grid>
       <Grid item>
-        <TrainListItemCardItem isActive={false} />
+        <TrainListItemCard isActive={false} />
       </Grid>
       <Grid item>
-        <TrainListItemCardItem isActive={false} />
+        <TrainListItemCard isActive={false} />
       </Grid>
     </Grid>
   );
