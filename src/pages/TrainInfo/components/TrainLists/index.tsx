@@ -1,6 +1,6 @@
 import TrainListItem from "./TrainListItem";
 
-export default function TrainList() {
+export default function TrainLists() {
   return (
     <>
       <TrainListItem />

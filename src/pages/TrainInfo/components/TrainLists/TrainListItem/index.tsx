@@ -4,10 +4,20 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import SelectCoachContainer from "./components/SelectCoachContainer";
 import TrainListItemCards from "./components/TrainListItemCards";
 import TrainListItemHeader from "./components/TrainListItemHeader";
 
+export type expandedItemType = {
+  id: string | number;
+};
+
 export default function TrainListItem() {
+  const [expandedItem, setExpandedItem] = useState<null | expandedItemType>(
+    null
+  );
+
   return (
     <>
       <Accordion
@@ -41,7 +51,11 @@ export default function TrainListItem() {
           <TrainListItemHeader />
           <Divider />
 
-          <TrainListItemCards />
+          <TrainListItemCards
+            setExpandedItem={setExpandedItem}
+            expandedItem={expandedItem}
+          />
+          {expandedItem?.id && <SelectCoachContainer />}
         </AccordionDetails>
       </Accordion>
     </>

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import UserLayout from "layouts/UserLayout";
 import TrainInfoHeader from "./components/TrainInfoHeader";
-import TrainList from "./components/TrainList";
+import TrainLists from "./components/TrainLists";
 
 export default function TrainInfo() {
   return (
@@ -26,7 +26,7 @@ export default function TrainInfo() {
             </strong>
           </Alert>
 
-          <TrainList />
+          <TrainLists />
         </Container>
       </Box>
     </UserLayout>
