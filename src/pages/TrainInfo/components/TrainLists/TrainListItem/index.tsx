@@ -2,10 +2,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import SelectCoachContainer from "./components/SelectCoachContainer";
+import CoachDetails from "./components/SelectCoachContainer/CoachDetails";
 import TrainListItemCards from "./components/TrainListItemCards";
 import TrainListItemHeader from "./components/TrainListItemHeader";
 
@@ -55,7 +57,20 @@ export default function TrainListItem() {
             setExpandedItem={setExpandedItem}
             expandedItem={expandedItem}
           />
-          {expandedItem?.id && <SelectCoachContainer />}
+
+          {expandedItem?.id && (
+            <SelectCoachContainer>
+              <CoachDetails>
+                <Button
+                  variant="text"
+                  sx={{ display: "flex", marginLeft: "auto" }}
+                  onClick={() => setExpandedItem(null)}
+                >
+                  Close
+                </Button>
+              </CoachDetails>
+            </SelectCoachContainer>
+          )}
         </AccordionDetails>
       </Accordion>
     </>

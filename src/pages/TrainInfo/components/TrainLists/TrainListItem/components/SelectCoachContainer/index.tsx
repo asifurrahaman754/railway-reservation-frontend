@@ -3,10 +3,9 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
-import CoachDetails from "./CoachDetails";
 import SelectCoach from "./SelectCoach";
 
-export default function SelectCoachContainer() {
+export default function SelectCoachContainer({ children }: any) {
   const primaryColor = useTheme().palette.primary.main;
 
   return (
@@ -24,7 +23,7 @@ export default function SelectCoachContainer() {
           <SelectCoach />
         </Grid>
         <Grid item md={6} xs={12}>
-          <CoachDetails />
+          {children}
         </Grid>
       </Grid>
     </Box>

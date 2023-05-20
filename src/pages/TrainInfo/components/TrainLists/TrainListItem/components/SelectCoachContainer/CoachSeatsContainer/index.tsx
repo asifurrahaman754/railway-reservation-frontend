@@ -13,7 +13,6 @@ const seatStyle = {
 };
 
 const CoachSeatsContainer = () => {
-  console.log("CoachSeatsContainer");
 
   const seats = 44 / 2;
   const seatsInArray = Array.from({ length: seats }, (_, i) => i + 1);
