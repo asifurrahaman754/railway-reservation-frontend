@@ -14,6 +14,12 @@ import Typography from "@mui/material/Typography";
 import { IMG_PATH } from "config/img_path";
 import navigation, { dropDownNavigation } from "config/navigation";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
+import { selectUser } from "store/features/auth/authSelector";
+import { removeUser } from "store/features/auth/authSlice";
+import { removeUserFromLocal } from "utils/localStorage";
 
 const style = {
   appbarStyle: {
@@ -32,6 +38,9 @@ const style = {
 };
 
 export default function Navbar() {
+  const dispatch = useDispatch();
+  const authUser = useSelector(selectUser);
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -44,10 +53,18 @@ export default function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleClickUserMenu = (name: string) => {
+    if (name === "logout") {
+      removeUserFromLocal();
+      dispatch(removeUser());
+    }
+    handleCloseUserMenu();
+  };
+
   return (
     <AppBar position="static" style={style.appbarStyle}>
       <Container maxWidth="lg">
@@ -89,6 +106,12 @@ export default function Navbar() {
                   <Typography textAlign="center">{name}</Typography>
                 </MenuItem>
               ))}
+
+              {!authUser && (
+                <MenuItem onClick={() => navigate(routes.auth.login)}>
+                  <Typography textAlign="center">Login</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
 
@@ -103,61 +126,72 @@ export default function Navbar() {
                 {name}
               </Button>
             ))}
+
+            {!authUser && (
+              <Button
+                onClick={() => navigate(routes.auth.login)}
+                sx={{ ...style.bigMenuItemStyle }}
+              >
+                Login
+              </Button>
+            )}
           </Box>
 
           {/* menu for user profile  */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="user profile">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Asifur" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{
-                mt: "45px",
-              }}
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Typography
-                padding="1rem"
-                textAlign="center"
-                variant="h5"
-                fontWeight={500}
+          {authUser && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="user profile">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Asifur" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{
+                  mt: "45px",
+                }}
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
               >
-                Asifur Rahamn
-              </Typography>
-              <Divider />
-
-              {dropDownNavigation.map(({ name, icon }) => (
-                <MenuItem
-                  key={name}
-                  onClick={handleCloseNavMenu}
-                  sx={{ py: ".8rem" }}
+                <Typography
+                  padding="1rem"
+                  textAlign="center"
+                  variant="h5"
+                  fontWeight={500}
                 >
-                  <Box
-                    color="#000000ab"
-                    marginRight="1rem"
-                    display="flex"
-                    alignItems="center"
+                  Asifur Rahamn
+                </Typography>
+                <Divider />
+
+                {dropDownNavigation.map(({ name, icon }) => (
+                  <MenuItem
+                    key={name}
+                    onClick={() => handleClickUserMenu(name)}
+                    sx={{ py: ".8rem" }}
                   >
-                    {icon}
-                  </Box>
-                  <Typography textAlign="center">{name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                    <Box
+                      color="#000000ab"
+                      marginRight="1rem"
+                      display="flex"
+                      alignItems="center"
+                    >
+                      {icon}
+                    </Box>
+                    <Typography textAlign="center">{name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

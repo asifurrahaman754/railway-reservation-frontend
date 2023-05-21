@@ -18,11 +18,19 @@ const routesConfig = [
     children: [
       {
         path: routes.auth.login,
-        element: <AuthLogin />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AuthLogin />
+          </Suspense>
+        ),
       },
       {
         path: routes.auth.register,
-        element: <AuthRegister />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AuthRegister />
+          </Suspense>
+        ),
       },
     ],
   },
