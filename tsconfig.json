@@ -20,6 +20,7 @@
       "utils/*": ["utils/*"],
       "components/*": ["components/*"],
       "core_components/*": ["core_components/*"],
+      "layouts/*": ["layouts/*"],
       "icons/*": ["icons/*"],
       "hooks/*": ["hooks/*"],
       "store/*": ["store/*"],

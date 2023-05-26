@@ -1,8 +1,13 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
+import SuspenseLoader from "components/SuspenseLoader";
 import UserLayout from "layouts/UserLayout";
-import HomeTicketSearchForm from "./components/HomeTicketSearchForm";
+import { Suspense, lazy } from "react";
+
+const HomeTicketSearchForm = lazy(
+  () => import("./components/HomeTicketSearchForm")
+);
 
 export default function Home() {
   const primaryColor = useTheme().palette.primary.main;
@@ -23,7 +28,9 @@ export default function Home() {
         >
           Search for your ticket
         </Typography>
-        <HomeTicketSearchForm />
+        <Suspense fallback={<SuspenseLoader />}>
+          <HomeTicketSearchForm />
+        </Suspense>
       </Box>
     </UserLayout>
   );

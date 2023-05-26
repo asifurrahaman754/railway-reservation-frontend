@@ -1,4 +1,4 @@
-import App from "components/core/App";
+import App from "components/App";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";

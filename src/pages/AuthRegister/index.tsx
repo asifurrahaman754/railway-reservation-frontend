@@ -1,7 +1,7 @@
 import { Button, Grid, Typography } from "@mui/material";
-import AuthFormHeader from "components/reusable/AuthFormHeader";
+import AuthLayout from "Layouts/AuthLayout";
+import AuthTextField from "components/AuthTextField";
 import { Form, Formik } from "formik";
-import AuthTextField from "pages/Auth/components/AuthTextField";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "store/features/auth/authApi";
@@ -43,8 +43,15 @@ export default function AuthRegister() {
   };
 
   return (
-    <>
-      <AuthFormHeader title="Register" />
+    <AuthLayout>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        fontWeight="700"
+        margin="1rem 0 2rem 0"
+      >
+        Register
+      </Typography>
       <Formik
         initialValues={initialValue}
         validationSchema={Yup.object().shape({
@@ -119,6 +126,6 @@ export default function AuthRegister() {
           </Form>
         )}
       </Formik>
-    </>
+    </AuthLayout>
   );
 }

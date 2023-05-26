@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import Navbar from "components/reusable/Navbar";
+import Navbar from "components/Navbar";
 
 export default function UserLayout({ children }: any) {
   return (

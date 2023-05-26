@@ -1,11 +1,11 @@
-import Auth from "pages/Auth";
+import SuspenseLoader from "components/SuspenseLoader";
+import AuthLogin from "pages/AuthLogin";
+import AuthRegister from "pages/AuthRegister";
+import Home from "pages/Home";
 import { lazy, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 import routes from "routes";
 
-const AuthLogin = lazy(() => import("pages/Auth/components/AuthLogin"));
-const AuthRegister = lazy(() => import("pages/Auth/components/AuthRegister"));
-const Home = lazy(() => import("pages/Home"));
 const TrainInfo = lazy(() => import("pages/TrainInfo"));
 
 const routesConfig = [
@@ -14,33 +14,24 @@ const routesConfig = [
     element: <Home />,
   },
   {
-    element: <Auth />,
-    children: [
-      {
-        path: routes.auth.login,
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <AuthLogin />
-          </Suspense>
-        ),
-      },
-      {
-        path: routes.auth.register,
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <AuthRegister />
-          </Suspense>
-        ),
-      },
-    ],
+    path: routes.auth.login,
+    element: <AuthLogin />,
+  },
+  {
+    path: routes.auth.register,
+    element: <AuthRegister />,
   },
   {
     path: routes.booking,
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SuspenseLoader />}>
         <TrainInfo />
       </Suspense>
     ),
+  },
+  {
+    path: routes.admin.login,
+    element: <AuthLogin isForAdmin />,
   },
   {
     path: "*",
