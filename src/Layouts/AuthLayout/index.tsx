@@ -1,4 +1,4 @@
-import AuthBg from "components/AuthBg";
+import AuthBg from "Layouts/AuthBg";
 import AuthFormLayout from "./AuthFormLayout";
 
 export default function AuthLayout({

@@ -6,18 +6,22 @@ import { authUserType } from "types/authUserType";
 
 export default function GuardRoute({
   children,
+  isForAdmin = false,
 }: {
   children: React.ReactNode | null;
+  isForAdmin?: boolean;
 }) {
   const isAuthenticated: authUserType | null = useSelector(selectUser);
-  console.log("isAuthenticated", isAuthenticated);
 
   return (
     <>
       {isAuthenticated ? (
         children
       ) : (
-        <Navigate to={routes.auth.login} replace={true} />
+        <Navigate
+          to={isForAdmin ? routes.admin.login : routes.auth.login}
+          replace={true}
+        />
       )}
     </>
   );

@@ -9,6 +9,7 @@ const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+
     register: builder.mutation({
       query: (body) => ({
         url: "/auth/register",
@@ -16,7 +17,16 @@ const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+
+    adminLogin: builder.mutation({
+      query: (body) => ({
+        url: "/auth/admin/login",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useAdminLoginMutation } =
+  authApi;
