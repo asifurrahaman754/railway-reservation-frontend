@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import AuthBg from "Layouts/AuthBg";
+import { Link } from "react-router-dom";
+import routes from "routes/index";
 
 const CustomButton = ({ children }: { children: string }) => {
   return (
@@ -34,7 +36,9 @@ export default function Dashboard() {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid item sm={6} xs={12}>
-              <CustomButton>Users</CustomButton>
+              <Link to={routes.admin.user}>
+                <CustomButton>Users</CustomButton>
+              </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
               <CustomButton>Train list</CustomButton>

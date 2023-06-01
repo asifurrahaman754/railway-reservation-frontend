@@ -6,8 +6,10 @@ const routes = {
   admin: {
     login: "/admin/login",
     dashboard: "/admin/dashboard",
-    train: "/admin/train",
-    user: "/admin/user",
+    trains: "/admin/dashboard/train",
+    user: "/admin/dashboard/user",
+    bookings: "/admin/dashboard/bookings",
+    admin_accounts: "/admin/dashboard/admin_accounts",
   },
   home: "/",
   booking: `/booking`,

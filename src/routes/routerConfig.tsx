@@ -9,6 +9,7 @@ import { Navigate } from "react-router-dom";
 import routes from "routes";
 
 const TrainInfo = lazy(() => import("pages/TrainInfo"));
+const UsersTable = lazy(() => import("pages/Dashboard/UsersTable"));
 
 const routesConfig = [
   {
@@ -40,6 +41,16 @@ const routesConfig = [
     element: (
       <GuardRoute isForAdmin>
         <Dashboard />
+      </GuardRoute>
+    ),
+  },
+  {
+    path: routes.admin.user,
+    element: (
+      <GuardRoute isForAdmin>
+        <Suspense fallback={<SuspenseLoader />}>
+          <UsersTable />
+        </Suspense>
       </GuardRoute>
     ),
   },
