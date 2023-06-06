@@ -1,5 +1,7 @@
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,72 +9,43 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import AuthBg from "Layouts/AuthBg";
+import SuspenseLoader from "components/SuspenseLoader";
 import * as React from "react";
+import { Link } from "react-router-dom";
+import routes from "routes/index";
+import { useGetAllUsersQuery } from "store/features/users/usersApi";
+import { UserType } from "types/user";
 import UserTableHead from "./TableHead";
 import TableToolbar from "./TableToolbar";
 
-interface Data {
-  name: string;
-  email: string;
-  mobile: string;
-  nid: number;
-  isVerified: boolean;
-}
-
-function createData(
-  name: string,
-  email: string,
-  mobile: string,
-  nid: number,
-  isVerified: boolean
-): Data {
-  return {
-    name,
-    email,
-    mobile,
-    nid,
-    isVerified,
-  };
-}
-
-const rows: Data[] = [
-  createData("asifur1", "asifur@gmail.com", "1234", 4343, true),
-  createData("asifur2", "asifur@gmail.com", "1234", 4343, true),
-  createData("asifur3", "asifur@gmail.com", "1234", 4343, true),
-  createData("asifur4", "asifur@gmail.com", "1234", 4343, true),
-];
-
 export default function UsersTable() {
-  const [selected, setSelected] = React.useState<any[]>([]);
+  const { isLoading, isError, data: Users } = useGetAllUsersQuery();
+  const [selected, setSelected] = React.useState<Partial<UserType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
-      setSelected(newSelected);
+      const newSelecteds = Users?.data.map((user: UserType) => ({
+        id: user.id,
+        isVerified: user.isVerified,
+      }));
+      setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: Data[] = [];
+  const handleClick = (user: UserType) => {
+    const selectedUser = selected.find((u) => u.id === user.id);
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
+    if (!selectedUser) {
+      setSelected([...selected, { id: user.id, isVerified: user.isVerified }]);
+    } else {
+      const newSelected = selected.filter((u) => u.id !== user.id);
+      setSelected(newSelected);
     }
-
-    setSelected(newSelected);
   };
 
   return (
@@ -85,8 +58,24 @@ export default function UsersTable() {
           overflowX: "auto",
         }}
       >
+        <Link to={routes.admin.dashboard}>
+          <Tooltip title="Back to dashboard">
+            <IconButton
+              sx={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: "#f3f3f3",
+                marginBottom: "1rem",
+              }}
+            >
+              <ArrowBackIosNewIcon />
+            </IconButton>
+          </Tooltip>
+        </Link>
         <Paper sx={{ width: "100%", mb: 2 }}>
-          <TableToolbar numSelected={selected.length} />
+          <TableToolbar selected={selected} setSelected={setSelected} />
+
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
@@ -96,21 +85,42 @@ export default function UsersTable() {
               <UserTableHead
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
-                rowCount={rows.length}
+                rowCount={Users?.data.length}
               />
               <TableBody>
-                {rows.map((row, index) => {
-                  const isItemSelected = selected.indexOf(row.name) !== -1;
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                {isLoading && (
+                  <TableRow>
+                    <TableCell colSpan={10}>
+                      <SuspenseLoader
+                        sx={{ color: "#000", width: "15px", height: "15px" }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                {/*TODO: need to use error from api */}
+                {isError && (
+                  <TableRow>
+                    <TableCell colSpan={10}>
+                      <Typography variant="body2" align="center">
+                        Failed to load data
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                {Users?.data.map((user: UserType) => {
+                  const isItemSelected = selected.some((u) => u.id === user.id);
+                  const labelId = `enhanced-table-checkbox-${user.id}`;
 
                   return (
                     <TableRow
+                      key={user.id}
                       hover
-                      onClick={() => handleClick(row.name)}
+                      onClick={() => handleClick(user)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
                       selected={isItemSelected}
                       sx={{ cursor: "pointer" }}
                     >
@@ -123,13 +133,13 @@ export default function UsersTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {user.username}
                       </TableCell>
-                      <TableCell align="left">{row.email}</TableCell>
-                      <TableCell align="left">{row.mobile}</TableCell>
-                      <TableCell align="left">{row.nid}</TableCell>
+                      <TableCell align="left">{user.email}</TableCell>
+                      <TableCell align="left">{user.mobile}</TableCell>
+                      <TableCell align="left">{user.nid_no}</TableCell>
                       <TableCell align="left">
-                        {row.isVerified ? "yes" : "no"}
+                        {user.isVerified ? "yes" : "no"}
                       </TableCell>
                     </TableRow>
                   );
@@ -140,7 +150,7 @@ export default function UsersTable() {
           <TablePagination
             rowsPerPageOptions={[]}
             component="div"
-            count={rows.length}
+            count={Users?.data.length || 0}
             rowsPerPage={0}
             page={0}
             onPageChange={() => {}}

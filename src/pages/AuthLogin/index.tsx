@@ -5,6 +5,8 @@ import AuthLayout from "Layouts/AuthLayout";
 import AuthTextField from "components/AuthTextField";
 import { Form, Formik } from "formik";
 import useAuthSubmitHandler from "hooks/useAuthSubmitHandler";
+import { Link } from "react-router-dom";
+import routes from "routes/index";
 import * as Yup from "yup";
 
 type formValuesType = {
@@ -86,6 +88,20 @@ export default function AuthLogin({ isForAdmin }: AuthLoginProps) {
             <Button type="submit" fullWidth variant="contained">
               Submit
             </Button>
+
+            <Typography
+              variant="body2"
+              textAlign="center"
+              marginTop={spacing}
+              marginBottom={spacing}
+            >
+              Don't have an account?{" "}
+              <Link to={routes.auth.register}>
+                <Button component="a" variant="text">
+                  Register
+                </Button>
+              </Link>
+            </Typography>
           </Form>
         )}
       </Formik>
