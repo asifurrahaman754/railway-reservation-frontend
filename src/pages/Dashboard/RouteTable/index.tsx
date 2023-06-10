@@ -1,6 +1,6 @@
+import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VerifiedIcon from "@mui/icons-material/Verified";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
@@ -12,34 +12,22 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import AuthBg from "Layouts/AuthBg";
 import AdminTableHead from "components/AdminTableHead";
 import AdminTableToolbar from "components/AdminTableToolbar";
-import SuspenseLoader from "components/SuspenseLoader";
 import TableHeadCell from "config/TableHeadCell";
-import * as React from "react";
-import { toast } from "react-hot-toast";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import routes from "routes/index";
-import {
-  useDeleteUserMutation,
-  useGetAllUsersQuery,
-  useUpdateUserVerificationMutation,
-} from "store/features/users/usersApi";
-import { UserType } from "types/tableRow";
+import { routeType } from "types/tableRow";
 
-export default function UsersTable() {
-  const { isLoading, isError, data: Users } = useGetAllUsersQuery();
-  const [selected, setSelected] = React.useState<Partial<UserType>[]>([]);
-  const [deleteUser] = useDeleteUserMutation();
-  const [updateUserVerification] = useUpdateUserVerificationMutation();
+export default function RouteTable() {
+  const [selected, setSelected] = useState<Partial<routeType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = Users?.data.map((user: UserType) => ({
+      const newSelecteds = [].map((user: routeType) => ({
         id: user.id,
-        isVerified: user.isVerified,
       }));
       setSelected(newSelecteds);
       return;
@@ -47,57 +35,33 @@ export default function UsersTable() {
     setSelected([]);
   };
 
-  const handleClick = (user: UserType) => {
-    const selectedUser = selected.find((u) => u.id === user.id);
+  const handleClick = (route: routeType) => {
+    const { id } = route;
+    const selectedUser = selected.find((u) => u.id === id);
 
     if (!selectedUser) {
-      setSelected([...selected, { id: user.id, isVerified: user.isVerified }]);
+      setSelected([...selected, { id }]);
     } else {
-      const newSelected = selected.filter((u) => u.id !== user.id);
+      const newSelected = selected.filter((u) => u.id !== id);
       setSelected(newSelected);
     }
   };
 
-  const verifyUser = async () => {
-    const isConfirmed = confirm("Are you sure you want to verify this user?");
-    if (isConfirmed) {
-      const noVerifiedUsers = selected.filter((user) => user.isVerified !== 1);
-      const updateUsersPromises = noVerifiedUsers.map((user) =>
-        updateUserVerification(user.id)
-      );
+  const deleteRoutes = async () => {
+    const isConfirmed = confirm("Are you sure you want to delete this Route?");
+    // if (isConfirmed) {
+    //   const deleteUsersPromises = selected.map((user) => deleteUser(user.id));
 
-      if (updateUsersPromises.length === 0) {
-        toast.error("No user to verify!");
-        return;
-      }
-
-      try {
-        const result: any = await Promise.all(updateUsersPromises);
-        if (result[0]?.data?.success) {
-          toast.success("User verified successfully!");
-          setSelected([]);
-        }
-      } catch (error) {
-        toast.error("Error verifying user!");
-      }
-    }
-  };
-
-  const deleteUsers = async () => {
-    const isConfirmed = confirm("Are you sure you want to delete this user?");
-    if (isConfirmed) {
-      const deleteUsersPromises = selected.map((user) => deleteUser(user.id));
-
-      try {
-        const result: any = await Promise.all(deleteUsersPromises);
-        if (result[0]?.data?.success) {
-          toast.success("User deleted successfully!");
-          setSelected([]);
-        }
-      } catch (error) {
-        toast.error("Error deleting user!");
-      }
-    }
+    //   try {
+    //     const result: any = await Promise.all(deleteUsersPromises);
+    //     if (result[0]?.data?.success) {
+    //       toast.success("User deleted successfully!");
+    //       setSelected([]);
+    //     }
+    //   } catch (error) {
+    //     toast.error("Error deleting user!");
+    //   }
+    // }
   };
 
   return (
@@ -128,16 +92,15 @@ export default function UsersTable() {
         <Paper sx={{ width: "100%", mb: 2 }}>
           <AdminTableToolbar<(typeof selected)[0]>
             selected={selected}
-            title="Users"
+            title="Routes"
           >
-            <Tooltip title="Verify user">
-              <IconButton onClick={verifyUser}>
-                <VerifiedIcon />
+            <Tooltip title="add route">
+              <IconButton onClick={deleteRoutes}>
+                <AddIcon />
               </IconButton>
             </Tooltip>
-
-            <Tooltip title="Delete user">
-              <IconButton onClick={deleteUsers}>
+            <Tooltip title="delete route">
+              <IconButton onClick={deleteRoutes}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -152,11 +115,11 @@ export default function UsersTable() {
               <AdminTableHead
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
-                rowCount={Users?.data.length}
-                cells={TableHeadCell.users}
+                rowCount={[].length}
+                cells={TableHeadCell.route}
               />
               <TableBody>
-                {isLoading && (
+                {/* {isLoading && (
                   <TableRow>
                     <TableCell colSpan={10}>
                       <SuspenseLoader
@@ -167,7 +130,7 @@ export default function UsersTable() {
                 )}
 
                 {/*TODO: need to use error from api */}
-                {isError && (
+                {/* {isError && (
                   <TableRow>
                     <TableCell colSpan={10}>
                       <Typography variant="body2" align="center">
@@ -175,10 +138,10 @@ export default function UsersTable() {
                       </Typography>
                     </TableCell>
                   </TableRow>
-                )}
+                )} */}
 
-                {Users?.data.map((user: UserType) => {
-                  const isItemSelected = selected.some((u) => u.id === user.id);
+                {[{ id: "nice", name: "asifur" }].map((user) => {
+                  const isItemSelected = selected.some((u) => u.id == user.id);
                   const labelId = `enhanced-table-checkbox-${user.id}`;
 
                   return (
@@ -199,15 +162,17 @@ export default function UsersTable() {
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        padding="normal"
                       >
-                        {user.username}
+                        {user.id}
                       </TableCell>
-                      <TableCell align="left">{user.email}</TableCell>
-                      <TableCell align="left">{user.mobile}</TableCell>
-                      <TableCell align="left">{user.nid_no}</TableCell>
-                      <TableCell align="left">
-                        {user.isVerified ? "yes" : "no"}
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="normal"
+                      >
+                        {user.name}
                       </TableCell>
                     </TableRow>
                   );
@@ -218,7 +183,7 @@ export default function UsersTable() {
           <TablePagination
             rowsPerPageOptions={[]}
             component="div"
-            count={Users?.data.length || 0}
+            count={0}
             rowsPerPage={0}
             page={0}
             onPageChange={() => {}}

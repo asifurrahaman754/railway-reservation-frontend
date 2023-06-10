@@ -10,6 +10,8 @@ import routes from "routes";
 
 const TrainInfo = lazy(() => import("pages/TrainInfo"));
 const UsersTable = lazy(() => import("pages/Dashboard/UsersTable"));
+const RouteTable = lazy(() => import("pages/Dashboard/RouteTable"));
+const TrainsTable = lazy(() => import("pages/Dashboard/TrainsTable"));
 
 const routesConfig = [
   {
@@ -50,6 +52,26 @@ const routesConfig = [
       <GuardRoute isForAdmin>
         <Suspense fallback={<SuspenseLoader />}>
           <UsersTable />
+        </Suspense>
+      </GuardRoute>
+    ),
+  },
+  {
+    path: routes.admin.trains,
+    element: (
+      <GuardRoute isForAdmin>
+        <Suspense fallback={<SuspenseLoader />}>
+          <TrainsTable />
+        </Suspense>
+      </GuardRoute>
+    ),
+  },
+  {
+    path: routes.admin.route,
+    element: (
+      <GuardRoute isForAdmin>
+        <Suspense fallback={<SuspenseLoader />}>
+          <RouteTable />
         </Suspense>
       </GuardRoute>
     ),

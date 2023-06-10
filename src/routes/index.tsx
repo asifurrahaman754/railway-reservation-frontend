@@ -10,6 +10,7 @@ const routes = {
     user: "/admin/dashboard/user",
     bookings: "/admin/dashboard/bookings",
     admin_accounts: "/admin/dashboard/admin_accounts",
+    route: "/admin/dashboard/route",
   },
   home: "/",
   booking: `/booking`,

@@ -3,18 +3,20 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import TableHeadCell from "config/TableHeadCell";
+import { TableHeadCell } from "types/TableHeadCell";
 
 interface UserTableHeadProps {
   numSelected: number;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   rowCount: number;
+  cells: TableHeadCell[];
 }
 
-export default function UserTableHead({
+export default function AdminTableHead({
   onSelectAllClick,
   numSelected,
   rowCount,
+  cells,
 }: UserTableHeadProps) {
   return (
     <TableHead>
@@ -26,16 +28,12 @@ export default function UserTableHead({
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              "aria-label": "select all desserts",
+              "aria-label": "select all users",
             }}
           />
         </TableCell>
-        {TableHeadCell.users.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align="left"
-            padding={headCell.disablePadding ? "none" : "normal"}
-          >
+        {cells.map((headCell) => (
+          <TableCell key={headCell.id} align="left" padding="normal">
             <TableSortLabel>{headCell.label}</TableSortLabel>
           </TableCell>
         ))}

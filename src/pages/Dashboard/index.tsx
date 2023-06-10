@@ -41,10 +41,17 @@ export default function Dashboard() {
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
-              <CustomButton>Train list</CustomButton>
+              <Link to={routes.admin.trains}>
+                <CustomButton>All Trains</CustomButton>
+              </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
               <CustomButton>Bookings</CustomButton>
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <Link to={routes.admin.route}>
+                <CustomButton>Route</CustomButton>
+              </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
               <CustomButton>Admins</CustomButton>

@@ -6,3 +6,8 @@ export type UserType = {
   nid_no: string;
   isVerified: boolean | number;
 };
+
+export type routeType = {
+  id: string;
+  name: string;
+};

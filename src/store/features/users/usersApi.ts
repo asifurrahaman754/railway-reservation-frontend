@@ -1,4 +1,4 @@
-import { UserType } from "types/user";
+import { UserType } from "types/tableRow";
 import apiSlice from "../api/apiSlice";
 
 const usersApi = apiSlice.injectEndpoints({

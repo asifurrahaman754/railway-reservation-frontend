@@ -3,33 +3,40 @@ import { TableHeadCell } from "types/TableHeadCell";
 const UserHeadCells: TableHeadCell[] = [
   {
     id: "name",
-    disablePadding: true,
     label: "Name",
   },
   {
     id: "email",
-    disablePadding: false,
     label: "Email",
   },
   {
     id: "mobile",
-    disablePadding: false,
     label: "Mobile",
   },
   {
     id: "nid",
-    disablePadding: false,
     label: "NID No.",
   },
   {
     id: "verified",
-    disablePadding: false,
     label: "Verified",
+  },
+];
+
+const routeHeadCells: TableHeadCell[] = [
+  {
+    id: "ID",
+    label: "ID",
+  },
+  {
+    id: "name",
+    label: "Name",
   },
 ];
 
 const TableHeadCell = {
   users: UserHeadCells,
+  route: routeHeadCells,
 };
 
 export default TableHeadCell;
