@@ -12,22 +12,33 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import AuthBg from "Layouts/AuthBg";
 import AdminTableHead from "components/AdminTableHead";
 import AdminTableToolbar from "components/AdminTableToolbar";
+import SuspenseLoader from "components/SuspenseLoader";
 import TableHeadCell from "config/TableHeadCell";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import routes from "routes/index";
+import {
+  useDeleteRouteMutation,
+  useGetAllRouteQuery,
+} from "store/features/route/routeApi";
 import { routeType } from "types/tableRow";
+import CreateRouteDialog from "./CreateRouteDialog";
 
 export default function RouteTable() {
+  const { data: route, isError, isLoading } = useGetAllRouteQuery();
+  const [deleteRoute] = useDeleteRouteMutation();
+  const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<Partial<routeType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = [].map((user: routeType) => ({
-        id: user.id,
+      const newSelecteds = route?.data?.map((route: routeType) => ({
+        id: route.id,
       }));
       setSelected(newSelecteds);
       return;
@@ -37,9 +48,9 @@ export default function RouteTable() {
 
   const handleClick = (route: routeType) => {
     const { id } = route;
-    const selectedUser = selected.find((u) => u.id === id);
+    const selectedRoute = selected.find((u) => u.id === id);
 
-    if (!selectedUser) {
+    if (!selectedRoute) {
       setSelected([...selected, { id }]);
     } else {
       const newSelected = selected.filter((u) => u.id !== id);
@@ -49,19 +60,21 @@ export default function RouteTable() {
 
   const deleteRoutes = async () => {
     const isConfirmed = confirm("Are you sure you want to delete this Route?");
-    // if (isConfirmed) {
-    //   const deleteUsersPromises = selected.map((user) => deleteUser(user.id));
+    if (isConfirmed) {
+      const deleteRoutePromises = selected.map((route) =>
+        deleteRoute(route.id)
+      );
 
-    //   try {
-    //     const result: any = await Promise.all(deleteUsersPromises);
-    //     if (result[0]?.data?.success) {
-    //       toast.success("User deleted successfully!");
-    //       setSelected([]);
-    //     }
-    //   } catch (error) {
-    //     toast.error("Error deleting user!");
-    //   }
-    // }
+      try {
+        const result: any = await Promise.all(deleteRoutePromises);
+        if (result[0]?.data?.success) {
+          toast.success("Route deleted successfully!");
+          setSelected([]);
+        }
+      } catch (error) {
+        toast.error("Error deleting route!");
+      }
+    }
   };
 
   return (
@@ -93,12 +106,14 @@ export default function RouteTable() {
           <AdminTableToolbar<(typeof selected)[0]>
             selected={selected}
             title="Routes"
+            children2={
+              <Tooltip title="add route">
+                <IconButton onClick={() => setModalOpen(true)}>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            }
           >
-            <Tooltip title="add route">
-              <IconButton onClick={deleteRoutes}>
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
             <Tooltip title="delete route">
               <IconButton onClick={deleteRoutes}>
                 <DeleteIcon />
@@ -115,11 +130,11 @@ export default function RouteTable() {
               <AdminTableHead
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
-                rowCount={[].length}
+                rowCount={route?.data.length}
                 cells={TableHeadCell.route}
               />
               <TableBody>
-                {/* {isLoading && (
+                {isLoading && (
                   <TableRow>
                     <TableCell colSpan={10}>
                       <SuspenseLoader
@@ -130,7 +145,7 @@ export default function RouteTable() {
                 )}
 
                 {/*TODO: need to use error from api */}
-                {/* {isError && (
+                {isError && (
                   <TableRow>
                     <TableCell colSpan={10}>
                       <Typography variant="body2" align="center">
@@ -138,17 +153,27 @@ export default function RouteTable() {
                       </Typography>
                     </TableCell>
                   </TableRow>
-                )} */}
+                )}
 
-                {[{ id: "nice", name: "asifur" }].map((user) => {
-                  const isItemSelected = selected.some((u) => u.id == user.id);
-                  const labelId = `enhanced-table-checkbox-${user.id}`;
+                {route?.data.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={10}>
+                      <Typography variant="body2" align="center">
+                        No route found
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
+
+                {route?.data.map((route: routeType) => {
+                  const isItemSelected = selected.some((u) => u.id == route.id);
+                  const labelId = `enhanced-table-checkbox-${route.id}`;
 
                   return (
                     <TableRow
-                      key={user.id}
+                      key={route.id}
                       hover
-                      onClick={() => handleClick(user)}
+                      onClick={() => handleClick(route)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -164,7 +189,7 @@ export default function RouteTable() {
                         scope="row"
                         padding="normal"
                       >
-                        {user.id}
+                        {route.id}
                       </TableCell>
                       <TableCell
                         component="th"
@@ -172,7 +197,7 @@ export default function RouteTable() {
                         scope="row"
                         padding="normal"
                       >
-                        {user.name}
+                        {route.name}
                       </TableCell>
                     </TableRow>
                   );
@@ -190,6 +215,8 @@ export default function RouteTable() {
           />
         </Paper>
       </Box>
+
+      <CreateRouteDialog modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </AuthBg>
   );
 }

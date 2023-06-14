@@ -6,12 +6,14 @@ interface AdminTableToolbarProps<T> {
   selected: T[];
   title: string;
   children?: React.ReactNode;
+  children2?: React.ReactNode;
 }
 
 export default function AdminTableToolbarProps<T>({
   selected,
   title,
   children,
+  children2,
 }: AdminTableToolbarProps<T>) {
   return (
     <Toolbar
@@ -47,6 +49,8 @@ export default function AdminTableToolbarProps<T>({
         </Typography>
       )}
       {selected.length > 0 && children}
+
+      {!selected.length && children2}
     </Toolbar>
   );
 }

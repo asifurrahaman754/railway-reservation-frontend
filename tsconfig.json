@@ -21,15 +21,14 @@
       "components/*": ["components/*"],
       "core_components/*": ["core_components/*"],
       "layouts/*": ["layouts/*"],
-      "icons/*": ["icons/*"],
       "hooks/*": ["hooks/*"],
       "store/*": ["store/*"],
-      "libs/*": ["libs/*"],
       "routes/*": ["routes/*"],
       "test_utils/*": ["test_utils/*"],
       "theme/*": ["theme/*"],
       "pages/*": ["pages/*"],
-      "types/*": ["types/*"]
+      "types/*": ["types/*"],
+      "data/*": ["data/*"]
     }
   },
   "include": ["src/**/*"],
