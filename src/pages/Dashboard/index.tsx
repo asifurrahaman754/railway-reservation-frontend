@@ -36,13 +36,13 @@ export default function Dashboard() {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.user}>
-                <CustomButton>Users</CustomButton>
+              <Link to={routes.admin.trains}>
+                <CustomButton>All Trains</CustomButton>
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.trains}>
-                <CustomButton>All Trains</CustomButton>
+              <Link to={routes.admin.user}>
+                <CustomButton>Users</CustomButton>
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
@@ -51,6 +51,11 @@ export default function Dashboard() {
             <Grid item sm={6} xs={12}>
               <Link to={routes.admin.route}>
                 <CustomButton>Route</CustomButton>
+              </Link>
+            </Grid>
+            <Grid item sm={6} xs={12}>
+              <Link to={routes.admin.coach_classes}>
+                <CustomButton>Coach Classes</CustomButton>
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>

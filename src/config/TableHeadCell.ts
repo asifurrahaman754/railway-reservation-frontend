@@ -34,9 +34,12 @@ const routeHeadCells: TableHeadCell[] = [
   },
 ];
 
+const coachClassesCells: typeof routeHeadCells = routeHeadCells;
+
 const TableHeadCell = {
   users: UserHeadCells,
   route: routeHeadCells,
+  coachClasses: coachClassesCells,
 };
 
 export default TableHeadCell;

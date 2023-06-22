@@ -20,22 +20,22 @@ import TableHeadCell from "config/TableHeadCell";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-  useDeleteRouteMutation,
-  useGetAllRouteQuery,
-} from "store/features/route/routeApi";
+  useDeleteCoachClassMutation,
+  useGetAllCoachClassQuery,
+} from "store/features/coachClass/coachClassApi";
 import { routeType } from "types/tableRow";
-import CreateRouteDialog from "./CreateRouteDialog";
+import CreateCoachClassDialog from "./CreateCoachClassDialog";
 
-export default function RouteTable() {
-  const { data: route, isError, isLoading } = useGetAllRouteQuery();
-  const [deleteRoute] = useDeleteRouteMutation();
+export default function CoachClasses() {
+  const { data: coachClass, isError, isLoading } = useGetAllCoachClassQuery();
+  const [deleteRoute] = useDeleteCoachClassMutation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<Partial<routeType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = route?.data?.map((route: routeType) => ({
-        id: route.id,
+      const newSelecteds = coachClass?.data?.map((coachClass: routeType) => ({
+        id: coachClass.id,
       }));
       setSelected(newSelecteds);
       return;
@@ -43,8 +43,8 @@ export default function RouteTable() {
     setSelected([]);
   };
 
-  const handleClick = (route: routeType) => {
-    const { id } = route;
+  const handleClick = (coachClass: routeType) => {
+    const { id } = coachClass;
     const selectedRoute = selected.find((u) => u.id === id);
 
     if (!selectedRoute) {
@@ -55,21 +55,23 @@ export default function RouteTable() {
     }
   };
 
-  const deleteRoutes = async () => {
-    const isConfirmed = confirm("Are you sure you want to delete this Route?");
+  const deleteCoachClass = async () => {
+    const isConfirmed = confirm(
+      "Are you sure you want to delete this coach class?"
+    );
     if (isConfirmed) {
-      const deleteRoutePromises = selected.map((route) =>
-        deleteRoute(route.id)
+      const deleteRoutePromises = selected.map((coachClass) =>
+        deleteRoute(coachClass.id)
       );
 
       try {
         const result: any = await Promise.all(deleteRoutePromises);
         if (result[0]?.data?.success) {
-          toast.success("Route deleted successfully!");
+          toast.success("Coach class deleted successfully!");
           setSelected([]);
         }
       } catch (error) {
-        toast.error("Error deleting route!");
+        toast.error("Error deleting coach class!");
       }
     }
   };
@@ -88,17 +90,17 @@ export default function RouteTable() {
         <Paper sx={{ width: "100%", mb: 2 }}>
           <AdminTableToolbar<(typeof selected)[0]>
             selected={selected}
-            title="Routes"
+            title="Coach Classes"
             children2={
-              <Tooltip title="add route">
+              <Tooltip title="add coach class">
                 <IconButton onClick={() => setModalOpen(true)}>
                   <AddIcon />
                 </IconButton>
               </Tooltip>
             }
           >
-            <Tooltip title="delete route">
-              <IconButton onClick={deleteRoutes}>
+            <Tooltip title="delete coach class">
+              <IconButton onClick={deleteCoachClass}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>
@@ -113,8 +115,8 @@ export default function RouteTable() {
               <AdminTableHead
                 numSelected={selected.length}
                 onSelectAllClick={handleSelectAllClick}
-                rowCount={route?.data.length}
-                cells={TableHeadCell.route}
+                rowCount={coachClass?.data.length}
+                cells={TableHeadCell.coachClasses}
               />
               <TableBody>
                 {isLoading && (
@@ -138,25 +140,27 @@ export default function RouteTable() {
                   </TableRow>
                 )}
 
-                {route?.data.length === 0 && (
+                {coachClass?.data.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={10}>
                       <Typography variant="body2" align="center">
-                        No route found
+                        No coach class found
                       </Typography>
                     </TableCell>
                   </TableRow>
                 )}
 
-                {route?.data.map((route: routeType) => {
-                  const isItemSelected = selected.some((u) => u.id == route.id);
-                  const labelId = `enhanced-table-checkbox-${route.id}`;
+                {coachClass?.data.map((coachClass: routeType) => {
+                  const isItemSelected = selected.some(
+                    (u) => u.id == coachClass.id
+                  );
+                  const labelId = `enhanced-table-checkbox-${coachClass.id}`;
 
                   return (
                     <TableRow
-                      key={route.id}
+                      key={coachClass.id}
                       hover
-                      onClick={() => handleClick(route)}
+                      onClick={() => handleClick(coachClass)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -172,7 +176,7 @@ export default function RouteTable() {
                         scope="row"
                         padding="normal"
                       >
-                        {route.id}
+                        {coachClass.id}
                       </TableCell>
                       <TableCell
                         component="th"
@@ -180,7 +184,7 @@ export default function RouteTable() {
                         scope="row"
                         padding="normal"
                       >
-                        {route.name}
+                        {coachClass.name}
                       </TableCell>
                     </TableRow>
                   );
@@ -191,7 +195,10 @@ export default function RouteTable() {
         </Paper>
       </Box>
 
-      <CreateRouteDialog modalOpen={modalOpen} setModalOpen={setModalOpen} />
+      <CreateCoachClassDialog
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      />
     </AuthBg>
   );
 }

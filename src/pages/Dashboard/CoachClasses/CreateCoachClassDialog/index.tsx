@@ -4,11 +4,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import districts from "data/district";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { toast } from "react-hot-toast";
-import { useAddRouteMutation } from "store/features/route/routeApi";
+import { useAddCoachClassMutation } from "store/features/coachClass/coachClassApi";
 
 const portal: any = document.getElementById("modal");
 
@@ -17,40 +16,45 @@ type CreateRouteDialogProps = {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function CreateRouteDialog({
+export default function CreateCoachClassDialog({
   modalOpen,
   setModalOpen,
 }: CreateRouteDialogProps) {
-  const [addRoute] = useAddRouteMutation();
-  const [route, setRoute] = useState<string>("");
+  const [addCoachClass] = useAddCoachClassMutation();
+  const [coachClass, setCoachClass] = useState<string>("");
   const [isValidMsg, setIsValidMsg] = useState<string>("");
+  let formattedName = coachClass.trim().toUpperCase().split(" ").join("_");
 
   const handleClose = () => {
     setModalOpen(false);
-    setRoute("");
+    setCoachClass("");
     setIsValidMsg("");
   };
 
-  const handleAddRoute = async () => {
-    if (!route) {
-      setIsValidMsg("Route cannot be empty");
+  const handleAdd = async () => {
+    if (!coachClass) {
+      setIsValidMsg("Class name cannot be empty");
       return;
     }
-    if (!districts.includes(route.toLowerCase())) {
-      setIsValidMsg("Please enter a valid route");
+    if (coachClass.length > 12) {
+      setIsValidMsg("Class name should be less than 12 characters");
       return;
     }
 
     try {
       setIsValidMsg("");
-      const result: any = await addRoute({
-        name: route.trim().toLowerCase(),
+
+      if (!formattedName.includes("CHAIR")) {
+        formattedName = formattedName + "_CHAIR";
+      }
+      const result: any = await addCoachClass({
+        name: formattedName,
       });
 
       if (result?.data?.success) {
-        toast.success("Route added successfully");
+        toast.success("Coach class added successfully");
         setModalOpen(false);
-        setRoute("");
+        setCoachClass("");
       } else {
         toast.error(result.data.message);
       }
@@ -60,23 +64,23 @@ export default function CreateRouteDialog({
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRoute(event.target.value);
+    setCoachClass(event.target.value);
     setIsValidMsg("");
   };
 
   return ReactDOM.createPortal(
     <Dialog open={modalOpen} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogTitle>Add Route</DialogTitle>
+      <DialogTitle>Add Coach Class</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
           id="route"
-          label="enter your route"
+          placeholder="Enter class name, ex: ac"
           type="text"
           fullWidth
           variant="standard"
-          value={route}
+          value={coachClass}
           onChange={handleChange}
           error={isValidMsg !== ""}
           helperText={isValidMsg}
@@ -84,7 +88,7 @@ export default function CreateRouteDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleAddRoute}>Add Route</Button>
+        <Button onClick={handleAdd}>Add Route</Button>
       </DialogActions>
     </Dialog>,
     portal
