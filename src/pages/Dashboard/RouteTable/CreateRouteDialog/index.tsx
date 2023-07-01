@@ -1,9 +1,5 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import Dialog from "components/Dialog";
 import districts from "data/district";
 import { useState } from "react";
 import ReactDOM from "react-dom";
@@ -21,7 +17,7 @@ export default function CreateRouteDialog({
   modalOpen,
   setModalOpen,
 }: CreateRouteDialogProps) {
-  const [addRoute] = useAddRouteMutation();
+  const [addRoute, { isLoading }] = useAddRouteMutation();
   const [route, setRoute] = useState<string>("");
   const [isValidMsg, setIsValidMsg] = useState<string>("");
 
@@ -65,27 +61,26 @@ export default function CreateRouteDialog({
   };
 
   return ReactDOM.createPortal(
-    <Dialog open={modalOpen} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogTitle>Add Route</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="route"
-          label="enter your route"
-          type="text"
-          fullWidth
-          variant="standard"
-          value={route}
-          onChange={handleChange}
-          error={isValidMsg !== ""}
-          helperText={isValidMsg}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleAddRoute}>Add Route</Button>
-      </DialogActions>
+    <Dialog
+      open={modalOpen}
+      onClose={handleClose}
+      title="Route"
+      onAdd={handleAddRoute}
+      showLoader={isLoading}
+    >
+      <TextField
+        autoFocus
+        margin="dense"
+        id="route"
+        label="enter your route"
+        type="text"
+        fullWidth
+        variant="standard"
+        value={route}
+        onChange={handleChange}
+        error={isValidMsg !== ""}
+        helperText={isValidMsg}
+      />
     </Dialog>,
     portal
   );

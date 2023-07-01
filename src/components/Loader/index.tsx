@@ -1,6 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function SuspenseLoader(props: any) {
+export default function Loader({ size, sx }: any) {
   const getSize = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 600) {
@@ -11,8 +11,9 @@ export default function SuspenseLoader(props: any) {
   };
 
   return (
-    <div style={{ display: "block", textAlign: "center", margin: "1rem 0" }}>
-      <CircularProgress size={getSize()} sx={props.sx && props.sx} />
-    </div>
+    <CircularProgress
+      size={size || getSize()}
+      sx={{ margin: "1rem auto", display: "block", ...sx }}
+    />
   );
 }

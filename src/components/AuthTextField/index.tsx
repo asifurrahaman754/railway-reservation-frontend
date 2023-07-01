@@ -11,6 +11,7 @@ type AuthTextFieldProps = {
   values?: any;
   touched?: any;
   errors?: any;
+  placeholder?: any;
 };
 
 export default function AuthTextField({
@@ -18,6 +19,7 @@ export default function AuthTextField({
   name,
   label,
   sx,
+  placeholder = "",
   ...propsFormik
 }: AuthTextFieldProps) {
   const { handleChange, handleBlur, values, isSubmitting, touched, errors } =
@@ -32,8 +34,8 @@ export default function AuthTextField({
       type={type}
       name={name}
       label={label}
+      placeholder={placeholder}
       value={values[name]}
-      variant="outlined"
       disabled={isSubmitting}
       helperText={touched[name] && errors[name]}
       error={touched[name] && !!errors[name]}

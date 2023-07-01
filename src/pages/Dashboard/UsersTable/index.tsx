@@ -1,21 +1,16 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import VerifiedIcon from "@mui/icons-material/Verified";
-import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import AuthBg from "Layouts/AuthBg";
+import AdminTableCard from "components/AdminTableCard";
 import AdminTableHead from "components/AdminTableHead";
 import AdminTableToolbar from "components/AdminTableToolbar";
-import DashboardGoBack from "components/DashboardGoBack";
-import SuspenseLoader from "components/SuspenseLoader";
 import TableHeadCell from "config/TableHeadCell";
 import * as React from "react";
 import { toast } from "react-hot-toast";
@@ -25,6 +20,7 @@ import {
   useUpdateUserVerificationMutation,
 } from "store/features/users/usersApi";
 import { UserType } from "types/tableRow";
+import TableDataLoadingError from "../TableDataLoadingError";
 
 export default function UsersTable() {
   const { isLoading, isError, data: Users } = useGetAllUsersQuery();
@@ -98,108 +94,81 @@ export default function UsersTable() {
   };
 
   return (
-    <AuthBg>
-      <Box
-        sx={{
-          maxWidth: "1200px",
-          width: "100%",
-          paddingX: "1rem",
-          overflowX: "auto",
-        }}
+    <AdminTableCard>
+      <AdminTableToolbar<(typeof selected)[0]>
+        selected={selected}
+        title="Users"
       >
-        <DashboardGoBack />
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          <AdminTableToolbar<(typeof selected)[0]>
-            selected={selected}
-            title="Users"
-          >
-            <Tooltip title="Verify user">
-              <IconButton onClick={verifyUser}>
-                <VerifiedIcon />
-              </IconButton>
-            </Tooltip>
+        <Tooltip title="Verify user">
+          <IconButton onClick={verifyUser}>
+            <VerifiedIcon />
+          </IconButton>
+        </Tooltip>
 
-            <Tooltip title="Delete user">
-              <IconButton onClick={deleteUsers}>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </AdminTableToolbar>
+        <Tooltip title="Delete user">
+          <IconButton onClick={deleteUsers}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </AdminTableToolbar>
 
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 750 }}
-              aria-labelledby="tableTitle"
-              size="medium"
-            >
-              <AdminTableHead
-                numSelected={selected.length}
-                onSelectAllClick={handleSelectAllClick}
-                rowCount={Users?.data.length}
-                cells={TableHeadCell.users}
-              />
-              <TableBody>
-                {isLoading && (
-                  <TableRow>
-                    <TableCell colSpan={10}>
-                      <SuspenseLoader
-                        sx={{ color: "#000", width: "15px", height: "15px" }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                )}
+      <TableContainer>
+        <Table
+          sx={{ minWidth: 750 }}
+          aria-labelledby="tableTitle"
+          size="medium"
+        >
+          <AdminTableHead
+            numSelected={selected.length}
+            onSelectAllClick={handleSelectAllClick}
+            rowCount={Users?.data.length}
+            cells={TableHeadCell.users}
+          />
+          <TableBody>
+            <TableDataLoadingError
+              isError={isError}
+              isLoading={isLoading}
+              data={Users?.data}
+            />
 
-                {/*TODO: need to use error from api */}
-                {isError && (
-                  <TableRow>
-                    <TableCell colSpan={10}>
-                      <Typography variant="body2" align="center">
-                        Failed to load data
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                )}
+            {Users?.data.map((user: UserType) => {
+              const isItemSelected = selected.some((u) => u.id === user.id);
+              const labelId = `enhanced-table-checkbox-${user.id}`;
 
-                {Users?.data.map((user: UserType) => {
-                  const isItemSelected = selected.some((u) => u.id === user.id);
-                  const labelId = `enhanced-table-checkbox-${user.id}`;
-
-                  return (
-                    <TableRow
-                      key={user.id}
-                      hover
-                      onClick={() => handleClick(user)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox color="primary" checked={isItemSelected} />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {user.username}
-                      </TableCell>
-                      <TableCell align="left">{user.email}</TableCell>
-                      <TableCell align="left">{user.mobile}</TableCell>
-                      <TableCell align="left">{user.nid_no}</TableCell>
-                      <TableCell align="left">
-                        {user.isVerified ? "yes" : "no"}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Box>
-    </AuthBg>
+              return (
+                <TableRow
+                  key={user.id}
+                  hover
+                  onClick={() => handleClick(user)}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  selected={isItemSelected}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox color="primary" checked={isItemSelected} />
+                  </TableCell>
+                  <TableCell
+                    component="th"
+                    id={labelId}
+                    scope="row"
+                    padding="none"
+                  >
+                    {user.username}
+                  </TableCell>
+                  <TableCell align="left">{user.email}</TableCell>
+                  <TableCell align="left">{user.mobile}</TableCell>
+                  <TableCell align="left">{user.nid_no}</TableCell>
+                  <TableCell align="left">
+                    {user.isVerified ? "yes" : "no"}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </AdminTableCard>
   );
 }

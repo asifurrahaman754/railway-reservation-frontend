@@ -1,9 +1,5 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import Dialog from "components/Dialog";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import { toast } from "react-hot-toast";
@@ -20,7 +16,7 @@ export default function CreateCoachClassDialog({
   modalOpen,
   setModalOpen,
 }: CreateRouteDialogProps) {
-  const [addCoachClass] = useAddCoachClassMutation();
+  const [addCoachClass, { isLoading }] = useAddCoachClassMutation();
   const [coachClass, setCoachClass] = useState<string>("");
   const [isValidMsg, setIsValidMsg] = useState<string>("");
   let formattedName = coachClass.trim().toUpperCase().split(" ").join("_");
@@ -69,27 +65,26 @@ export default function CreateCoachClassDialog({
   };
 
   return ReactDOM.createPortal(
-    <Dialog open={modalOpen} onClose={handleClose} fullWidth maxWidth="xs">
-      <DialogTitle>Add Coach Class</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="route"
-          placeholder="Enter class name, ex: ac"
-          type="text"
-          fullWidth
-          variant="standard"
-          value={coachClass}
-          onChange={handleChange}
-          error={isValidMsg !== ""}
-          helperText={isValidMsg}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleAdd}>Add Route</Button>
-      </DialogActions>
+    <Dialog
+      open={modalOpen}
+      onClose={handleClose}
+      onAdd={handleAdd}
+      title="Coach Class"
+      showLoader={isLoading}
+    >
+      <TextField
+        autoFocus
+        margin="dense"
+        id="route"
+        placeholder="Enter class name, ex: ac"
+        type="text"
+        fullWidth
+        variant="standard"
+        value={coachClass}
+        onChange={handleChange}
+        error={isValidMsg !== ""}
+        helperText={isValidMsg}
+      />
     </Dialog>,
     portal
   );

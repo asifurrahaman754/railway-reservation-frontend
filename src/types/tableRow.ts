@@ -11,3 +11,13 @@ export type routeType = {
   id: string;
   name: string;
 };
+
+export type coachClassType = routeType;
+
+export type coachType = {
+  id: string;
+  name: string;
+  capacity: number;
+  class_id: string;
+  train_id: string;
+};

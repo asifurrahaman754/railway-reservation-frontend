@@ -59,7 +59,9 @@ export default function Dashboard() {
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
-              <CustomButton>Admins</CustomButton>
+              <Link to={routes.admin.coaches}>
+                <CustomButton>All Coaches</CustomButton>
+              </Link>
             </Grid>
           </Grid>
         </Box>

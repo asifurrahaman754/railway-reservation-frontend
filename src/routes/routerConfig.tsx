@@ -1,5 +1,5 @@
 import GuardRoute from "components/GuardRoute";
-import SuspenseLoader from "components/SuspenseLoader";
+import Loader from "components/Loader";
 import AuthLogin from "pages/AuthLogin";
 import AuthRegister from "pages/AuthRegister";
 import Dashboard from "pages/Dashboard";
@@ -13,6 +13,7 @@ const UsersTable = lazy(() => import("pages/Dashboard/UsersTable"));
 const RouteTable = lazy(() => import("pages/Dashboard/RouteTable"));
 const TrainsTable = lazy(() => import("pages/Dashboard/TrainsTable"));
 const CoachClasses = lazy(() => import("pages/Dashboard/CoachClasses"));
+const Coaches = lazy(() => import("pages/Dashboard/Coaches"));
 
 const routesConfig = [
   {
@@ -30,7 +31,7 @@ const routesConfig = [
   {
     path: routes.booking,
     element: (
-      <Suspense fallback={<SuspenseLoader />}>
+      <Suspense fallback={<Loader />}>
         <TrainInfo />
       </Suspense>
     ),
@@ -51,7 +52,7 @@ const routesConfig = [
     path: routes.admin.user,
     element: (
       <GuardRoute isForAdmin>
-        <Suspense fallback={<SuspenseLoader />}>
+        <Suspense fallback={<Loader />}>
           <UsersTable />
         </Suspense>
       </GuardRoute>
@@ -61,7 +62,7 @@ const routesConfig = [
     path: routes.admin.trains,
     element: (
       <GuardRoute isForAdmin>
-        <Suspense fallback={<SuspenseLoader />}>
+        <Suspense fallback={<Loader />}>
           <TrainsTable />
         </Suspense>
       </GuardRoute>
@@ -71,7 +72,7 @@ const routesConfig = [
     path: routes.admin.route,
     element: (
       <GuardRoute isForAdmin>
-        <Suspense fallback={<SuspenseLoader />}>
+        <Suspense fallback={<Loader />}>
           <RouteTable />
         </Suspense>
       </GuardRoute>
@@ -81,8 +82,18 @@ const routesConfig = [
     path: routes.admin.coach_classes,
     element: (
       <GuardRoute isForAdmin>
-        <Suspense fallback={<SuspenseLoader />}>
+        <Suspense fallback={<Loader />}>
           <CoachClasses />
+        </Suspense>
+      </GuardRoute>
+    ),
+  },
+  {
+    path: routes.admin.coaches,
+    element: (
+      <GuardRoute isForAdmin>
+        <Suspense fallback={<Loader />}>
+          <Coaches />
         </Suspense>
       </GuardRoute>
     ),

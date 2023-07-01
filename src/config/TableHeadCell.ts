@@ -36,10 +36,34 @@ const routeHeadCells: TableHeadCell[] = [
 
 const coachClassesCells: typeof routeHeadCells = routeHeadCells;
 
+const coachHeadCells: TableHeadCell[] = [
+  {
+    id: "ID",
+    label: "ID",
+  },
+  {
+    id: "name",
+    label: "Name",
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+  },
+  {
+    id: "Coach_Class",
+    label: "Coach Class",
+  },
+  {
+    id: "train",
+    label: "train",
+  },
+];
+
 const TableHeadCell = {
   users: UserHeadCells,
   route: routeHeadCells,
   coachClasses: coachClassesCells,
+  coach: coachHeadCells,
 };
 
 export default TableHeadCell;

@@ -15,23 +15,23 @@ import TableHeadCell from "config/TableHeadCell";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-  useDeleteRouteMutation,
-  useGetAllRouteQuery,
-} from "store/features/route/routeApi";
-import { routeType } from "types/tableRow";
+  useDeleteCoachMutation,
+  useGetAllCoachQuery,
+} from "store/features/coach/coachApi";
+import { coachType, routeType } from "types/tableRow";
 import TableDataLoadingError from "../TableDataLoadingError";
-import CreateRouteDialog from "./CreateRouteDialog";
+import CreateCoachDialog from "./CreateCoachDialog";
 
-export default function RouteTable() {
-  const { data: route, isError, isLoading } = useGetAllRouteQuery();
-  const [deleteRoute] = useDeleteRouteMutation();
+export default function Coaches() {
+  const { data: coach, isError, isLoading } = useGetAllCoachQuery();
+  const [deleteCoach] = useDeleteCoachMutation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<Partial<routeType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = route?.data?.map((route: routeType) => ({
-        id: route.id,
+      const newSelecteds = coach?.data?.map((coach: routeType) => ({
+        id: coach.id,
       }));
       setSelected(newSelecteds);
       return;
@@ -39,8 +39,8 @@ export default function RouteTable() {
     setSelected([]);
   };
 
-  const handleClick = (route: routeType) => {
-    const { id } = route;
+  const handleClick = (coach: routeType) => {
+    const { id } = coach;
     const selectedRoute = selected.find((u) => u.id === id);
 
     if (!selectedRoute) {
@@ -51,21 +51,19 @@ export default function RouteTable() {
     }
   };
 
-  const deleteRoutes = async () => {
-    const isConfirmed = confirm("Are you sure you want to delete this Route?");
+  const deleteRow = async () => {
+    const isConfirmed = confirm("Are you sure you want to delete this coach?");
     if (isConfirmed) {
-      const deleteRoutePromises = selected.map((route) =>
-        deleteRoute(route.id)
-      );
+      const deletePromises = selected.map((coach) => deleteCoach(coach.id));
 
       try {
-        const result: any = await Promise.all(deleteRoutePromises);
+        const result: any = await Promise.all(deletePromises);
         if (result[0]?.data?.success) {
-          toast.success("Route deleted successfully!");
+          toast.success("Coach deleted successfully!");
           setSelected([]);
         }
       } catch (error) {
-        toast.error("Error deleting route!");
+        toast.error("Error deleting Coach!");
       }
     }
   };
@@ -75,17 +73,17 @@ export default function RouteTable() {
       <AdminTableCard>
         <AdminTableToolbar<(typeof selected)[0]>
           selected={selected}
-          title="Routes"
+          title="Coach"
           children2={
-            <Tooltip title="add route">
+            <Tooltip title="add new coach">
               <IconButton onClick={() => setModalOpen(true)}>
                 <AddIcon />
               </IconButton>
             </Tooltip>
           }
         >
-          <Tooltip title="delete route">
-            <IconButton onClick={deleteRoutes}>
+          <Tooltip title="delete coach">
+            <IconButton onClick={deleteRow}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -94,31 +92,31 @@ export default function RouteTable() {
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
+            aria-labelledby="coaches table"
             size="medium"
           >
             <AdminTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={route?.data.length}
-              cells={TableHeadCell.route}
+              rowCount={coach?.data.length}
+              cells={TableHeadCell.coach}
             />
             <TableBody>
               <TableDataLoadingError
                 isError={isError}
                 isLoading={isLoading}
-                data={route?.data}
+                data={coach?.data}
               />
 
-              {route?.data.map((route: routeType) => {
-                const isItemSelected = selected.some((u) => u.id == route.id);
-                const labelId = `enhanced-table-checkbox-${route.id}`;
+              {coach?.data.map((coach: coachType) => {
+                const isItemSelected = selected.some((u) => u.id == coach.id);
+                const labelId = `enhanced-table-checkbox-${coach.id}`;
 
                 return (
                   <TableRow
-                    key={route.id}
+                    key={coach.id}
                     hover
-                    onClick={() => handleClick(route)}
+                    onClick={() => handleClick(coach)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -134,7 +132,7 @@ export default function RouteTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {route.id}
+                      {coach.id}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -142,7 +140,31 @@ export default function RouteTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {route.name}
+                      {coach.name}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="normal"
+                    >
+                      {coach.capacity}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="normal"
+                    >
+                      {coach.class_id}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="normal"
+                    >
+                      {coach.train_id}
                     </TableCell>
                   </TableRow>
                 );
@@ -151,7 +173,8 @@ export default function RouteTable() {
           </Table>
         </TableContainer>
       </AdminTableCard>
-      <CreateRouteDialog modalOpen={modalOpen} setModalOpen={setModalOpen} />
+
+      <CreateCoachDialog modalOpen={modalOpen} setModalOpen={setModalOpen} />
     </>
   );
 }
