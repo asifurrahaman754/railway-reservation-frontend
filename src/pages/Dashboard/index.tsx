@@ -46,9 +46,6 @@ export default function Dashboard() {
               </Link>
             </Grid>
             <Grid item sm={6} xs={12}>
-              <CustomButton>Bookings</CustomButton>
-            </Grid>
-            <Grid item sm={6} xs={12}>
               <Link to={routes.admin.route}>
                 <CustomButton>Route</CustomButton>
               </Link>
