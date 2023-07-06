@@ -12,26 +12,27 @@ import AdminTableCard from "components/AdminTableCard";
 import AdminTableHead from "components/AdminTableHead";
 import AdminTableToolbar from "components/AdminTableToolbar";
 import TableHeadCell from "config/TableHeadCell";
+import weekMap from "data/week";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import {
-  useDeleteCoachMutation,
-  useGetAllCoachQuery,
-} from "store/features/coach/coachApi";
-import { coachType, routeType } from "types/tableRow";
+  useDeleteTrainMutation,
+  useGetAllTrainQuery,
+} from "store/features/train/trainApi";
+import { trainType } from "types/tableRow";
 import TableDataLoadingError from "../TableDataLoadingError";
 import CreateTrainDialog from "./CreateTrainDialog";
 
 export default function TrainTable() {
-  const { data: coach, isError, isLoading } = useGetAllCoachQuery();
-  const [deleteCoach] = useDeleteCoachMutation();
+  const { data: train, isError, isLoading } = useGetAllTrainQuery();
+  const [deleteTrain] = useDeleteTrainMutation();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selected, setSelected] = useState<Partial<routeType>[]>([]);
+  const [selected, setSelected] = useState<Partial<trainType>[]>([]);
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = coach?.data?.map((coach: routeType) => ({
-        id: coach.id,
+      const newSelecteds = train?.data?.map((train: routeType) => ({
+        id: train.id,
       }));
       setSelected(newSelecteds);
       return;
@@ -39,8 +40,8 @@ export default function TrainTable() {
     setSelected([]);
   };
 
-  const handleClick = (coach: routeType) => {
-    const { id } = coach;
+  const handleClick = (train: trainType) => {
+    const { id } = train;
     const selectedRoute = selected.find((u) => u.id === id);
 
     if (!selectedRoute) {
@@ -52,18 +53,18 @@ export default function TrainTable() {
   };
 
   const deleteRow = async () => {
-    const isConfirmed = confirm("Are you sure you want to delete this coach?");
+    const isConfirmed = confirm("Are you sure you want to delete these train?");
     if (isConfirmed) {
-      const deletePromises = selected.map((coach) => deleteCoach(coach.id));
+      const deletePromises = selected.map((train) => deleteTrain(train.id));
 
       try {
         const result: any = await Promise.all(deletePromises);
         if (result[0]?.data?.success) {
-          toast.success("Coach deleted successfully!");
+          toast.success("train deleted successfully!");
           setSelected([]);
         }
       } catch (error) {
-        toast.error("Error deleting Coach!");
+        toast.error("Error deleting train!");
       }
     }
   };
@@ -98,25 +99,25 @@ export default function TrainTable() {
             <AdminTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={coach?.data.length}
-              cells={TableHeadCell.coach}
+              rowCount={0}
+              cells={TableHeadCell.train}
             />
             <TableBody>
               <TableDataLoadingError
                 isError={isError}
                 isLoading={isLoading}
-                data={coach?.data}
+                data={train?.data}
               />
 
-              {coach?.data.map((coach: coachType) => {
-                const isItemSelected = selected.some((u) => u.id == coach.id);
-                const labelId = `enhanced-table-checkbox-${coach.id}`;
+              {train?.data.map((train: trainType) => {
+                const isItemSelected = selected.some((u) => u.id == train.id);
+                const labelId = `enhanced-table-checkbox-${train.id}`;
 
                 return (
                   <TableRow
-                    key={coach.id}
+                    key={train.id}
                     hover
-                    onClick={() => handleClick(coach)}
+                    onClick={() => handleClick(train)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -132,7 +133,7 @@ export default function TrainTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {coach.id}
+                      {train.id}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -140,7 +141,7 @@ export default function TrainTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {coach.name}
+                      {train.name}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -148,7 +149,7 @@ export default function TrainTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {coach.capacity}
+                      {train.type}
                     </TableCell>
                     <TableCell
                       component="th"
@@ -156,7 +157,7 @@ export default function TrainTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {coach.class_id}
+                      {train.fare_per_km} Tk
                     </TableCell>
                     <TableCell
                       component="th"
@@ -164,7 +165,7 @@ export default function TrainTable() {
                       scope="row"
                       padding="normal"
                     >
-                      {coach.train_id}
+                      {weekMap[`${train.holiday}`]}
                     </TableCell>
                   </TableRow>
                 );

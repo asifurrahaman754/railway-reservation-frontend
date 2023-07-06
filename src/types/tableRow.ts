@@ -14,6 +14,14 @@ export type routeType = {
 
 export type coachClassType = routeType;
 
+export type trainType = {
+  id?: string;
+  name: string;
+  type: string;
+  fare_per_km: number;
+  holiday: string;
+};
+
 export type coachType = {
   id: string;
   name: string;

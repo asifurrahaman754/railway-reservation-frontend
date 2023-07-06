@@ -59,11 +59,35 @@ const coachHeadCells: TableHeadCell[] = [
   },
 ];
 
+const trainHeadCells: TableHeadCell[] = [
+  {
+    id: "ID",
+    label: "ID",
+  },
+  {
+    id: "name",
+    label: "Name",
+  },
+  {
+    id: "type",
+    label: "Type",
+  },
+  {
+    id: "fare_per_km",
+    label: "Fare Per KM",
+  },
+  {
+    id: "holiday",
+    label: "Holiday",
+  },
+];
+
 const TableHeadCell = {
   users: UserHeadCells,
   route: routeHeadCells,
   coachClasses: coachClassesCells,
   coach: coachHeadCells,
+  train: trainHeadCells,
 };
 
 export default TableHeadCell;
