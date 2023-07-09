@@ -80,6 +80,10 @@ const trainHeadCells: TableHeadCell[] = [
     id: "holiday",
     label: "Holiday",
   },
+  {
+    id: "action",
+    label: "Action",
+  },
 ];
 
 const TableHeadCell = {

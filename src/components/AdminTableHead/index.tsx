@@ -2,7 +2,6 @@ import Checkbox from "@mui/material/Checkbox";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
 import { TableHeadCell } from "types/TableHeadCell";
 
 interface UserTableHeadProps {
@@ -34,7 +33,7 @@ export default function AdminTableHead({
         </TableCell>
         {cells.map((headCell) => (
           <TableCell key={headCell.id} align="left" padding="normal">
-            <TableSortLabel>{headCell.label}</TableSortLabel>
+            {headCell.label}
           </TableCell>
         ))}
       </TableRow>

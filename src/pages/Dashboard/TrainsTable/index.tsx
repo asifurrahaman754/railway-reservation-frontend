@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
@@ -15,6 +16,8 @@ import TableHeadCell from "config/TableHeadCell";
 import weekMap from "data/week";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
+import routes from "routes/index";
 import {
   useDeleteTrainMutation,
   useGetAllTrainQuery,
@@ -166,6 +169,20 @@ export default function TrainTable() {
                       padding="normal"
                     >
                       {weekMap[`${train.holiday}`]}
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="normal"
+                    >
+                      <Link
+                        to={routes.admin.train_details.pathWithId(
+                          train.id as string
+                        )}
+                      >
+                        <Button variant="outlined">details</Button>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );

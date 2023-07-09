@@ -7,6 +7,10 @@ const routes = {
     login: "/admin/login",
     dashboard: "/admin/dashboard",
     trains: "/admin/dashboard/train",
+    train_details: {
+      path: "/admin/dashboard/train/:id",
+      pathWithId: (id: string) => `/admin/dashboard/train/${id}`,
+    },
     user: "/admin/dashboard/user",
     bookings: "/admin/dashboard/bookings",
     admin_accounts: "/admin/dashboard/admin_accounts",
