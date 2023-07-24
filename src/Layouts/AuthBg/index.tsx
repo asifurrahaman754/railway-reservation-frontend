@@ -1,10 +1,10 @@
 import { styled } from "@mui/material/styles";
 
-const AuthBgWrapper = styled("div")(({ theme }) => ({
+const AuthBgWrapper = styled("div")(({ theme, isCenter }) => ({
   width: "100%",
   minHeight: "100vh",
   display: "grid",
-  placeItems: "center",
+  placeItems: isCenter ? "center" : "start",
   background:
     "url('/assets/images/train-bg.svg') no-repeat fixed right bottom / 50%",
   backgroundColor: theme.palette.AuthbodyBg.main,
@@ -15,9 +15,10 @@ const AuthBgWrapper = styled("div")(({ theme }) => ({
 }));
 
 type Props = {
-  children: React.ReactChild | React.ReactNode;
+  children: React.ReactNode;
+  isCenter?: boolean;
 };
 
-export default function AuthBg({ children }: Props) {
-  return <AuthBgWrapper>{children}</AuthBgWrapper>;
+export default function AuthBg({ children, isCenter = true }: Props) {
+  return <AuthBgWrapper isCenter={isCenter}>{children}</AuthBgWrapper>;
 }
