@@ -1,5 +1,3 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import VerifiedIcon from "@mui/icons-material/Verified";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
@@ -12,6 +10,8 @@ import AdminTableCard from "components/AdminTableCard";
 import AdminTableHead from "components/AdminTableHead";
 import AdminTableToolbar from "components/AdminTableToolbar";
 import TableHeadCell from "config/TableHeadCell";
+import DeleteIcon from "icons/DeleteIcon";
+import VerifiedIcon from "icons/VerifiedIcon";
 import * as React from "react";
 import { toast } from "react-hot-toast";
 import {
