@@ -55,7 +55,7 @@ const coachHeadCells: TableHeadCell[] = [
   },
   {
     id: "train",
-    label: "train",
+    label: "Train",
   },
 ];
 

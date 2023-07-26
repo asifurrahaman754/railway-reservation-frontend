@@ -2,6 +2,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Typography from "@mui/material/Typography";
 
 interface AboutDialogProps {
   open: boolean;
@@ -24,7 +25,11 @@ export default function AboutDialog({
     >
       <DialogTitle>About the section</DialogTitle>
       <DialogContent>
-        <DialogContentText>{content}</DialogContentText>
+        <DialogContentText>
+          <Typography variant="body1" sx={{ fontWeight: "500" }}>
+            {content}
+          </Typography>
+        </DialogContentText>
       </DialogContent>
     </Dialog>
   );
