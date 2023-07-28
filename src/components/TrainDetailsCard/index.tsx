@@ -8,6 +8,8 @@ import {
   Typography,
 } from "@mui/material";
 import AboutDialog from "components/AboutDialog";
+import Loader from "components/Loader";
+import MessageCard from "components/MessageCard";
 import AddIcon from "icons/AddIcon";
 import HelpIcon from "icons/HelpIcon";
 import { useState } from "react";
@@ -17,13 +19,17 @@ interface TrainDetailsCardProps {
   title: string;
   children: React.ReactNode;
   props?: any;
+  isLoading?: boolean;
+  error?: string;
 }
 
 export default function TrainDetailsCard({
   dialogContent,
   title,
   children,
-  props,
+  isLoading = false,
+  error,
+  ...props
 }: TrainDetailsCardProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -51,6 +57,8 @@ export default function TrainDetailsCard({
           </Grid>
         </Grid>
       </CardContent>
+      {isLoading && <Loader />}
+      {error && <MessageCard isCenter>{error}</MessageCard>}
       {children}
     </Card>
   );

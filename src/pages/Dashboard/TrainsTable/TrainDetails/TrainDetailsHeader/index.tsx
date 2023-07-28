@@ -1,10 +1,24 @@
 import { Box, Card, Grid, Typography } from "@mui/material";
+import Loader from "components/Loader";
+import MessageCard from "components/MessageCard";
+import weekMap from "data/week";
 import DoNotDisturbIcon from "icons/DoNotDisturbIcon";
 import DollarIcon from "icons/DollarIcon";
+import { useParams } from "react-router-dom";
+import { useGetSingleTrainQuery } from "store/features/train/trainApi";
 
 export default function TrainDetailsHeader() {
-  return (
-    <Card variant="outlined" sx={{ p: 3, mt: 5, mb: 3 }}>
+  const { trainId } = useParams();
+  const { data, isLoading, error } = useGetSingleTrainQuery(trainId);
+  const { name, type, holiday, fare_per_km } = data?.data || {};
+
+  let content = null;
+  if (error?.data) {
+    content = <MessageCard>{error?.data?.message}</MessageCard>;
+  } else if (isLoading) {
+    content = <Loader />;
+  } else if (data?.data) {
+    content = (
       <Grid container>
         <Grid item md={6} xs={12}>
           <Typography
@@ -14,7 +28,7 @@ export default function TrainDetailsHeader() {
               fontSize: { sm: "2rem", xs: "1.2rem" },
             }}
           >
-            Sonar Bangla Express
+            {name}
           </Typography>
           <Typography
             variant="h5"
@@ -22,7 +36,7 @@ export default function TrainDetailsHeader() {
               fontSize: { sm: "1.2rem", xs: "1rem" },
             }}
           >
-            Express train
+            {type} train
           </Typography>
         </Grid>
         <Grid
@@ -41,7 +55,7 @@ export default function TrainDetailsHeader() {
           >
             <DollarIcon color="primary" />
             <Typography variant="body1" marginLeft={0.3}>
-              Fare per km: <strong>1.5</strong> Tk
+              Fare per km: <strong>{fare_per_km}</strong> Tk
             </Typography>
           </Box>
           <Box
@@ -50,11 +64,17 @@ export default function TrainDetailsHeader() {
           >
             <DoNotDisturbIcon color="primary" />
             <Typography variant="body1" marginLeft={0.3}>
-              Holiday: <strong>Friday</strong>
+              Holiday: <strong>{weekMap[holiday]}</strong>
             </Typography>
           </Box>
         </Grid>
       </Grid>
+    );
+  }
+
+  return (
+    <Card variant="outlined" sx={{ p: 3, mt: 5, mb: 3 }}>
+      {content}
     </Card>
   );
 }

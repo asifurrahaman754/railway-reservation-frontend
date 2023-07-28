@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import AuthBg from "Layouts/AuthBg";
-import TrainDetailsClass from "./TrainDetailsClass";
+import TrainDetailsClassFare from "./TrainDetailsClassFare";
 import TrainDetailsCoach from "./TrainDetailsCoach";
 import TrainDetailsHeader from "./TrainDetailsHeader";
 import TrainDetailsRoutes from "./TrainDetailsRoutes";
@@ -10,7 +10,7 @@ export default function TrainDetails() {
     <AuthBg isCenter={false}>
       <Container>
         <TrainDetailsHeader />
-        <TrainDetailsClass />
+        <TrainDetailsClassFare />
         <TrainDetailsCoach />
         <TrainDetailsRoutes />
       </Container>

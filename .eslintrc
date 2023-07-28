@@ -42,7 +42,8 @@
         "printWidth": 100,
         "tabWidth": 4,
         "semi": true,
-        "endOfLine": "auto"
+        "endOfLine": "auto",
+        "noMultipleEmptyLines": false
       }
     ]
   },

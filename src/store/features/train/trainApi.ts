@@ -6,6 +6,10 @@ const trainApi = apiSlice.injectEndpoints({
       query: () => "/train",
     }),
 
+    getSingleTrain: builder.query({
+      query: (trainId) => `/train/${trainId}`,
+    }),
+
     addTrain: builder.mutation({
       query: (body) => ({
         url: "/train/add",
@@ -61,6 +65,7 @@ const trainApi = apiSlice.injectEndpoints({
 
 export const {
   useGetAllTrainQuery,
+  useGetSingleTrainQuery,
   useAddTrainMutation,
   useDeleteTrainMutation,
 } = trainApi;
