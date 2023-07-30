@@ -7,7 +7,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import AboutDialog from "components/AboutDialog";
+import CustomDialog from "components/CustomDialog";
 import Loader from "components/Loader";
 import MessageCard from "components/MessageCard";
 import AddIcon from "icons/AddIcon";
@@ -15,6 +15,7 @@ import HelpIcon from "icons/HelpIcon";
 import { useState } from "react";
 
 interface TrainDetailsCardProps {
+  onAdd?: () => void;
   dialogContent: string;
   title: string;
   children: React.ReactNode;
@@ -24,6 +25,7 @@ interface TrainDetailsCardProps {
 }
 
 export default function TrainDetailsCard({
+  onAdd,
   dialogContent,
   title,
   children,
@@ -35,11 +37,11 @@ export default function TrainDetailsCard({
 
   return (
     <Card sx={{ mb: "1.5rem", mt: "1.5rem" }} {...props}>
-      <AboutDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        content={dialogContent}
-      />{" "}
+      <CustomDialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+        <Typography variant="body1" sx={{ fontWeight: "400" }}>
+          {dialogContent}
+        </Typography>
+      </CustomDialog>{" "}
       <CardContent>
         <Grid container>
           <Grid item xs={6}>
@@ -51,7 +53,7 @@ export default function TrainDetailsCard({
             </Box>
           </Grid>
           <Grid item xs={6} textAlign="right">
-            <Button variant="outlined" startIcon={<AddIcon />}>
+            <Button variant="outlined" startIcon={<AddIcon />} onClick={onAdd}>
               Add New {title}
             </Button>
           </Grid>

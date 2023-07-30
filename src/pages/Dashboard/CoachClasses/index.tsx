@@ -18,6 +18,7 @@ import {
   useDeleteCoachClassMutation,
   useGetAllCoachClassQuery,
 } from "store/features/coachClass/coachClassApi";
+import { CoachClass } from "types/coachClass";
 import { coachClassType } from "types/tableRow";
 import TableDataLoadingError from "../TableDataLoadingError";
 import CreateCoachClassDialog from "./CreateCoachClassDialog";
@@ -112,7 +113,7 @@ export default function CoachClasses() {
                 data={coachClass?.data}
               />
 
-              {coachClass?.data.map((coachClass: coachClassType) => {
+              {coachClass?.data.map((coachClass: CoachClass) => {
                 const isItemSelected = selected.some(
                   (u) => u.id == coachClass.id
                 );

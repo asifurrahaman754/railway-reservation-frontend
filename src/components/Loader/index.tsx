@@ -1,19 +1,20 @@
-import CircularProgress from "@mui/material/CircularProgress";
+import CircularProgress, {
+  CircularProgressProps,
+} from "@mui/material/CircularProgress";
 
-export default function Loader({ size, sx }: any) {
+interface LoaderProps extends CircularProgressProps {
+  size?: number;
+}
+
+export default function Loader({ size, ...props }: LoaderProps) {
   const getSize = () => {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 600) {
-      return 20; // Small size
+      return 20;
     } else {
-      return 35; // Medium size
+      return 35;
     }
   };
 
-  return (
-    <CircularProgress
-      size={size || getSize()}
-      sx={{ margin: "1rem auto", display: "block", ...sx }}
-    />
-  );
+  return <CircularProgress size={size || getSize()} {...props} />;
 }

@@ -1,9 +1,11 @@
 import apiSlice from "../api/apiSlice";
+import validateTags from "../api/validateTags";
 
 const coachClassFareApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllCoachClassFare: builder.query({
       query: () => "/coach_class_fare",
+      providesTags: validateTags.getAllCoachClassFare,
     }),
 
     addCoachClassFare: builder.mutation({
@@ -12,6 +14,7 @@ const coachClassFareApi = apiSlice.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags: validateTags.getAllCoachClassFare,
     }),
 
     deleteCoachClassFare: builder.mutation({
