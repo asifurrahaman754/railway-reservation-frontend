@@ -2,8 +2,17 @@ import { Box, Card, IconButton, Typography } from "@mui/material";
 import { useTheme } from "@mui/system/";
 import DeleteIcon from "icons/DeleteIcon";
 import { useState } from "react";
+import { Coach } from "types/coach";
 
-export default function TrainDetailsCoachItem() {
+interface TrainDetailsCoachItemProps {
+  coach: Coach;
+  onDelete: (id: string) => void;
+}
+
+export default function TrainDetailsCoachItem({
+  coach,
+  onDelete,
+}: TrainDetailsCoachItemProps) {
   const [showDelete, setShowDelete] = useState(false);
   const primaryColor = useTheme().palette.primary.main;
 
@@ -34,7 +43,7 @@ export default function TrainDetailsCoachItem() {
           variant="h6"
           fontSize="20px"
         >
-          KA
+          {coach.name}
         </Typography>
 
         {!showDelete ? (
@@ -44,7 +53,7 @@ export default function TrainDetailsCoachItem() {
             variant="h6"
             fontSize="10px"
           >
-            #sdfkdkd
+            #{coach.id}
           </Typography>
         ) : (
           <IconButton
@@ -53,26 +62,17 @@ export default function TrainDetailsCoachItem() {
               top: "5px",
               right: "0",
             }}
+            onClick={() => onDelete(coach.id)}
           >
             <DeleteIcon />
           </IconButton>
         )}
       </Box>
-      <Typography
-        color={"primary"}
-        variant="h5"
-        fontWeight="bold"
-        fontSize="15px"
-        marginBottom={"1rem"}
-      >
-        906 tk
-      </Typography>
-
       <Typography variant="body1" fontWeight="bold" fontSize="15px">
-        Capacity: 40
+        Capacity: {coach.capacity}
       </Typography>
       <Typography variant="body1" fontWeight="bold" fontSize="15px">
-        Class: S
+        Class: {coach.class}
       </Typography>
     </Card>
   );
