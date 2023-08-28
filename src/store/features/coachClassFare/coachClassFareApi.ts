@@ -8,6 +8,11 @@ const coachClassFareApi = apiSlice.injectEndpoints({
       providesTags: validateTags.getAllCoachClassFare,
     }),
 
+    getSingleCoachClassFare: builder.query({
+      query: (id) => `/coach_class_fare/${id}`,
+      providesTags: validateTags.getSingleCoachClassFare,
+    }),
+
     addCoachClassFare: builder.mutation({
       query: (body) => ({
         url: "/coach_class_fare/add",
@@ -22,7 +27,7 @@ const coachClassFareApi = apiSlice.injectEndpoints({
         url: `/delete_coach_class_fare/${id}`,
         method: "DELETE",
       }),
-
+      invalidatesTags: validateTags.getSingleCoachClassFare,
       onQueryStarted: async (id, { dispatch, queryFulfilled }) => {
         try {
           const result = await queryFulfilled;
@@ -47,6 +52,7 @@ const coachClassFareApi = apiSlice.injectEndpoints({
 
 export const {
   useGetAllCoachClassFareQuery,
+  useGetSingleCoachClassFareQuery,
   useDeleteCoachClassFareMutation,
   useAddCoachClassFareMutation,
 } = coachClassFareApi;

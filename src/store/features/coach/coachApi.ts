@@ -1,9 +1,11 @@
 import apiSlice from "../api/apiSlice";
+import validateTags from "../api/validateTags";
 
 const coachApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllCoach: builder.query({
       query: () => "/coaches",
+      providesTags: validateTags.getAllCoach,
     }),
 
     addCoach: builder.mutation({
@@ -12,23 +14,7 @@ const coachApi = apiSlice.injectEndpoints({
         method: "POST",
         body,
       }),
-
-      onQueryStarted: async (body, { dispatch, queryFulfilled }) => {
-        try {
-          const result = await queryFulfilled;
-          dispatch(
-            apiSlice.util.updateQueryData(
-              "getAllCoach",
-              undefined,
-              (prevData: any) => {
-                if (result.data.success) {
-                  prevData.data.push(result.data.data);
-                }
-              }
-            )
-          );
-        } catch (error) {}
-      },
+      invalidatesTags: validateTags.getAllCoach,
     }),
 
     deleteCoach: builder.mutation({

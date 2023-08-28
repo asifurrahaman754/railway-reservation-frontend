@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useAddCoachMutation } from "store/features/coach/coachApi";
-import { useGetAllCoachClassQuery } from "store/features/coachClass/coachClassApi";
+import { useGetSingleCoachClassFareQuery } from "store/features/coachClassFare/coachClassFareApi";
 import * as Yup from "yup";
 
 interface TrainDetailsCoachAddProps {
@@ -24,7 +24,7 @@ export default function TrainDetailsCoachAdd({
   const [addCoach, { isLoading }] = useAddCoachMutation();
   const { trainId } = useParams();
   const formRef = useRef<any>();
-  const { data: coachClasses } = useGetAllCoachClassQuery();
+  const { data: coachClassFare } = useGetSingleCoachClassFareQuery(trainId);
 
   const handleSubmit = async (
     values: typeof initialValue,
@@ -119,9 +119,9 @@ export default function TrainDetailsCoachAdd({
               error={touched.class && !!errors.class}
               helperText={touched.class && errors.class}
             >
-              {coachClasses?.data?.map((coachClass: coachClassType) => (
-                <MenuItem key={coachClass.id} value={coachClass.id}>
-                  {coachClass.name}
+              {coachClassFare?.data?.map((coachClass: any) => (
+                <MenuItem key={coachClass.id} value={coachClass.class_id}>
+                  {coachClass.className}
                 </MenuItem>
               ))}
             </TextField>
