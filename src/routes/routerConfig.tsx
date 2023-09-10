@@ -13,7 +13,6 @@ const UsersTable = lazy(() => import("pages/Dashboard/UsersTable"));
 const RouteTable = lazy(() => import("pages/Dashboard/RouteTable"));
 const TrainsTable = lazy(() => import("pages/Dashboard/TrainsTable"));
 const CoachClasses = lazy(() => import("pages/Dashboard/CoachClasses"));
-const Coaches = lazy(() => import("pages/Dashboard/Coaches"));
 const TrainDetails = lazy(
   () => import("pages/Dashboard/TrainsTable/TrainDetails")
 );
@@ -87,16 +86,6 @@ const routesConfig = [
       <GuardRoute isForAdmin>
         <Suspense fallback={<Loader />}>
           <CoachClasses />
-        </Suspense>
-      </GuardRoute>
-    ),
-  },
-  {
-    path: routes.admin.coaches,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <Coaches />
         </Suspense>
       </GuardRoute>
     ),

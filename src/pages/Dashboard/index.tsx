@@ -55,11 +55,6 @@ export default function Dashboard() {
                 <CustomButton>Coach Classes</CustomButton>
               </Link>
             </Grid>
-            <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.coaches}>
-                <CustomButton>All Coaches</CustomButton>
-              </Link>
-            </Grid>
           </Grid>
         </Box>
       </Container>

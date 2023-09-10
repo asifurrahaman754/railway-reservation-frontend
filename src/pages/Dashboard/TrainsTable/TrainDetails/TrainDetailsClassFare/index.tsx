@@ -13,22 +13,24 @@ import TrainDetailsCard from "components/TrainDetailsCard";
 import DeleteIcon from "icons/DeleteIcon";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import {
   useDeleteCoachClassFareMutation,
-  useGetAllCoachClassFareQuery,
+  useGetSingleCoachClassFareQuery,
 } from "store/features/coachClassFare/coachClassFareApi";
 import { CoachClassFare } from "types/coachClassFare";
 import dialogContent from "../utils/dialogContent";
 import TrainDetailsClassFareAdd from "./TrainDetailsClassFareAdd";
 
 export default function TrainDetailsClassFare() {
+  const { trainId } = useParams();
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [addDialogOpen, setAddDialogOpen] = useState<boolean>(false);
   const {
     data: coachClassFare,
     isLoading,
     error,
-  } = useGetAllCoachClassFareQuery();
+  } = useGetSingleCoachClassFareQuery(trainId);
   const [deleteCoachClassFare, { isLoading: isDeleting }] =
     useDeleteCoachClassFareMutation();
 

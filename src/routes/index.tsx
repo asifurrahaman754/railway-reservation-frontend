@@ -16,7 +16,6 @@ const routes = {
     admin_accounts: "/admin/dashboard/admin_accounts",
     route: "/admin/dashboard/route",
     coach_classes: "/admin/dashboard/coach_classes",
-    coaches: "/admin/dashboard/coaches",
   },
   home: "/",
   booking: `/booking`,

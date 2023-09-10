@@ -3,9 +3,10 @@ import CustomDialog from "components/CustomDialog";
 import TrainDetailsCard from "components/TrainDetailsCard";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import {
   useDeleteCoachMutation,
-  useGetAllCoachQuery,
+  useGetCoachesByIdQuery,
 } from "store/features/coach/coachApi";
 import { Coach } from "types/coach";
 import dialogContent from "../utils/dialogContent";
@@ -13,9 +14,10 @@ import TrainDetailsCoachAdd from "./TrainDetailsCoachAdd";
 import TrainDetailsCoachItem from "./TrainDetailsCoachItem";
 
 export default function TrainDetailsCoach() {
+  const { trainId } = useParams();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { data: coach, error, isLoading } = useGetAllCoachQuery();
+  const { data: coach, error, isLoading } = useGetCoachesByIdQuery(trainId);
   const [deleteCoach, { isLoading: isDeleting }] = useDeleteCoachMutation();
 
   const handleDeleteCoach = async () => {

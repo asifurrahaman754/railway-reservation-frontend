@@ -8,6 +8,11 @@ const coachApi = apiSlice.injectEndpoints({
       providesTags: validateTags.getAllCoach,
     }),
 
+    getCoachesById: builder.query({
+      query: (id) => `/coaches/${id}`,
+      providesTags: validateTags.getAllCoach,
+    }),
+
     addCoach: builder.mutation({
       query: (body) => ({
         url: "/coaches/add",
@@ -47,6 +52,7 @@ const coachApi = apiSlice.injectEndpoints({
 
 export const {
   useGetAllCoachQuery,
+  useGetCoachesByIdQuery,
   useAddCoachMutation,
   useDeleteCoachMutation,
 } = coachApi;
