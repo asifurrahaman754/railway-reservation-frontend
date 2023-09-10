@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { Form, Formik } from "formik";
 import useSearchParams from "hooks/useSearchParams";
+import { useGetAllCoachClassQuery } from "store/features/coachClass/coachClassApi";
 import { formInitialValuesType } from "types/bookTicketFormType";
 import * as Yup from "yup";
 
@@ -17,6 +18,7 @@ type TrainInfoHeaderDetailsProps = {
 export default function TrainInfoHeaderForm({
   setShowForm,
 }: TrainInfoHeaderDetailsProps) {
+  const { data } = useGetAllCoachClassQuery();
   const today = new Date();
   const tenDaysFromToday = new Date();
   tenDaysFromToday.setDate(today.getDate() + 10);
@@ -152,7 +154,11 @@ export default function TrainInfoHeaderForm({
                     helperText={touched.seat && errors.seat}
                     error={touched.seat && !!errors.seat}
                   >
-                    <MenuItem value="Option 1">Option 1</MenuItem>
+                    {data?.data.map((coachClass: CoachClass) => (
+                      <MenuItem value={coachClass.name}>
+                        {coachClass.name}
+                      </MenuItem>
+                    ))}
                   </TextField>
                 </Grid>
                 <Grid item md={2} xs={12}>

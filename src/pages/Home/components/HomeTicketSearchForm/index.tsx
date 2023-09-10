@@ -6,7 +6,9 @@ import TextField from "@mui/material/TextField";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import routes from "routes/index";
+import { useGetAllCoachClassQuery } from "store/features/coachClass/coachClassApi";
 import { formInitialValuesType } from "types/bookTicketFormType";
+import { CoachClass } from "types/coachClass";
 import * as Yup from "yup";
 
 const formInitialValues: formInitialValuesType = {
@@ -17,6 +19,7 @@ const formInitialValues: formInitialValuesType = {
 };
 
 export default function HomeTicketSearchForm() {
+  const { data } = useGetAllCoachClassQuery();
   const navigate = useNavigate();
   const today = new Date();
   const tenDaysFromToday = new Date();
@@ -144,7 +147,11 @@ export default function HomeTicketSearchForm() {
                   helperText={touched.seat && errors.seat}
                   error={touched.seat && !!errors.seat}
                 >
-                  <MenuItem value="Option 1">Option 1</MenuItem>
+                  {data?.data.map((coachClass: CoachClass) => (
+                    <MenuItem value={coachClass.name}>
+                      {coachClass.name}
+                    </MenuItem>
+                  ))}
                 </TextField>
               </Grid>
             </Grid>
