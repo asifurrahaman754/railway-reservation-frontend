@@ -1,20 +1,14 @@
+import { Box, BoxProps } from "@mui/material";
 import CircularProgress, {
   CircularProgressProps,
 } from "@mui/material/CircularProgress";
 
-interface LoaderProps extends CircularProgressProps {
-  size?: number;
-}
+interface LoaderProps extends BoxProps {}
 
-export default function Loader({ size, ...props }: LoaderProps) {
-  const getSize = () => {
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 600) {
-      return 20;
-    } else {
-      return 35;
-    }
-  };
-
-  return <CircularProgress size={size || getSize()} {...props} />;
+export default function Loader({ ...props }: LoaderProps) {
+  return (
+    <Box p={2} textAlign="center" {...props}>
+      <CircularProgress size={25} />
+    </Box>
+  );
 }

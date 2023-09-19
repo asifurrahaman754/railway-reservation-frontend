@@ -1,3 +1,4 @@
+import DashboardLayout from "Layouts/DashboardLayout";
 import GuardRoute from "components/GuardRoute";
 import Loader from "components/Loader";
 import AuthLogin from "pages/AuthLogin";
@@ -43,62 +44,57 @@ const routesConfig = [
     element: <AuthLogin isForAdmin />,
   },
   {
-    path: routes.admin.dashboard,
     element: (
       <GuardRoute isForAdmin>
-        <Dashboard />
+        <DashboardLayout />
       </GuardRoute>
     ),
-  },
-  {
-    path: routes.admin.user,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <UsersTable />
-        </Suspense>
-      </GuardRoute>
-    ),
-  },
-  {
-    path: routes.admin.trains,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <TrainsTable />
-        </Suspense>
-      </GuardRoute>
-    ),
-  },
-  {
-    path: routes.admin.route,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <RouteTable />
-        </Suspense>
-      </GuardRoute>
-    ),
-  },
-  {
-    path: routes.admin.coach_classes,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <CoachClasses />
-        </Suspense>
-      </GuardRoute>
-    ),
-  },
-  {
-    path: routes.admin.train_details.path,
-    element: (
-      <GuardRoute isForAdmin>
-        <Suspense fallback={<Loader />}>
-          <TrainDetails />
-        </Suspense>
-      </GuardRoute>
-    ),
+    children: [
+      {
+        path: routes.admin.dashboard,
+        element: <Dashboard />,
+      },
+      {
+        path: routes.admin.user,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <UsersTable />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.admin.trains,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <TrainsTable />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.admin.route,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <RouteTable />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.admin.coach_classes,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <CoachClasses />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.admin.train_details.path,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <TrainDetails />
+          </Suspense>
+        ),
+      },
+    ],
   },
   {
     path: "*",

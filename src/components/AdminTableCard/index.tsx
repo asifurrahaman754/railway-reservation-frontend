@@ -9,18 +9,16 @@ export default function AdminTableCard({
   children: React.ReactNode;
 }) {
   return (
-    <AuthBg>
-      <Box
-        sx={{
-          maxWidth: "1200px",
-          width: "100%",
-          paddingX: "1rem",
-          overflowX: "auto",
-        }}
-      >
-        <DashboardGoBack />
-        <Paper sx={{ width: "100%", mb: 2 }}>{children}</Paper>
-      </Box>
-    </AuthBg>
+    <Box
+      sx={{
+        maxWidth: "1200px",
+        width: "100%",
+        paddingX: "1rem",
+        overflowX: "auto",
+      }}
+    >
+      <DashboardGoBack />
+      <Paper sx={{ width: "100%", mb: 2 }}>{children}</Paper>
+    </Box>
   );
 }

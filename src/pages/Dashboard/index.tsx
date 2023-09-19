@@ -27,37 +27,35 @@ const CustomButton = ({ children }: { children: string }) => {
 
 export default function Dashboard() {
   return (
-    <AuthBg>
-      <Container>
-        <Box maxWidth="500px" margin="auto">
-          <Grid
-            container
-            rowSpacing={{ xs: 2, sm: 3, md: 4 }}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.trains}>
-                <CustomButton>All Trains</CustomButton>
-              </Link>
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.user}>
-                <CustomButton>Users</CustomButton>
-              </Link>
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.route}>
-                <CustomButton>Route</CustomButton>
-              </Link>
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <Link to={routes.admin.coach_classes}>
-                <CustomButton>Coach Classes</CustomButton>
-              </Link>
-            </Grid>
+    <Container>
+      <Box maxWidth="500px" margin="auto">
+        <Grid
+          container
+          rowSpacing={{ xs: 2, sm: 3, md: 4 }}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        >
+          <Grid item sm={6} xs={12}>
+            <Link to={routes.admin.trains}>
+              <CustomButton>All Trains</CustomButton>
+            </Link>
           </Grid>
-        </Box>
-      </Container>
-    </AuthBg>
+          <Grid item sm={6} xs={12}>
+            <Link to={routes.admin.user}>
+              <CustomButton>Users</CustomButton>
+            </Link>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <Link to={routes.admin.route}>
+              <CustomButton>Route</CustomButton>
+            </Link>
+          </Grid>
+          <Grid item sm={6} xs={12}>
+            <Link to={routes.admin.coach_classes}>
+              <CustomButton>Coach Classes</CustomButton>
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 }
