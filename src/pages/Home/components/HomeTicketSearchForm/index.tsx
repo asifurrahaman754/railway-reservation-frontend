@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import districts from "data/district";
 import { Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import routes from "routes/index";
@@ -27,9 +28,15 @@ export default function HomeTicketSearchForm() {
 
   const submitHandler = async (
     values: formInitialValuesType,
-    { setSubmitting }: any
+    { setSubmitting, setErrors }: any
   ) => {
     const { from, journeyDate, seat, to } = values;
+
+    if (from === to) {
+      setErrors({ to: "From and To can't be same!" });
+      setSubmitting(false);
+      return;
+    }
 
     // set the query params in the url using new URLSearchParams()
     const params = new URLSearchParams();
@@ -45,8 +52,12 @@ export default function HomeTicketSearchForm() {
     <Formik
       initialValues={formInitialValues}
       validationSchema={Yup.object().shape({
-        from: Yup.string().required("from destination is required!"),
-        to: Yup.string().required("to destination is required!"),
+        from: Yup.string()
+          .required("from destination is required!")
+          .oneOf(districts, "Invalid District"),
+        to: Yup.string()
+          .required("to destination is required!")
+          .oneOf(districts, "Invalid District"),
         journeyDate: Yup.date()
           .max(
             tenDaysFromToday.toISOString().split("T")[0],

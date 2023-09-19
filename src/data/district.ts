@@ -1,4 +1,4 @@
-const districts: string[] = [
+const districts = [
   "bagerhat",
   "bandarban",
   "barguna",

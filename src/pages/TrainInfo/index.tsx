@@ -1,13 +1,12 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import UserLayout from "layouts/UserLayout";
 import TrainInfoHeader from "./components/TrainInfoHeader";
 import TrainLists from "./components/TrainLists";
 
 export default function TrainInfo() {
   return (
-    <UserLayout>
+    <>
       <TrainInfoHeader />
       <Box sx={{ padding: "2rem 0" }}>
         <Container>
@@ -29,6 +28,6 @@ export default function TrainInfo() {
           <TrainLists />
         </Container>
       </Box>
-    </UserLayout>
+    </>
   );
 }

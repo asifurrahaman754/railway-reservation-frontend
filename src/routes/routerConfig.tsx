@@ -1,4 +1,5 @@
 import DashboardLayout from "Layouts/DashboardLayout";
+import HomeLayout from "Layouts/HomeLayout";
 import GuardRoute from "components/GuardRoute";
 import Loader from "components/Loader";
 import AuthLogin from "pages/AuthLogin";
@@ -20,8 +21,21 @@ const TrainDetails = lazy(
 
 const routesConfig = [
   {
-    path: routes.home,
-    element: <Home />,
+    element: <HomeLayout />,
+    children: [
+      {
+        path: routes.home,
+        element: <Home />,
+      },
+      {
+        path: routes.booking,
+        element: (
+          <Suspense fallback={<Loader />}>
+            <TrainInfo />
+          </Suspense>
+        ),
+      },
+    ],
   },
   {
     path: routes.auth.login,
@@ -30,14 +44,6 @@ const routesConfig = [
   {
     path: routes.auth.register,
     element: <AuthRegister />,
-  },
-  {
-    path: routes.booking,
-    element: (
-      <Suspense fallback={<Loader />}>
-        <TrainInfo />
-      </Suspense>
-    ),
   },
   {
     path: routes.admin.login,
