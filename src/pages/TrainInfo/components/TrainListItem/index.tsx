@@ -10,12 +10,17 @@ import SelectCoachContainer from "./components/SelectCoachContainer";
 import CoachDetails from "./components/SelectCoachContainer/CoachDetails";
 import TrainListItemCards from "./components/TrainListItemCards";
 import TrainListItemHeader from "./components/TrainListItemHeader";
+import { RouteSchedule } from "types/routeSchedule";
 
 export type expandedItemType = {
   id: string | number;
 };
 
-export default function TrainListItem() {
+export interface TrainListItemProps {
+  schedule: RouteSchedule;
+}
+
+export default function TrainListItem({ schedule }: TrainListItemProps) {
   const [expandedItem, setExpandedItem] = useState<null | expandedItemType>(
     null
   );

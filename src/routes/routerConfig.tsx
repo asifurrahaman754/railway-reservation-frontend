@@ -30,7 +30,7 @@ const routesConfig = [
       {
         path: routes.booking,
         element: (
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={""}>
             <TrainInfo />
           </Suspense>
         ),
