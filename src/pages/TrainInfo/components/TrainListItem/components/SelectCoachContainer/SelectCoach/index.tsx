@@ -4,6 +4,8 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CoachSeatsContainer from "../CoachSeatsContainer";
+import { Coach } from "types/coach";
+import { useState, useEffect } from "react";
 
 const ticketColorBoxStyle = {
   width: "1rem",
@@ -13,7 +15,28 @@ const ticketColorBoxStyle = {
   marginRight: ".5rem",
 };
 
-export default function SelectCoach() {
+export interface SelectCoachProps {
+  coaches: Coach[];
+  activeCoachClass: string;
+}
+
+export default function SelectCoach({
+  coaches,
+  activeCoachClass,
+}: SelectCoachProps) {
+  const [selectedCoach, setSelectedCoach] = useState<string>("");
+  const coachWithSelectedClass = coaches?.find(
+    (coach) => coach.class === activeCoachClass
+  );
+
+  useEffect(() => {
+    setSelectedCoach(coachWithSelectedClass?.id as unknown as string);
+  }, [activeCoachClass]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedCoach(event.target.value);
+  };
+
   return (
     <>
       <Typography variant="h6">Select Coach</Typography>
@@ -21,18 +44,20 @@ export default function SelectCoach() {
         fullWidth
         name="seat"
         variant="outlined"
-        defaultValue="ka"
+        defaultValue={coachWithSelectedClass?.id}
         select
         size="small"
         InputLabelProps={{
           shrink: true,
         }}
+        value={selectedCoach}
+        onChange={handleChange}
       >
-        <MenuItem value="ka">KA - 13 Seat</MenuItem>
-        <MenuItem value="KHA">KHA - 23 Seat</MenuItem>
-        <MenuItem value="GA">GA - 44 Seat</MenuItem>
-        <MenuItem value="GHA">GHA - 39 Seat</MenuItem>
-        <MenuItem value="DA">DA - 0 Seat</MenuItem>
+        {coaches?.map((coach) => (
+          <MenuItem key={coach.id} value={coach.id}>
+            {coach.name} - {coach.available_seats} Seat
+          </MenuItem>
+        ))}
       </TextField>
 
       <Grid container marginY="1.5rem">

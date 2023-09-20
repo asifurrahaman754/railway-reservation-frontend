@@ -1,53 +1,54 @@
+import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
-import { useEffect } from "react";
-import { useGetTotalAvailableTicketsMutation } from "store/features/trainSearch/trainSearchApi";
+import { Coach } from "types/coach";
 import { CoachClassFare } from "types/coachClassFare";
 
 interface TrainListItemCardProps {
   coachClassFare: CoachClassFare;
   fare: number;
-  trainId: string;
-  expandedItem: number | null;
-  setExpandedItem: (item: number | null) => void;
+  coaches: Coach[];
+  activeCoachClass: string;
+  onClick: (item: string) => void;
 }
 
 export default function TrainListItemCardItem({
   coachClassFare,
   fare,
-  trainId,
-  expandedItem,
-  setExpandedItem,
+  activeCoachClass,
+  coaches,
+  onClick,
 }: TrainListItemCardProps) {
-  const [getTotalAvailableTickets, { data: totalTickets, isLoading }] =
-    useGetTotalAvailableTicketsMutation();
-  const isExpanded = expandedItem === coachClassFare?.id;
+  const isExpanded = activeCoachClass === coachClassFare?.className;
   const primaryColor = useTheme().palette.primary.main;
+  const fareWithCoach = fare + coachClassFare?.fare;
 
-  const isActive = isLoading || totalTickets;
+  const totalAvailableTickets = useMemo(() => {
+    return coaches.reduce((acc, coach) => {
+      if (coach.class === coachClassFare?.className) {
+        return (acc += coach.available_seats);
+      }
+
+      return acc;
+    }, 0);
+  }, [coachClassFare?.className]);
+
+  const isActive = totalAvailableTickets > 0;
   const nonExpandedColor = isActive ? "#E2E8E7" : "#F1E8E8";
   const headerBgColor = isExpanded ? primaryColor : nonExpandedColor;
-  const fareWithCoach = fare + coachClassFare?.fare;
 
   const expandItem = () => {
     if (isExpanded) {
-      setExpandedItem(null);
+      onClick("");
       return;
     }
 
-    setExpandedItem(coachClassFare?.id);
+    onClick(coachClassFare?.className);
   };
-
-  useEffect(() => {
-    getTotalAvailableTickets({
-      trainId,
-      class_id: coachClassFare?.class_id,
-    });
-  }, [trainId, coachClassFare?.class_id]);
 
   return (
     <Card
@@ -94,7 +95,7 @@ export default function TrainListItemCardItem({
           Available tickets
         </Typography>
         <Typography variant="h4" fontWeight="bold" fontSize="15px">
-          {totalTickets?.data ?? "..."}
+          {totalAvailableTickets ?? "..."}
         </Typography>
 
         {isActive && (

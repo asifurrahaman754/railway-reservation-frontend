@@ -4,12 +4,23 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
 import SelectCoach from "./SelectCoach";
+import { Coach } from "types/coach";
 
-export default function SelectCoachContainer({ children }: any) {
+export interface SelectCoachContainerProps {
+  children: React.ReactNode;
+  coaches: Coach[];
+  activeCoachClass: string;
+}
+
+export default function SelectCoachContainer({
+  children,
+  activeCoachClass,
+  coaches,
+}: SelectCoachContainerProps) {
   const primaryColor = useTheme().palette.primary.main;
 
   return (
-    <Box>
+    <>
       <Typography variant="h6" color={primaryColor}>
         Choose your seat(s) **Maximum 4 seats can be booked at a time.
       </Typography>
@@ -20,12 +31,12 @@ export default function SelectCoachContainer({ children }: any) {
       </Typography>
       <Grid container spacing={2} marginTop=".8rem">
         <Grid item md={6} xs={12}>
-          <SelectCoach />
+          <SelectCoach coaches={coaches} activeCoachClass={activeCoachClass} />
         </Grid>
         <Grid item md={6} xs={12}>
           {children}
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 }

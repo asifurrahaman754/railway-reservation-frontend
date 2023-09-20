@@ -20,6 +20,7 @@ import { useGetSingleCoachClassFareQuery } from "store/features/coachClassFare/c
 import TrainListItemCardItem from "./components/TrainListItemCardItem";
 import { CoachClassFare } from "types/coachClassFare";
 import { TrainListItemCardContainerStyle } from "./components/TrainListItemCardItem/style";
+import { useGetCoachesByIdQuery } from "store/features/coach/coachApi";
 
 export type expandedItemType = {
   id: string | number;
@@ -30,15 +31,24 @@ export interface TrainListItemProps {
 }
 
 export default function TrainListItem({ schedule }: TrainListItemProps) {
-  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const [activeCoachClass, setActiveCoachClass] = useState<string>("");
   const { data: trainData, isLoading: trainLoading } = useGetSingleTrainQuery(
     schedule.train_id
   );
   const { data: coachClassFareData, isLoading: coachClassFareLoading } =
     useGetSingleCoachClassFareQuery(schedule.train_id);
+  const { data: coaches, isLoading: isCoachesLoading } = useGetCoachesByIdQuery(
+    schedule.train_id
+  );
+
   const train = trainData?.data || {};
-  const isInitialized = !trainLoading && !coachClassFareLoading;
+  const isInitialized =
+    !trainLoading && !coachClassFareLoading && !isCoachesLoading;
   const seatFare = schedule?.distance * train?.fare_per_km;
+
+  const handleActiveCoachClassIdchange = (name: string) => {
+    setActiveCoachClass(name);
+  };
 
   let content;
   if (!isInitialized) {
@@ -55,22 +65,25 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
             <Grid item key={coachClassFare.id}>
               <TrainListItemCardItem
                 fare={seatFare}
-                trainId={train.id}
+                coaches={coaches?.data || []}
                 coachClassFare={coachClassFare}
-                setExpandedItem={setExpandedItem}
-                expandedItem={expandedItem}
+                onClick={handleActiveCoachClassIdchange}
+                activeCoachClass={activeCoachClass}
               />
             </Grid>
           ))}
         </Grid>
 
-        {expandedItem && (
-          <SelectCoachContainer>
+        {activeCoachClass && (
+          <SelectCoachContainer
+            coaches={coaches?.data || []}
+            activeCoachClass={activeCoachClass}
+          >
             <CoachDetails>
               <Button
                 variant="text"
                 sx={{ display: "flex", marginLeft: "auto" }}
-                onClick={() => setExpandedItem(null)}
+                onClick={() => setActiveCoachClass("")}
               >
                 Close
               </Button>

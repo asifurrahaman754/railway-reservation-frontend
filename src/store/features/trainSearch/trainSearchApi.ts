@@ -9,15 +9,7 @@ const trainSearchApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    getTotalAvailableTickets: builder.mutation({
-      query: (body) => ({
-        url: "/get_ticket_available",
-        method: "POST",
-        body,
-      }),
-    }),
   }),
 });
 
-export const { useFetchTrainMutation, useGetTotalAvailableTicketsMutation } =
-  trainSearchApi;
+export const { useFetchTrainMutation } = trainSearchApi;
