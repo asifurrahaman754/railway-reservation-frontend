@@ -4,32 +4,50 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
-import { TrainListItemCardsProps } from ".";
+import { useEffect } from "react";
+import { useGetTotalAvailableTicketsMutation } from "store/features/trainSearch/trainSearchApi";
+import { CoachClassFare } from "types/coachClassFare";
 
-interface TrainListItemCardProps extends TrainListItemCardsProps {
-  isActive: boolean;
-  id: number;
+interface TrainListItemCardProps {
+  coachClassFare: CoachClassFare;
+  fare: number;
+  trainId: string;
+  expandedItem: number | null;
+  setExpandedItem: (item: number | null) => void;
 }
 
 export default function TrainListItemCardItem({
-  isActive,
+  coachClassFare,
+  fare,
+  trainId,
   expandedItem,
   setExpandedItem,
-  id,
 }: TrainListItemCardProps) {
-  const isExpanded = expandedItem?.id === id;
+  const [getTotalAvailableTickets, { data: totalTickets, isLoading }] =
+    useGetTotalAvailableTicketsMutation();
+  const isExpanded = expandedItem === coachClassFare?.id;
   const primaryColor = useTheme().palette.primary.main;
+
+  const isActive = isLoading || totalTickets;
   const nonExpandedColor = isActive ? "#E2E8E7" : "#F1E8E8";
   const headerBgColor = isExpanded ? primaryColor : nonExpandedColor;
+  const fareWithCoach = fare + coachClassFare?.fare;
 
   const expandItem = () => {
-    if (expandedItem?.id === id) {
+    if (isExpanded) {
       setExpandedItem(null);
       return;
     }
 
-    setExpandedItem({ id });
+    setExpandedItem(coachClassFare?.id);
   };
+
+  useEffect(() => {
+    getTotalAvailableTickets({
+      trainId,
+      class_id: coachClassFare?.class_id,
+    });
+  }, [trainId, coachClassFare?.class_id]);
 
   return (
     <Card
@@ -53,7 +71,7 @@ export default function TrainListItemCardItem({
               variant="h6"
               fontSize="15px"
             >
-              AC_S
+              {coachClassFare.className}
             </Typography>
             <Typography
               color={isExpanded ? "#fff" : "primary"}
@@ -61,7 +79,7 @@ export default function TrainListItemCardItem({
               fontWeight="bold"
               fontSize="15px"
             >
-              906 tk
+              {fareWithCoach} tk
             </Typography>
           </>
         }
@@ -76,7 +94,7 @@ export default function TrainListItemCardItem({
           Available tickets
         </Typography>
         <Typography variant="h4" fontWeight="bold" fontSize="15px">
-          10
+          {totalTickets?.data ?? "..."}
         </Typography>
 
         {isActive && (

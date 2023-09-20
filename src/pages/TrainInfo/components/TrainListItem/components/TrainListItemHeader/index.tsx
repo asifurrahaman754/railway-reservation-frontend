@@ -4,8 +4,16 @@ import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
+import { RouteSchedule } from "types/routeSchedule";
+import { convertTimeTo12, timeDifference } from "utils/time";
 
-export default function TrainListItemHeader() {
+export interface TrainListItemHeaderProps {
+  schedule: RouteSchedule;
+}
+
+export default function TrainListItemHeader({
+  schedule,
+}: TrainListItemHeaderProps) {
   const primaryColor = useTheme().palette.primary.main;
 
   return (
@@ -24,14 +32,16 @@ export default function TrainListItemHeader() {
               fontSize={{ xs: ".8rem", sm: ".9rem" }}
               textAlign={{ xs: "left", sm: "right" }}
             >
-              20 May, 07:00 am
+              {convertTimeTo12(schedule.departure_time)}
             </Typography>
             <Typography variant="body1" textAlign={{ xs: "left", sm: "right" }}>
-              Dhaka
+              {schedule?.from_route}
             </Typography>
           </Grid>
           <Grid fontSize=".9rem" item xs={6} textAlign="center">
-            <Divider>05h 15m</Divider>
+            <Divider>
+              {timeDifference(schedule?.departure_time, schedule?.arrival_time)}
+            </Divider>
           </Grid>
           <Grid item xs={3}>
             <Typography
@@ -40,10 +50,10 @@ export default function TrainListItemHeader() {
               fontSize={{ xs: ".8rem", sm: ".9rem" }}
               textAlign={{ xs: "right", sm: "left" }}
             >
-              20 May, 12:15 pm
+              {convertTimeTo12(schedule.arrival_time)}
             </Typography>
             <Typography variant="body1" textAlign={{ xs: "right", sm: "left" }}>
-              Chattogram
+              {schedule?.to_route}
             </Typography>
           </Grid>
         </Grid>

@@ -18,13 +18,11 @@ export default function TrainInfo() {
     fetchTrain(data);
   }, [JSON.stringify(data)]);
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  return (
-    <>
-      <TrainInfoHeader />
+  let content;
+  if (!allSchedules) {
+    content = <Loader />;
+  } else {
+    content = (
       <Box py={3}>
         <Container>
           <Alert
@@ -47,6 +45,13 @@ export default function TrainInfo() {
           ))}
         </Container>
       </Box>
+    );
+  }
+
+  return (
+    <>
+      <TrainInfoHeader />
+      {content}
     </>
   );
 }

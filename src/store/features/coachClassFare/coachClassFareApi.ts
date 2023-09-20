@@ -9,7 +9,7 @@ const coachClassFareApi = apiSlice.injectEndpoints({
     }),
 
     getSingleCoachClassFare: builder.query({
-      query: (id) => `/coach_class_fare/${id}`,
+      query: (trainId) => `/coach_class_fare/${trainId}`,
       providesTags: validateTags.getSingleCoachClassFare,
     }),
 

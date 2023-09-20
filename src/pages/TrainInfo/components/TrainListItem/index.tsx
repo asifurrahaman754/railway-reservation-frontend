@@ -1,16 +1,25 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Button,
+  Divider,
+  Typography,
+  Grid,
+} from "@mui/material";
 import { useState } from "react";
 import SelectCoachContainer from "./components/SelectCoachContainer";
 import CoachDetails from "./components/SelectCoachContainer/CoachDetails";
-import TrainListItemCards from "./components/TrainListItemCards";
+import TrainListItemCards from "./components/TrainListItemCardItem";
 import TrainListItemHeader from "./components/TrainListItemHeader";
 import { RouteSchedule } from "types/routeSchedule";
+import { useGetSingleTrainQuery } from "store/features/train/trainApi";
+import Loader from "components/Loader";
+import { useGetSingleCoachClassFareQuery } from "store/features/coachClassFare/coachClassFareApi";
+import TrainListItemCardItem from "./components/TrainListItemCardItem";
+import { CoachClassFare } from "types/coachClassFare";
+import { TrainListItemCardContainerStyle } from "./components/TrainListItemCardItem/style";
 
 export type expandedItemType = {
   id: string | number;
@@ -21,9 +30,56 @@ export interface TrainListItemProps {
 }
 
 export default function TrainListItem({ schedule }: TrainListItemProps) {
-  const [expandedItem, setExpandedItem] = useState<null | expandedItemType>(
-    null
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const { data: trainData, isLoading: trainLoading } = useGetSingleTrainQuery(
+    schedule.train_id
   );
+  const { data: coachClassFareData, isLoading: coachClassFareLoading } =
+    useGetSingleCoachClassFareQuery(schedule.train_id);
+  const train = trainData?.data || {};
+  const isInitialized = !trainLoading && !coachClassFareLoading;
+  const seatFare = schedule?.distance * train?.fare_per_km;
+
+  let content;
+  if (!isInitialized) {
+    content = <Loader />;
+  } else {
+    content = (
+      <>
+        <Divider />
+        <TrainListItemHeader schedule={schedule} />
+        <Divider />
+
+        <Grid container spacing={2} sx={TrainListItemCardContainerStyle}>
+          {coachClassFareData?.data?.map((coachClassFare: CoachClassFare) => (
+            <Grid item key={coachClassFare.id}>
+              <TrainListItemCardItem
+                fare={seatFare}
+                trainId={train.id}
+                coachClassFare={coachClassFare}
+                setExpandedItem={setExpandedItem}
+                expandedItem={expandedItem}
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        {expandedItem && (
+          <SelectCoachContainer>
+            <CoachDetails>
+              <Button
+                variant="text"
+                sx={{ display: "flex", marginLeft: "auto" }}
+                onClick={() => setExpandedItem(null)}
+              >
+                Close
+              </Button>
+            </CoachDetails>
+          </SelectCoachContainer>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
@@ -49,34 +105,11 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
             variant="h5"
             fontSize={{ xs: "1rem", sm: "1.2rem" }}
           >
-            SONAR BANGLA EXPRESS (788)
+            {train.name}
           </Typography>
         </AccordionSummary>
 
-        <AccordionDetails>
-          <Divider />
-          <TrainListItemHeader />
-          <Divider />
-
-          <TrainListItemCards
-            setExpandedItem={setExpandedItem}
-            expandedItem={expandedItem}
-          />
-
-          {expandedItem?.id && (
-            <SelectCoachContainer>
-              <CoachDetails>
-                <Button
-                  variant="text"
-                  sx={{ display: "flex", marginLeft: "auto" }}
-                  onClick={() => setExpandedItem(null)}
-                >
-                  Close
-                </Button>
-              </CoachDetails>
-            </SelectCoachContainer>
-          )}
-        </AccordionDetails>
+        <AccordionDetails>{content}</AccordionDetails>
       </Accordion>
     </>
   );
