@@ -7,6 +7,7 @@ import {
   Divider,
   Typography,
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import SelectCoachContainer from "./components/SelectCoachContainer";
@@ -31,7 +32,9 @@ export interface TrainListItemProps {
 }
 
 export default function TrainListItem({ schedule }: TrainListItemProps) {
-  const [activeCoachClass, setActiveCoachClass] = useState<string>("");
+  const primaryColor = useTheme().palette.primary.main;
+  const [selectedCoachClass, setSelectedCoachClass] = useState<string>("");
+
   const { data: trainData, isLoading: trainLoading } = useGetSingleTrainQuery(
     schedule.train_id
   );
@@ -45,10 +48,6 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
   const isInitialized =
     !trainLoading && !coachClassFareLoading && !isCoachesLoading;
   const seatFare = schedule?.distance * train?.fare_per_km;
-
-  const handleActiveCoachClassIdchange = (name: string) => {
-    setActiveCoachClass(name);
-  };
 
   let content;
   if (!isInitialized) {
@@ -67,28 +66,29 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
                 fare={seatFare}
                 coaches={coaches?.data || []}
                 coachClassFare={coachClassFare}
-                onClick={handleActiveCoachClassIdchange}
-                activeCoachClass={activeCoachClass}
+                onClick={(name) => setSelectedCoachClass(name)}
+                selectedCoachClass={selectedCoachClass}
               />
             </Grid>
           ))}
         </Grid>
 
-        {activeCoachClass && (
-          <SelectCoachContainer
-            coaches={coaches?.data || []}
-            activeCoachClass={activeCoachClass}
-          >
-            <CoachDetails>
-              <Button
-                variant="text"
-                sx={{ display: "flex", marginLeft: "auto" }}
-                onClick={() => setActiveCoachClass("")}
-              >
-                Close
-              </Button>
-            </CoachDetails>
-          </SelectCoachContainer>
+        {selectedCoachClass && (
+          <>
+            <Typography variant="h6" color={primaryColor}>
+              Choose your seat(s) **Maximum 4 seats can be booked at a time.
+            </Typography>
+            <Divider />
+            <Typography variant="body1" marginTop=".5rem">
+              To know seat number(s), rest the cursor on your desired seat(s).
+              Click on it to select or deselect.
+            </Typography>
+            <SelectCoachContainer
+              coaches={coaches?.data || []}
+              selectedCoachClass={selectedCoachClass}
+              onClose={() => setSelectedCoachClass("")}
+            />
+          </>
         )}
       </>
     );

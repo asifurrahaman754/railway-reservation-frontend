@@ -8,7 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 
-export default function CoachDetails({ children }: any) {
+export interface CoachDetailsProps {
+  onClose: () => void;
+}
+
+export default function CoachDetails({ onClose }: CoachDetailsProps) {
   return (
     <Card
       variant="outlined"
@@ -62,7 +66,13 @@ export default function CoachDetails({ children }: any) {
         </Typography>
       </Button>
 
-      {children}
+      <Button
+        variant="text"
+        sx={{ display: "flex", marginLeft: "auto" }}
+        onClick={onClose}
+      >
+        Close
+      </Button>
     </Card>
   );
 }

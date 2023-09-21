@@ -12,18 +12,18 @@ interface TrainListItemCardProps {
   coachClassFare: CoachClassFare;
   fare: number;
   coaches: Coach[];
-  activeCoachClass: string;
+  selectedCoachClass: string;
   onClick: (item: string) => void;
 }
 
 export default function TrainListItemCardItem({
   coachClassFare,
   fare,
-  activeCoachClass,
+  selectedCoachClass,
   coaches,
   onClick,
 }: TrainListItemCardProps) {
-  const isExpanded = activeCoachClass === coachClassFare?.className;
+  const isExpanded = selectedCoachClass === coachClassFare?.className;
   const primaryColor = useTheme().palette.primary.main;
   const fareWithCoach = fare + coachClassFare?.fare;
 

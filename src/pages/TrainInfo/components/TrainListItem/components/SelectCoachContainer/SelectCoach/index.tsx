@@ -3,9 +3,9 @@ import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import CoachSeatsContainer from "../CoachSeatsContainer";
+import CoachSeats from "../CoachSeats";
 import { Coach } from "types/coach";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const ticketColorBoxStyle = {
   width: "1rem",
@@ -17,24 +17,17 @@ const ticketColorBoxStyle = {
 
 export interface SelectCoachProps {
   coaches: Coach[];
-  activeCoachClass: string;
+  selectedCoachId: string;
+  onChange: (value: string) => void;
 }
 
 export default function SelectCoach({
   coaches,
-  activeCoachClass,
+  selectedCoachId,
+  onChange,
 }: SelectCoachProps) {
-  const [selectedCoach, setSelectedCoach] = useState<string>("");
-  const coachWithSelectedClass = coaches?.find(
-    (coach) => coach.class === activeCoachClass
-  );
-
-  useEffect(() => {
-    setSelectedCoach(coachWithSelectedClass?.id as unknown as string);
-  }, [activeCoachClass]);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedCoach(event.target.value);
+    onChange(event.target.value);
   };
 
   return (
@@ -44,13 +37,12 @@ export default function SelectCoach({
         fullWidth
         name="seat"
         variant="outlined"
-        defaultValue={coachWithSelectedClass?.id}
         select
         size="small"
         InputLabelProps={{
           shrink: true,
         }}
-        value={selectedCoach}
+        value={selectedCoachId}
         onChange={handleChange}
       >
         {coaches?.map((coach) => (
@@ -80,8 +72,6 @@ export default function SelectCoach({
           </Box>
         </Grid>
       </Grid>
-
-      <CoachSeatsContainer />
     </>
   );
 }

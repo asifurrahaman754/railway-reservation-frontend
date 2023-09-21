@@ -9,7 +9,11 @@ const trainSearchApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
+
+    fetchSeats: builder.query({
+      query: (coachId) => `/seats/${coachId}`,
+    }),
   }),
 });
 
-export const { useFetchTrainMutation } = trainSearchApi;
+export const { useFetchTrainMutation, useFetchSeatsQuery } = trainSearchApi;

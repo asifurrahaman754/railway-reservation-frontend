@@ -2,39 +2,51 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/system/";
 import SelectCoach from "./SelectCoach";
 import { Coach } from "types/coach";
+import CoachSeats from "./CoachSeats";
+import { useEffect, useMemo, useState } from "react";
+import CoachDetails from "./CoachDetails";
 
 export interface SelectCoachContainerProps {
-  children: React.ReactNode;
   coaches: Coach[];
-  activeCoachClass: string;
+  selectedCoachClass: string;
+  onClose: () => void;
 }
 
 export default function SelectCoachContainer({
-  children,
-  activeCoachClass,
+  selectedCoachClass,
   coaches,
+  onClose,
 }: SelectCoachContainerProps) {
-  const primaryColor = useTheme().palette.primary.main;
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [selectedCoachId, setSelectedCoachId] = useState<string>("");
+  const selectedCoach = useMemo(
+    () => coaches?.find((coach) => coach.class === selectedCoachClass),
+    [selectedCoachClass]
+  );
+
+  useEffect(() => {
+    setSelectedCoachId(selectedCoach?.id as unknown as string);
+  }, [selectedCoachClass]);
+
+  const handleChange = (value: string) => {
+    setSelectedCoachId(value);
+  };
 
   return (
     <>
-      <Typography variant="h6" color={primaryColor}>
-        Choose your seat(s) **Maximum 4 seats can be booked at a time.
-      </Typography>
-      <Divider />
-      <Typography variant="body1" marginTop=".5rem">
-        To know seat number(s), rest the cursor on your desired seat(s). Click
-        on it to select or deselect.
-      </Typography>
       <Grid container spacing={2} marginTop=".8rem">
         <Grid item md={6} xs={12}>
-          <SelectCoach coaches={coaches} activeCoachClass={activeCoachClass} />
+          <SelectCoach
+            coaches={coaches}
+            selectedCoachId={selectedCoachId}
+            onChange={handleChange}
+          />
+          <CoachSeats selectedCoachId={selectedCoachId} />
         </Grid>
         <Grid item md={6} xs={12}>
-          {children}
+          <CoachDetails onClose={onClose} />
         </Grid>
       </Grid>
     </>
