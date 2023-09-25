@@ -9,9 +9,9 @@ import {
   Grid,
   useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import SelectCoachContainer from "./components/SelectCoachContainer";
-import CoachDetails from "./components/SelectCoachContainer/CoachDetails";
+import CoachDetails from "./components/SelectCoachContainer/SeatDetails";
 import TrainListItemCards from "./components/TrainListItemCardItem";
 import TrainListItemHeader from "./components/TrainListItemHeader";
 import { RouteSchedule } from "types/routeSchedule";
@@ -66,7 +66,9 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
                 fare={seatFare}
                 coaches={coaches?.data || []}
                 coachClassFare={coachClassFare}
-                onClick={(name) => setSelectedCoachClass(name)}
+                onClick={(name) =>
+                  startTransition(() => setSelectedCoachClass(name))
+                }
                 selectedCoachClass={selectedCoachClass}
               />
             </Grid>

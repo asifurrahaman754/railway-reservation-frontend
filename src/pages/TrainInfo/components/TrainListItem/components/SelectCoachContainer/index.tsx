@@ -1,12 +1,9 @@
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import SelectCoach from "./SelectCoach";
 import { Coach } from "types/coach";
 import CoachSeats from "./CoachSeats";
 import { useEffect, useMemo, useState } from "react";
-import CoachDetails from "./CoachDetails";
+import SeatDetails from "./SeatDetails";
 
 export interface SelectCoachContainerProps {
   coaches: Coach[];
@@ -21,13 +18,13 @@ export default function SelectCoachContainer({
 }: SelectCoachContainerProps) {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [selectedCoachId, setSelectedCoachId] = useState<string>("");
-  const selectedCoach = useMemo(
-    () => coaches?.find((coach) => coach.class === selectedCoachClass),
+  const selectedCoaches = useMemo(
+    () => coaches?.filter((coach) => coach.class === selectedCoachClass),
     [selectedCoachClass]
   );
 
   useEffect(() => {
-    setSelectedCoachId(selectedCoach?.id as unknown as string);
+    setSelectedCoachId(selectedCoaches[0]?.id as unknown as string);
   }, [selectedCoachClass]);
 
   const handleChange = (value: string) => {
@@ -39,14 +36,17 @@ export default function SelectCoachContainer({
       <Grid container spacing={2} marginTop=".8rem">
         <Grid item md={6} xs={12}>
           <SelectCoach
-            coaches={coaches}
+            coaches={selectedCoaches}
             selectedCoachId={selectedCoachId}
             onChange={handleChange}
           />
-          <CoachSeats selectedCoachId={selectedCoachId} />
+          <CoachSeats
+            selectedCoachId={selectedCoaches[0]?.id as string}
+            selectedCoachName={selectedCoaches[0]?.name as string}
+          />
         </Grid>
         <Grid item md={6} xs={12}>
-          <CoachDetails onClose={onClose} />
+          <SeatDetails onClose={onClose} />
         </Grid>
       </Grid>
     </>

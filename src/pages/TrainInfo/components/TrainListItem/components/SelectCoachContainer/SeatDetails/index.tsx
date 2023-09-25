@@ -8,11 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 
-export interface CoachDetailsProps {
+export interface SeatDetailsProps {
   onClose: () => void;
 }
 
-export default function CoachDetails({ onClose }: CoachDetailsProps) {
+export default function SeatDetails({ onClose }: SeatDetailsProps) {
   return (
     <Card
       variant="outlined"

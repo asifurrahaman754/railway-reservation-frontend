@@ -30,12 +30,14 @@ export default function SelectCoach({
     onChange(event.target.value);
   };
 
+  console.log("from coach", selectedCoachId);
+
   return (
     <>
       <Typography variant="h6">Select Coach</Typography>
       <TextField
         fullWidth
-        name="seat"
+        name="coach"
         variant="outlined"
         select
         size="small"

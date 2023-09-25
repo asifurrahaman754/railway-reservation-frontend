@@ -14,6 +14,8 @@ const seatStyle = {
   display: "grid",
   placeItems: "center",
   cursor: "pointer",
+  fontSize: ".7rem",
+  fontWeight: 600,
 };
 
 function divideSeatsArray(seats: Seat[]) {
@@ -32,9 +34,13 @@ function divideSeatsArray(seats: Seat[]) {
 
 export interface CoachSeatsContainerProps {
   selectedCoachId: string;
+  selectedCoachName: string;
 }
 
-const CoachSeats = ({ selectedCoachId }: CoachSeatsContainerProps) => {
+const CoachSeats = ({
+  selectedCoachId,
+  selectedCoachName,
+}: CoachSeatsContainerProps) => {
   const { data: seatsData, isLoading } = useFetchSeatsQuery(selectedCoachId);
   const [firstPart, secondPart] = divideSeatsArray(seatsData?.data || []);
 
@@ -61,6 +67,7 @@ const CoachSeats = ({ selectedCoachId }: CoachSeatsContainerProps) => {
                   }),
                 }}
               >
+                {selectedCoachName}
                 {seat.name}
               </Box>
             </Grid>
@@ -79,6 +86,7 @@ const CoachSeats = ({ selectedCoachId }: CoachSeatsContainerProps) => {
                   }),
                 }}
               >
+                {selectedCoachName}
                 {seat.name}
               </Box>
             </Grid>
