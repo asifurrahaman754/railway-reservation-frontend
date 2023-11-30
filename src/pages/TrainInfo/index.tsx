@@ -11,8 +11,7 @@ import { Box } from "@mui/material";
 
 export default function TrainInfo() {
   let data = useSearchParams();
-  const [fetchTrain, { isLoading, data: allSchedules }] =
-    useFetchTrainMutation();
+  const [fetchTrain, { data: allSchedules }] = useFetchTrainMutation();
 
   useEffect(() => {
     fetchTrain(data);

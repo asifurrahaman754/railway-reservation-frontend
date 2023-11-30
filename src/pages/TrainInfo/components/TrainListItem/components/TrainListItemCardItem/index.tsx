@@ -25,7 +25,7 @@ export default function TrainListItemCardItem({
 }: TrainListItemCardProps) {
   const isExpanded = selectedCoachClass === coachClassFare?.className;
   const primaryColor = useTheme().palette.primary.main;
-  const fareWithCoach = fare + coachClassFare?.fare;
+  const fareWithCoach = fare + fare * (coachClassFare?.fare / 100);
 
   const totalAvailableTickets = useMemo(() => {
     return coaches.reduce((acc, coach) => {
@@ -80,7 +80,7 @@ export default function TrainListItemCardItem({
               fontWeight="bold"
               fontSize="15px"
             >
-              {fareWithCoach} tk
+              {Math.ceil(fareWithCoach)} tk
             </Typography>
           </>
         }

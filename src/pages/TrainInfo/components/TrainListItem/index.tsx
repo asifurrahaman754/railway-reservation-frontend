@@ -33,7 +33,7 @@ export interface TrainListItemProps {
 
 export default function TrainListItem({ schedule }: TrainListItemProps) {
   const primaryColor = useTheme().palette.primary.main;
-  const [selectedCoachClass, setSelectedCoachClass] = useState<string>("");
+  const [selectedCoachClass, setSelectedCoachClass] = useState("");
 
   const { data: trainData, isLoading: trainLoading } = useGetSingleTrainQuery(
     schedule.train_id

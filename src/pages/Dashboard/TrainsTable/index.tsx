@@ -22,7 +22,7 @@ import {
   useDeleteTrainMutation,
   useGetAllTrainQuery,
 } from "store/features/train/trainApi";
-import { trainType } from "types/tableRow";
+import { routeType, trainType } from "types/tableRow";
 import TableDataLoadingError from "../TableDataLoadingError";
 import CreateTrainDialog from "./CreateTrainDialog";
 
