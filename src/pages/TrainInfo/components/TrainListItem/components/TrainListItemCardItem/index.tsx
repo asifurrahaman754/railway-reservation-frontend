@@ -6,10 +6,8 @@ import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
 import { Coach } from "types/coach";
-import { CoachClassFare } from "types/coachClassFare";
 
 interface TrainListItemCardProps {
-  coachClassFare: CoachClassFare;
   fare: number;
   coaches: Coach[];
   selectedCoachClass: string;
@@ -17,25 +15,20 @@ interface TrainListItemCardProps {
 }
 
 export default function TrainListItemCardItem({
-  coachClassFare,
   fare,
   selectedCoachClass,
   coaches,
   onClick,
 }: TrainListItemCardProps) {
-  const isExpanded = selectedCoachClass === coachClassFare?.className;
+  const isExpanded = selectedCoachClass === coaches[0]?.class;
   const primaryColor = useTheme().palette.primary.main;
-  const fareWithCoach = fare + coachClassFare?.fare;
+  const fareWithCoach = fare + coaches[0]?.fare;
 
   const totalAvailableTickets = useMemo(() => {
     return coaches.reduce((acc, coach) => {
-      if (coach.class === coachClassFare?.className) {
-        return (acc += coach.available_seats);
-      }
-
-      return acc;
+      return acc += coach.available_seats;
     }, 0);
-  }, [coachClassFare?.className]);
+  }, [coaches[0]?.class]);
 
   const isActive = totalAvailableTickets > 0;
   const nonExpandedColor = isActive ? "#E2E8E7" : "#F1E8E8";
@@ -47,7 +40,7 @@ export default function TrainListItemCardItem({
       return;
     }
 
-    onClick(coachClassFare?.className);
+    onClick(coaches[0]?.class);
   };
 
   return (
@@ -72,7 +65,7 @@ export default function TrainListItemCardItem({
               variant="h6"
               fontSize="15px"
             >
-              {coachClassFare.className}
+              {coaches[0]?.class}
             </Typography>
             <Typography
               color={isExpanded ? "#fff" : "primary"}

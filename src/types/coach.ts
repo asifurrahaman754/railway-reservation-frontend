@@ -4,5 +4,6 @@ export type Coach = {
   capacity: number;
   available_seats: number;
   class: string;
+  fare: number;
   train_id: string;
 };

@@ -83,7 +83,7 @@ export default function TrainDetailsClassFareAdd({
         <TextField
           id="fare"
           name="fare"
-          label="Enter fare in (Tk)"
+          label="Enter fare percentage%"
           type="number"
           fullWidth
           onChange={handleChange}

@@ -30,8 +30,12 @@ export default function TrainDetailsCoachAdd({
     values: typeof initialValue,
     { setSubmitting }: FormikHelpers<typeof initialValue>
   ) => {
+    const coachFare = coachClassFare?.data?.find(
+      (coach: any) => coach.class_id === values.class
+    );
+
     try {
-      const { data }: any = await addCoach({ ...values, train: trainId });
+      const { data }: any = await addCoach({ ...values, train: trainId, fare: coachFare?.fare });
       setSubmitting(false);
       if (data.success) {
         onClose();
