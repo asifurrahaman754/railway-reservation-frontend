@@ -3,9 +3,8 @@ import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import CoachSeats from "../CoachSeats";
+import { memo } from "react";
 import { Coach } from "types/coach";
-import { useState, useEffect, useMemo } from "react";
 
 const ticketColorBoxStyle = {
   width: "1rem",
@@ -21,16 +20,10 @@ export interface SelectCoachProps {
   onChange: (value: string) => void;
 }
 
-export default function SelectCoach({
-  coaches,
-  selectedCoachId,
-  onChange,
-}: SelectCoachProps) {
+function SelectCoach({ coaches, selectedCoachId, onChange }: SelectCoachProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
-
-  console.log("from coach", selectedCoachId);
 
   return (
     <>
@@ -77,3 +70,5 @@ export default function SelectCoach({
     </>
   );
 }
+
+export default memo(SelectCoach);

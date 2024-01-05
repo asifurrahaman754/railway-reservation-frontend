@@ -94,7 +94,7 @@ export default function TrainDetailsClassFare() {
                   ({ className, fare, id }: CoachClassFare) => (
                     <TableRow key={id}>
                       <TableCell>{className}</TableCell>
-                      <TableCell>{fare}TK</TableCell>
+                      <TableCell>{fare}%</TableCell>
                       <TableCell>
                         <IconButton onClick={() => setDeleteId(id)}>
                           <DeleteIcon color="error" />

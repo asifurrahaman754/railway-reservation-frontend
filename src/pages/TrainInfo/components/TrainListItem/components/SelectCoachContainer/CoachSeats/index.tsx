@@ -2,8 +2,9 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Loader from "components/Loader";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useFetchSeatsQuery } from "store/features/trainSearch/trainSearchApi";
+import { Coach } from "types/coach";
 import { Seat } from "types/seat";
 
 const seatStyle = {
@@ -34,15 +35,23 @@ function divideSeatsArray(seats: Seat[]) {
 
 export interface CoachSeatsContainerProps {
   selectedCoachId: string;
-  selectedCoachName: string;
+  coaches: Coach[];
+  onSelectSeat: (seat: Seat) => void;
+  selectedSeats: Seat[];
 }
 
 const CoachSeats = ({
   selectedCoachId,
-  selectedCoachName,
+  coaches,
+  onSelectSeat,
+  selectedSeats,
 }: CoachSeatsContainerProps) => {
   const { data: seatsData, isLoading } = useFetchSeatsQuery(selectedCoachId);
   const [firstPart, secondPart] = divideSeatsArray(seatsData?.data || []);
+  const selectedCoach = useMemo(
+    () => coaches?.find((coach) => coach.id === selectedCoachId),
+    [selectedCoachId]
+  );
 
   if (isLoading) return <Loader />;
 
@@ -55,42 +64,59 @@ const CoachSeats = ({
         marginX="auto"
       >
         <Grid container spacing={1} maxWidth="100px">
-          {firstPart?.map((seat) => (
-            <Grid item xs={6} key={seat.id}>
-              <Box
-                sx={{
-                  ...seatStyle,
-                  ...(seat.is_booked && {
-                    backgroundColor: "#E28A2B",
-                    color: "white",
-                    cursor: "no-drop",
-                  }),
-                }}
-              >
-                {selectedCoachName}
-                {seat.name}
-              </Box>
-            </Grid>
-          ))}
+          {firstPart?.map((seat) => {
+            const seatSelected = selectedSeats?.find((s) => s.id === seat.id);
+            return (
+              <Grid item xs={6} key={seat.id}>
+                <Box
+                  sx={{
+                    ...seatStyle,
+                    ...(seat.is_booked && {
+                      backgroundColor: "#E28A2B",
+                      color: "white",
+                      cursor: "no-drop",
+                    }),
+                    ...(seatSelected && {
+                      backgroundColor: "#384c6b",
+                      color: "white",
+                    }),
+                  }}
+                  onClick={() => onSelectSeat(seat)}
+                >
+                  {selectedCoach?.name}
+                  {seat.name}
+                </Box>
+              </Grid>
+            );
+          })}
         </Grid>
         <Grid container spacing={1} maxWidth="100px">
-          {secondPart?.map((seat) => (
-            <Grid item xs={6} key={seat.id}>
-              <Box
-                sx={{
-                  ...seatStyle,
-                  ...(seat.is_booked && {
-                    backgroundColor: "#E28A2B",
-                    color: "white",
-                    cursor: "no-drop",
-                  }),
-                }}
-              >
-                {selectedCoachName}
-                {seat.name}
-              </Box>
-            </Grid>
-          ))}
+          {secondPart?.map((seat) => {
+            const seatSelected = selectedSeats?.find((s) => s.id === seat.id);
+
+            return (
+              <Grid item xs={6} key={seat.id}>
+                <Box
+                  sx={{
+                    ...seatStyle,
+                    ...(seat.is_booked && {
+                      backgroundColor: "#E28A2B",
+                      color: "white",
+                      cursor: "no-drop",
+                    }),
+                    ...(seatSelected && {
+                      backgroundColor: "#384c6b",
+                      color: "white",
+                    }),
+                  }}
+                  onClick={() => onSelectSeat(seat)}
+                >
+                  {selectedCoach?.name}
+                  {seat.name}
+                </Box>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
     </Card>

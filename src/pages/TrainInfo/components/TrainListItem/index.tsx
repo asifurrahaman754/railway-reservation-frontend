@@ -1,22 +1,23 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
+  AccordionSummary,
   Divider,
-  Typography,
   Grid,
+  Typography,
   useTheme,
 } from "@mui/material";
-import { startTransition, useState } from "react";
-import SelectCoachContainer from "./components/SelectCoachContainer";
-import TrainListItemHeader from "./components/TrainListItemHeader";
-import { RouteSchedule } from "types/routeSchedule";
-import { useGetSingleTrainQuery } from "store/features/train/trainApi";
 import Loader from "components/Loader";
+import { startTransition, useState } from "react";
+import { useGetCoachesByIdQuery } from "store/features/coach/coachApi";
+import { useGetSingleTrainQuery } from "store/features/train/trainApi";
+import { Coach } from "types/coach";
+import { RouteSchedule } from "types/routeSchedule";
+import SelectCoachContainer from "./components/SelectCoachContainer";
 import TrainListItemCardItem from "./components/TrainListItemCardItem";
 import { TrainListItemCardContainerStyle } from "./components/TrainListItemCardItem/style";
-import { useGetCoachesByIdQuery } from "store/features/coach/coachApi";
+import TrainListItemHeader from "./components/TrainListItemHeader";
 
 export type expandedItemType = {
   id: string | number;
@@ -37,14 +38,13 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
     schedule.train_id
   );
 
-  const coachGroupedByClass = coaches?.data?.reduce((acc, coach) => {
+  const coachGroupedByClass = coaches?.data?.reduce((acc, coach: Coach) => {
     acc[coach.class] = (acc[coach.class] || []).concat(coach);
     return acc;
   }, {});
-  
+
   const train = trainData?.data || {};
-  const isInitialized =
-    !trainLoading && !isCoachesLoading;
+  const isInitialized = !trainLoading && !isCoachesLoading;
   const seatFare = schedule?.distance * train?.fare_per_km;
 
   let content;

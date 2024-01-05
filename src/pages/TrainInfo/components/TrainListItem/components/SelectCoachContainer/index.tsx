@@ -1,9 +1,10 @@
 import Grid from "@mui/material/Grid";
-import SelectCoach from "./SelectCoach";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Coach } from "types/coach";
+import { Seat } from "types/seat";
 import CoachSeats from "./CoachSeats";
-import { useEffect, useMemo, useState } from "react";
 import SeatDetails from "./SeatDetails";
+import SelectCoach from "./SelectCoach";
 
 export interface SelectCoachContainerProps {
   coaches: Coach[];
@@ -16,7 +17,7 @@ export default function SelectCoachContainer({
   coaches,
   onClose,
 }: SelectCoachContainerProps) {
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
   const [selectedCoachId, setSelectedCoachId] = useState<string>("");
   const selectedCoaches = useMemo(
     () => coaches?.filter((coach) => coach.class === selectedCoachClass),
@@ -27,9 +28,27 @@ export default function SelectCoachContainer({
     setSelectedCoachId(selectedCoaches[0]?.id as unknown as string);
   }, [selectedCoachClass]);
 
-  const handleChange = (value: string) => {
+  const handleChange = useCallback((value: string) => {
     setSelectedCoachId(value);
-  };
+  }, []);
+
+  const handleSelectSeat = useCallback(
+    (seat: Seat) => {
+      const seatIsSelected = selectedSeats.find((s) => s.id === seat.id);
+      if (seatIsSelected) {
+        setSelectedSeats((prev) => prev.filter((s) => s.id !== seat.id));
+        return;
+      }
+
+      if (selectedSeats.length === 4) {
+        alert("Maximum 4 seats can be selected!");
+        return;
+      }
+
+      setSelectedSeats((prev) => [...prev, seat]);
+    },
+    [selectedSeats]
+  );
 
   return (
     <>
@@ -41,8 +60,10 @@ export default function SelectCoachContainer({
             onChange={handleChange}
           />
           <CoachSeats
-            selectedCoachId={selectedCoaches[0]?.id as string}
-            selectedCoachName={selectedCoaches[0]?.name as string}
+            selectedCoachId={selectedCoachId}
+            coaches={coaches}
+            onSelectSeat={handleSelectSeat}
+            selectedSeats={selectedSeats}
           />
         </Grid>
         <Grid item md={6} xs={12}>

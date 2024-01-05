@@ -1,24 +1,24 @@
+import { Box } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Container from "@mui/material/Container";
-import TrainInfoHeader from "./components/TrainInfoHeader";
-import useSearchParams from "hooks/useSearchParams";
-import { useFetchTrainMutation } from "store/features/trainSearch/trainSearchApi";
-import { useEffect } from "react";
 import Loader from "components/Loader";
+import useSearchParams from "hooks/useSearchParams";
+import { useEffect } from "react";
+import { useFetchTrainMutation } from "store/features/trainSearch/trainSearchApi";
 import { RouteSchedule } from "types/routeSchedule";
+import TrainInfoHeader from "./components/TrainInfoHeader";
 import TrainListItem from "./components/TrainListItem";
-import { Box } from "@mui/material";
 
 export default function TrainInfo() {
   let data = useSearchParams();
-  const [fetchTrain, { data: allSchedules }] = useFetchTrainMutation();
+  const [fetchTrain, { data: allSchedules, isLoading }] = useFetchTrainMutation();
 
   useEffect(() => {
     fetchTrain(data);
   }, [JSON.stringify(data)]);
 
   let content;
-  if (!allSchedules) {
+  if (isLoading) {
     content = <Loader />;
   } else {
     content = (
