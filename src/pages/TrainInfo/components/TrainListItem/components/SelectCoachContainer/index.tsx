@@ -10,26 +10,30 @@ export interface SelectCoachContainerProps {
   coaches: Coach[];
   selectedCoachClass: string;
   onClose: () => void;
+  baseFare: number;
 }
 
 export default function SelectCoachContainer({
   selectedCoachClass,
   coaches,
   onClose,
+  baseFare,
 }: SelectCoachContainerProps) {
-  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
-  const [selectedCoachId, setSelectedCoachId] = useState<string>("");
   const selectedCoaches = useMemo(
     () => coaches?.filter((coach) => coach.class === selectedCoachClass),
-    [selectedCoachClass]
+    [selectedCoachClass, coaches]
   );
 
+  const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
+  const [selectedCoach, setSelectedCoach] = useState<Coach>(selectedCoaches[0]);
+
   useEffect(() => {
-    setSelectedCoachId(selectedCoaches[0]?.id as unknown as string);
+    setSelectedSeats([]);
+    setSelectedCoach(selectedCoaches[0]);
   }, [selectedCoachClass]);
 
-  const handleChange = useCallback((value: string) => {
-    setSelectedCoachId(value);
+  const handleChange = useCallback((value: Coach) => {
+    setSelectedCoach(value);
   }, []);
 
   const handleSelectSeat = useCallback(
@@ -56,18 +60,22 @@ export default function SelectCoachContainer({
         <Grid item md={6} xs={12}>
           <SelectCoach
             coaches={selectedCoaches}
-            selectedCoachId={selectedCoachId}
+            selectedCoach={selectedCoach}
             onChange={handleChange}
           />
           <CoachSeats
-            selectedCoachId={selectedCoachId}
-            coaches={coaches}
             onSelectSeat={handleSelectSeat}
             selectedSeats={selectedSeats}
+            selectedCoach={selectedCoach}
           />
         </Grid>
         <Grid item md={6} xs={12}>
-          <SeatDetails onClose={onClose} />
+          <SeatDetails
+            onClose={onClose}
+            seats={selectedSeats}
+            baseFare={baseFare}
+            selectedCoach={selectedCoach}
+          />
         </Grid>
       </Grid>
     </>

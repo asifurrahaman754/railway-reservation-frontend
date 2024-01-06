@@ -16,13 +16,16 @@ const ticketColorBoxStyle = {
 
 export interface SelectCoachProps {
   coaches: Coach[];
-  selectedCoachId: string;
-  onChange: (value: string) => void;
+  selectedCoach: Coach;
+  onChange: (value: Coach) => void;
 }
 
-function SelectCoach({ coaches, selectedCoachId, onChange }: SelectCoachProps) {
+function SelectCoach({ coaches, selectedCoach, onChange }: SelectCoachProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
+    const findCoach = coaches.find((coach) => coach.id === event.target.value);
+    if (findCoach) {
+      onChange(findCoach);
+    }
   };
 
   return (
@@ -37,7 +40,7 @@ function SelectCoach({ coaches, selectedCoachId, onChange }: SelectCoachProps) {
         InputLabelProps={{
           shrink: true,
         }}
-        value={selectedCoachId}
+        value={selectedCoach?.id}
         onChange={handleChange}
       >
         {coaches?.map((coach) => (

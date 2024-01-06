@@ -86,6 +86,7 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
               coaches={coaches?.data || []}
               selectedCoachClass={selectedCoachClass}
               onClose={() => setSelectedCoachClass("")}
+              baseFare={seatFare}
             />
           </>
         )}

@@ -1,11 +1,12 @@
-import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/system/";
+import { useMemo } from "react";
 import { Coach } from "types/coach";
+import { getFareWithCurr } from "utils/fare";
 
 interface TrainListItemCardProps {
   fare: number;
@@ -22,11 +23,10 @@ export default function TrainListItemCardItem({
 }: TrainListItemCardProps) {
   const isExpanded = selectedCoachClass === coaches[0]?.class;
   const primaryColor = useTheme().palette.primary.main;
-  const fareWithCoach = fare + fare * (coaches[0]?.fare / 100);
 
   const totalAvailableTickets = useMemo(() => {
     return coaches.reduce((acc, coach) => {
-      return acc += coach.available_seats;
+      return (acc += coach.available_seats);
     }, 0);
   }, [coaches[0]?.class]);
 
@@ -73,7 +73,7 @@ export default function TrainListItemCardItem({
               fontWeight="bold"
               fontSize="15px"
             >
-              {Math.ceil(fareWithCoach)} tk
+              {getFareWithCurr(fare, coaches[0]?.fare)}
             </Typography>
           </>
         }

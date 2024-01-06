@@ -7,12 +7,23 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import { Coach } from "types/coach";
+import { Seat } from "types/seat";
+import { getFareWithCurr } from "utils/fare";
 
 export interface SeatDetailsProps {
   onClose: () => void;
+  seats: Seat[];
+  baseFare: number;
+  selectedCoach: Coach;
 }
 
-export default function SeatDetails({ onClose }: SeatDetailsProps) {
+export default function SeatDetails({
+  onClose,
+  seats,
+  baseFare,
+  selectedCoach,
+}: SeatDetailsProps) {
   return (
     <Card
       variant="outlined"
@@ -28,16 +39,25 @@ export default function SeatDetails({ onClose }: SeatDetailsProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>Data 1</TableCell>
-            <TableCell>Data 2</TableCell>
-            <TableCell>Data 3</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Data 4</TableCell>
-            <TableCell>Data 5</TableCell>
-            <TableCell>Data 6</TableCell>
-          </TableRow>
+          {seats.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={3} sx={{ textAlign: "center" }}>
+                No seats selected
+              </TableCell>
+            </TableRow>
+          )}
+
+          {seats?.map((seat) => (
+            <TableRow key={seat.id}>
+              <TableCell>{seat.coach_class}</TableCell>
+              <TableCell>
+                {seat.coach_name}-{seat.name}
+              </TableCell>
+              <TableCell>
+                {getFareWithCurr(baseFare, selectedCoach.fare)}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
 
