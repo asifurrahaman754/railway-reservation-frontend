@@ -11,6 +11,8 @@ export interface SelectCoachContainerProps {
   selectedCoachClass: string;
   onClose: () => void;
   baseFare: number;
+  trainName: string;
+  departureTime: string;
 }
 
 export default function SelectCoachContainer({
@@ -18,6 +20,8 @@ export default function SelectCoachContainer({
   coaches,
   onClose,
   baseFare,
+  trainName,
+  departureTime,
 }: SelectCoachContainerProps) {
   const selectedCoaches = useMemo(
     () => coaches?.filter((coach) => coach.class === selectedCoachClass),
@@ -75,6 +79,8 @@ export default function SelectCoachContainer({
             seats={selectedSeats}
             baseFare={baseFare}
             selectedCoach={selectedCoach}
+            trainName={trainName}
+            departureTime={departureTime}
           />
         </Grid>
       </Grid>

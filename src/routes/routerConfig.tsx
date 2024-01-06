@@ -6,7 +6,7 @@ import AuthLogin from "pages/AuthLogin";
 import AuthRegister from "pages/AuthRegister";
 import Dashboard from "pages/Dashboard";
 import Home from "pages/Home";
-import { lazy, Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Navigate } from "react-router-dom";
 import routes from "routes";
 
@@ -18,6 +18,7 @@ const CoachClasses = lazy(() => import("pages/Dashboard/CoachClasses"));
 const TrainDetails = lazy(
   () => import("pages/Dashboard/TrainsTable/TrainDetails")
 );
+const Purchase = lazy(() => import("pages/PurchaseTicket"));
 
 const routesConfig = [
   {
@@ -32,6 +33,14 @@ const routesConfig = [
         element: (
           <Suspense fallback={""}>
             <TrainInfo />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.purchase,
+        element: (
+          <Suspense fallback={""}>
+            <Purchase />
           </Suspense>
         ),
       },

@@ -38,10 +38,13 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
     schedule.train_id
   );
 
-  const coachGroupedByClass = coaches?.data?.reduce((acc, coach: Coach) => {
-    acc[coach.class] = (acc[coach.class] || []).concat(coach);
-    return acc;
-  }, {});
+  const coachGroupedByClass = coaches?.data?.reduce(
+    (acc: any, coach: Coach) => {
+      acc[coach.class] = (acc[coach.class] || []).concat(coach);
+      return acc;
+    },
+    {}
+  );
 
   const train = trainData?.data || {};
   const isInitialized = !trainLoading && !isCoachesLoading;
@@ -87,6 +90,8 @@ export default function TrainListItem({ schedule }: TrainListItemProps) {
               selectedCoachClass={selectedCoachClass}
               onClose={() => setSelectedCoachClass("")}
               baseFare={seatFare}
+              trainName={train?.name}
+              departureTime={schedule?.departure_time}
             />
           </>
         )}

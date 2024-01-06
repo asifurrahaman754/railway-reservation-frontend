@@ -19,6 +19,7 @@ const routes = {
   },
   home: "/",
   booking: `/booking`,
+  purchase: `/purchase`,
 };
 
 export default routes;

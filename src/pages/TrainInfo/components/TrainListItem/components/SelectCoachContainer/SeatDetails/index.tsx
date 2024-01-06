@@ -7,15 +7,23 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import useSearchParams from "hooks/useSearchParams";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
+import { setTicketInfo } from "store/features/ticket/ticketSlice";
 import { Coach } from "types/coach";
 import { Seat } from "types/seat";
-import { getFareWithCurr } from "utils/fare";
+import { calculateFare, getFareWithCurr } from "utils/fare";
+import { convertTimeTo12 } from "utils/time";
 
 export interface SeatDetailsProps {
   onClose: () => void;
   seats: Seat[];
   baseFare: number;
   selectedCoach: Coach;
+  trainName: string;
+  departureTime: string;
 }
 
 export default function SeatDetails({
@@ -23,7 +31,38 @@ export default function SeatDetails({
   seats,
   baseFare,
   selectedCoach,
+  trainName,
+  departureTime,
 }: SeatDetailsProps) {
+  const dispatch = useDispatch();
+  const { formattedDate, fromCity, toCity } = useSearchParams();
+
+  const navigate = useNavigate();
+  const totalSeatsFare = seats.reduce((acc, _seat) => {
+    return acc + calculateFare(baseFare, selectedCoach.fare);
+  }, 0);
+
+  const handlePurchase = () => {
+    if (!seats.length) {
+      alert("Please select at least one seat!");
+      return;
+    }
+
+    dispatch(
+      setTicketInfo({
+        from: fromCity,
+        to: toCity,
+        date: formattedDate,
+        time: convertTimeTo12(departureTime),
+        coach_class: selectedCoach.class,
+        totalPrice: totalSeatsFare,
+        seats,
+        train_name: trainName,
+      })
+    );
+    navigate(routes.purchase);
+  };
+
   return (
     <Card
       variant="outlined"
@@ -66,8 +105,13 @@ export default function SeatDetails({
         square
         sx={{ padding: ".5rem", marginY: "1rem" }}
       >
-        <Typography variant="body1" fontWeight={500} textAlign="center">
-          Total:{" "}
+        <Typography
+          variant="body1"
+          fontWeight={500}
+          textAlign="center"
+          color="primary"
+        >
+          Total: {totalSeatsFare} TK
         </Typography>
       </Paper>
 
@@ -75,6 +119,7 @@ export default function SeatDetails({
         fullWidth
         variant="contained"
         sx={{ marginY: "1.5rem", paddingY: ".8rem", borderRadius: "30px" }}
+        onClick={handlePurchase}
       >
         <Typography
           textTransform="uppercase"

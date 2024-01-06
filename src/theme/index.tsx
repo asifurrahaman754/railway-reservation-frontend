@@ -21,6 +21,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#006747",
+      contrastText: "#fff",
     },
     AuthbodyBg: {
       main: "#cfd9d68f",
@@ -52,6 +53,7 @@ interface CustomColors {
   defaultBg: SimplePaletteColorOptions;
   defaultColor: SimplePaletteColorOptions;
   errorColor: SimplePaletteColorOptions;
+  primary: SimplePaletteColorOptions;
 }
 
 interface customFontWeight {
