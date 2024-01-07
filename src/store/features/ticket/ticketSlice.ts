@@ -1,23 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Ticket } from "types/ticket";
 
 interface ticketSliceState {
-  train_name: string;
-  from: string;
-  to: string;
-  date: string;
-  time: string;
-  seats: Array<string>;
-  totalPrice: string;
+  currentTicket: Ticket | null;
 }
 
 const initialState: ticketSliceState = {
-  train_name: "",
-  from: "",
-  to: "",
-  date: "",
-  time: "",
-  seats: [],
-  totalPrice: "",
+  currentTicket: null,
 };
 
 const ticketSlice = createSlice({
@@ -25,22 +14,10 @@ const ticketSlice = createSlice({
   initialState,
   reducers: {
     setTicketInfo: (state, action) => {
-      state.train_name = action.payload.train_name;
-      state.from = action.payload.from;
-      state.to = action.payload.to;
-      state.date = action.payload.date;
-      state.time = action.payload.time;
-      state.seats = action.payload.seats;
-      state.totalPrice = action.payload.totalPrice;
+      state.currentTicket = action.payload;
     },
     resetTicketInfo: (state) => {
-      state.train_name = "";
-      state.from = "";
-      state.to = "";
-      state.date = "";
-      state.time = "";
-      state.seats = [];
-      state.totalPrice = "";
+      state.currentTicket = null;
     },
   },
 });

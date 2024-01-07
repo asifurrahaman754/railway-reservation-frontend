@@ -23,6 +23,9 @@ const theme = createTheme({
       main: "#006747",
       contrastText: "#fff",
     },
+    secondary: {
+      main: "#da924e",
+    },
     AuthbodyBg: {
       main: "#cfd9d68f",
     },
