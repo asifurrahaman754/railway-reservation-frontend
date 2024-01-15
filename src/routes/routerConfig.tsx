@@ -19,6 +19,7 @@ const TrainDetails = lazy(
   () => import("pages/Dashboard/TrainsTable/TrainDetails")
 );
 const Purchase = lazy(() => import("pages/PurchaseTicket"));
+const Payment = lazy(() => import("pages/Payment"));
 
 const routesConfig = [
   {
@@ -41,6 +42,14 @@ const routesConfig = [
         element: (
           <Suspense fallback={""}>
             <Purchase />
+          </Suspense>
+        ),
+      },
+      {
+        path: routes.payment,
+        element: (
+          <Suspense fallback={""}>
+            <Payment />
           </Suspense>
         ),
       },

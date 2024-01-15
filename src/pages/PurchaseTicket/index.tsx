@@ -1,10 +1,12 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import PageContainer from "components/PageContainer";
 import { useSelector } from "react-redux";
 import { selectCurrentTicket } from "store/features/ticket/ticketSelector";
 import FareDetails from "./components/FareDetails";
 import JourneyDetails from "./components/JourneyDetails";
 import PurchaseHeader from "./components/PurchaseHeader";
+import { Link } from "react-router-dom";
+import routes from "routes/index";
 
 export default function PurchaseTicket() {
   const currentTicket = useSelector(selectCurrentTicket);
@@ -32,6 +34,11 @@ export default function PurchaseTicket() {
               <FareDetails currentTicket={currentTicket} />
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={12} textAlign="right">
+          <Link to={routes.payment}>
+            <Button variant="contained">Confirm and next</Button>
+          </Link>
         </Grid>
       </Grid>
     </PageContainer>

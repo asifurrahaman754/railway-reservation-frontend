@@ -6,7 +6,7 @@ export default function Purchase() {
     <Grid container spacing={2}>
       <Grid item xs={12} mb={3}>
         <Typography variant="h4" pb={3}>
-          Purchase Ticket
+          Confirm Ticket
         </Typography>
         <Divider />
       </Grid>

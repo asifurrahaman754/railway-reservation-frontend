@@ -20,6 +20,7 @@ const routes = {
   home: "/",
   booking: `/booking`,
   purchase: `/purchase`,
+  payment: `/payment`,
 };
 
 export default routes;
