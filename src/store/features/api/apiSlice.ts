@@ -3,7 +3,7 @@ import validateTags from "./validateTags";
 
 const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:2000" }),
   tagTypes: [
     ...validateTags.getAllCoachClassFare,
     ...validateTags.getSingleCoachClassFare,

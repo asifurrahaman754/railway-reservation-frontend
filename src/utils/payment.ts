@@ -8,7 +8,7 @@ export const paymentMethods = [
         steps: [
           "Open Bkash App",
           "Select Send Money",
-          "Enter Sender Bkash Number",
+          "Enter Sender Bkash Number: +9999999",
           "Enter Amount",
           "Enter Reference Number",
           "Enter your Bkash PIN to confirm",

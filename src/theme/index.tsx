@@ -38,6 +38,14 @@ const theme = createTheme({
     errorColor: {
       main: "#ff0000",
     },
+    grey100: {
+      main: "#fafafa",
+      contrastText: "#cecece",
+    },
+    grey200: {
+      main: "#cecece",
+      contrastText: "#fafafa",
+    },
   },
   components: {
     MuiFormHelperText: {
@@ -51,12 +59,14 @@ const theme = createTheme({
 });
 
 //these are the custom colors
-interface CustomColors {
+export interface CustomColors {
   AuthbodyBg: SimplePaletteColorOptions;
   defaultBg: SimplePaletteColorOptions;
   defaultColor: SimplePaletteColorOptions;
   errorColor: SimplePaletteColorOptions;
   primary: SimplePaletteColorOptions;
+  grey100: SimplePaletteColorOptions;
+  grey200: SimplePaletteColorOptions;
 }
 
 interface customFontWeight {
