@@ -5,9 +5,15 @@ import { selectCurrentTicket } from "store/features/ticket/ticketSelector";
 import PaymentHeader from "./components/PaymentHeader";
 import PaymentMethods from "./components/PaymentMethods";
 import PaymentConfirmation from "./components/PaymentConfirmation";
+import { useState } from "react";
 
 export default function Payment() {
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("bkash");
   const currentTicket = useSelector(selectCurrentTicket);
+
+  const handlePaymentChange = (value: string) => {
+    setSelectedPaymentMethod(value);
+  };
 
   if (!currentTicket) {
     return (
@@ -24,10 +30,13 @@ export default function Payment() {
           <PaymentHeader />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PaymentMethods currentTicket={currentTicket} />
+          <PaymentMethods
+            selectedPaymentMethod={selectedPaymentMethod}
+            onPaymentSelect={handlePaymentChange}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <PaymentConfirmation />
+          <PaymentConfirmation selectedPaymentMethod={selectedPaymentMethod} />
         </Grid>
       </Grid>
     </PageContainer>
