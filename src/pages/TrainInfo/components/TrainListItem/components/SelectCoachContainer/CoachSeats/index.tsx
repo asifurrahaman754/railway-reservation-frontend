@@ -68,14 +68,18 @@ const CoachSeats = ({
                     ...(seat.is_booked && {
                       backgroundColor: "#E28A2B",
                       color: "white",
-                      cursor: "no-drop",
+                      cursor: "not-allowed",
                     }),
                     ...(seatSelected && {
                       backgroundColor: "#384c6b",
                       color: "white",
                     }),
                   }}
-                  onClick={() => onSelectSeat(seat)}
+                  onClick={() => {
+                    if(!seat.is_booked){
+                      onSelectSeat(seat)
+                    }
+                  }}
                 >
                   {selectedCoach?.name}-{seat.name}
                 </Box>
@@ -95,14 +99,18 @@ const CoachSeats = ({
                     ...(seat.is_booked && {
                       backgroundColor: "#E28A2B",
                       color: "white",
-                      cursor: "no-drop",
+                      cursor: "not-allowed",
                     }),
                     ...(seatSelected && {
                       backgroundColor: "#384c6b",
                       color: "white",
                     }),
                   }}
-                  onClick={() => onSelectSeat(seat)}
+                  onClick={() => {
+                    if(!seat.is_booked){
+                      onSelectSeat(seat)
+                    }
+                  }}
                 >
                   {selectedCoach?.name}-{seat.name}
                 </Box>
