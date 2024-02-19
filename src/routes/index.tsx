@@ -21,6 +21,10 @@ const routes = {
   booking: `/booking`,
   purchase: `/purchase`,
   payment: `/payment`,
+  paymentSuccess: {
+    path: `/payment-success/:ticketID`,
+    pathWithId: (ticketID: string) => `/payment-success/${ticketID}`
+  },
 };
 
 export default routes;

@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Ticket } from "types/ticket";
 
 interface ticketSliceState {
-  currentTicket: Ticket | null;
+  currentTicket: Ticket & {
+    coach_class: string;
+  } | null;
 }
 
 const initialState: ticketSliceState = {

@@ -8,6 +8,7 @@ import {
 
 import { Ticket } from "types/ticket";
 import DetailsListItem from "../DetailsListItem";
+import { getSeatNameFromArray } from "utils/seats";
 
 export interface JourneyDetailsProps {
   currentTicket: Ticket;
@@ -42,7 +43,7 @@ export default function JourneyDetails({ currentTicket }: JourneyDetailsProps) {
           {seats[0]?.coach_class}
         </DetailsListItem>
         <DetailsListItem label="Seats">
-          {seats.map((s) => `${s.coach_name}-${s.name}`).join(", ")}
+          {getSeatNameFromArray(seats)}
         </DetailsListItem>
       </CardContent>
     </Card>

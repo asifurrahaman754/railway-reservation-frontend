@@ -1,12 +1,17 @@
 export const convertTimeTo12 = (time: string) => {
-  const [hour, minute] = time.split(":");
-  const formated = new Date(0, 0, 0, parseInt(hour), parseInt(minute));
+   let timeParts = time.split(':');
+   let hours = parseInt(timeParts[0]);
+   let minutes = parseInt(timeParts[1]);
 
-  // make it in 12 hours format
-  return formated.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+   let meridiem = hours >= 12 ? 'PM' : 'AM';
+
+   hours = hours % 12;
+   hours = hours ? hours : 12;
+
+  let minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+   let time12 = hours + ':' + minutesStr + ' ' + meridiem;
+   return time12;
 };
 
 export const timeDifference = (time1: string, time2: string) => {

@@ -12,7 +12,8 @@ import {
 import { memo, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { selectUser } from "store/features/auth/authSelector";
+import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
 import { useAddTicketMutation } from "store/features/ticket/ticketApi";
 import { selectCurrentTicket } from "store/features/ticket/ticketSelector";
 
@@ -23,7 +24,7 @@ interface PaymentConfirmationProps {
 function PaymentConfirmation({
   selectedPaymentMethod,
 }: PaymentConfirmationProps) {
-  const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const selectedTicket = useSelector(selectCurrentTicket);
   const [addTicket] = useAddTicketMutation();
   const [transactionId, setTransactionId] = useState("");
@@ -50,6 +51,8 @@ function PaymentConfirmation({
 
       if (data.success) {
         toast.success("Ticket purchase successful");
+        setTransactionId("");
+        navigate(routes.paymentSuccess.pathWithId(data?.data?.pnr))
       } else {
         toast.error(data.message);
       }
