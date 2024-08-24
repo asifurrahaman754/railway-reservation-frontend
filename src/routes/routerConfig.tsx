@@ -73,10 +73,6 @@ const routesConfig = [
     element: <AuthRegister />,
   },
   {
-    path: routes.admin.login,
-    element: <AuthLogin isForAdmin />,
-  },
-  {
     element: (
       <GuardRoute isForAdmin>
         <DashboardLayout />

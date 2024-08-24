@@ -1,34 +1,50 @@
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { toast } from "react-hot-toast";
 import { useTheme } from "@mui/system/";
 import AuthLayout from "Layouts/AuthLayout";
 import AuthTextField from "components/AuthTextField";
 import { Form, Formik } from "formik";
-import useAuthSubmitHandler from "hooks/useAuthSubmitHandler";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import routes from "routes/index";
+import { useLoginMutation } from "store/features/auth/authApi";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "store/features/auth/authSlice";
+import { userHomeRedirect } from "utils/authUser";
+import { selectUser } from "store/features/auth/authSelector";
 
-type formValuesType = {
-  password: string;
-  mobile: string;
-  email: string;
-};
-
-type AuthLoginProps = {
-  isForAdmin?: boolean;
-};
-
-export default function AuthLogin({ isForAdmin }: AuthLoginProps) {
+export default function AuthLogin() {
   const spacing = useTheme().spacing(2);
-  const handlerType = isForAdmin ? "admin" : "login";
-  const submitHandler = useAuthSubmitHandler();
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const authUser = useSelector(selectUser);
 
-  const initialValue: formValuesType = {
-    password: "",
-    mobile: "",
-    email: "",
+  const loginHandler = async (
+    values: any,
+    { setSubmitting, setFieldError }: any
+  ) => {
+    try {
+      const { data }: any = await login(values);
+
+      if (!data?.success) {
+        setFieldError(data?.field?.name, data?.field?.message);
+        // TODO: input field should focus
+      } else {
+        toast.success("Login success!");
+        navigate(userHomeRedirect(data?.user));
+        dispatch(setUser(data?.user));
+      }
+    } catch (error) {
+      toast.error("Login failed!");
+    }
+    setSubmitting(false);
   };
+
+  if (authUser) {
+    navigate(userHomeRedirect(authUser));
+  }
 
   return (
     <AuthLayout>
@@ -38,44 +54,31 @@ export default function AuthLogin({ isForAdmin }: AuthLoginProps) {
         fontWeight="700"
         margin="1rem 0 2rem 0"
       >
-        {isForAdmin ? "Admin Login" : "Login"}
+        Login
       </Typography>
 
       <Formik
-        initialValues={initialValue}
+        initialValues={{
+          password: "",
+          email: "",
+        }}
         validationSchema={Yup.object().shape({
           password: Yup.string().required("Password is required"),
-          ...(isForAdmin
-            ? {
-                email: Yup.string()
-                  .email("Invalid email")
-                  .required("Email is required"),
-              }
-            : {
-                mobile: Yup.string().required("Mobile number is required"),
-              }),
+          email: Yup.string()
+            .email("Invalid email")
+            .required("Email is required"),
         })}
-        onSubmit={(...args) => submitHandler(handlerType, ...args)}
+        onSubmit={(...args) => loginHandler(...args)}
       >
         {(formikProps) => (
           <Form onSubmit={formikProps.handleSubmit}>
-            {isForAdmin ? (
-              <AuthTextField
-                sx={{ marginBottom: spacing }}
-                name="email"
-                type="email"
-                label="Email"
-                {...formikProps}
-              />
-            ) : (
-              <AuthTextField
-                sx={{ marginBottom: spacing }}
-                name="mobile"
-                type="tel"
-                label="Mobile"
-                {...formikProps}
-              />
-            )}
+            <AuthTextField
+              sx={{ marginBottom: spacing }}
+              name="email"
+              type="email"
+              label="Email"
+              {...formikProps}
+            />
 
             <AuthTextField
               sx={{ marginBottom: spacing }}

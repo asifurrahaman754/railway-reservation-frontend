@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import routes from "routes/index";
 import { selectUser } from "store/features/auth/authSelector";
 import { removeUser } from "store/features/auth/authSlice";
-import { removeUserFromLocal } from "utils/localStorage";
+import { removeUserFromCookie } from "utils/cookie";
 
 const style = {
   appbarStyle: {
@@ -59,7 +59,7 @@ export default function Navbar() {
 
   const handleClickUserMenu = (name: string) => {
     if (name === "logout") {
-      removeUserFromLocal();
+      removeUserFromCookie();
       dispatch(removeUser());
     }
     handleCloseUserMenu();

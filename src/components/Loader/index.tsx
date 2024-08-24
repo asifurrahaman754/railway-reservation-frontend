@@ -3,12 +3,14 @@ import CircularProgress, {
   CircularProgressProps,
 } from "@mui/material/CircularProgress";
 
-interface LoaderProps extends BoxProps {}
+interface LoaderProps extends BoxProps {
+  size?: number;
+}
 
-export default function Loader({ ...props }: LoaderProps) {
+export default function Loader({ size = 25, ...props }: LoaderProps) {
   return (
     <Box p={2} textAlign="center" {...props}>
-      <CircularProgress size={25} />
+      <CircularProgress size={size} />
     </Box>
   );
 }

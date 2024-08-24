@@ -1,10 +1,9 @@
 const routes = {
   auth: {
-    login: "/auth/login",
-    register: "/auth/register",
+    login: "/login",
+    register: "/register",
   },
   admin: {
-    login: "/admin/login",
     dashboard: "/admin/dashboard",
     trains: "/admin/dashboard/train",
     train_details: {
@@ -23,7 +22,7 @@ const routes = {
   payment: `/payment`,
   paymentSuccess: {
     path: `/payment-success/:ticketID`,
-    pathWithId: (ticketID: string) => `/payment-success/${ticketID}`
+    pathWithId: (ticketID: string) => `/payment-success/${ticketID}`,
   },
 };
 

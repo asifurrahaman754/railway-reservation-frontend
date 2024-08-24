@@ -7,8 +7,11 @@ const authApi = apiSlice.injectEndpoints({
         url: "/auth/login",
         method: "POST",
         body,
-        credentials: "include",
       }),
+    }),
+
+    getLoggedInUser: builder.query({
+      query: () => `/auth/user`,
     }),
 
     register: builder.mutation({
@@ -18,16 +21,11 @@ const authApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
-
-    adminLogin: builder.mutation({
-      query: (body) => ({
-        url: "/auth/admin/login",
-        method: "POST",
-        body,
-      }),
-    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useAdminLoginMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useGetLoggedInUserQuery,
+  useRegisterMutation,
+} = authApi;

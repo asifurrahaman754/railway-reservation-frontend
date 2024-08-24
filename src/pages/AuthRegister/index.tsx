@@ -4,6 +4,7 @@ import AuthTextField from "components/AuthTextField";
 import { Form, Formik } from "formik";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import routes from "routes/index";
 import { useRegisterMutation } from "store/features/auth/authApi";
 import * as Yup from "yup";
 
@@ -34,7 +35,7 @@ export default function AuthRegister() {
         toast.error(data?.message);
       } else {
         toast.success("Registration successfull!");
-        navigate("/login", { replace: true });
+        navigate(routes.auth.login, { replace: true });
       }
     } catch (error) {
       toast.error("Registration failed!");

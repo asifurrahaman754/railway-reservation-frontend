@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { authUserType } from "types/authUserType";
-import { getUserFromLocal } from "utils/localStorage";
 
 interface authSliceState {
   user: authUserType | null;
 }
 
 const initialState: authSliceState = {
-  user: getUserFromLocal(),
+  user: null,
 };
 
 const authSlice = createSlice({
