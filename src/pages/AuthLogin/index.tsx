@@ -68,7 +68,7 @@ export default function AuthLogin() {
             .email("Invalid email")
             .required("Email is required"),
         })}
-        onSubmit={(...args) => loginHandler(...args)}
+        onSubmit={loginHandler}
       >
         {(formikProps) => (
           <Form onSubmit={formikProps.handleSubmit}>

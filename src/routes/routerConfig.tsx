@@ -1,6 +1,6 @@
 import DashboardLayout from "Layouts/DashboardLayout";
 import HomeLayout from "Layouts/HomeLayout";
-import GuardRoute from "components/GuardRoute";
+import AuthGuard from "components/AuthGuard";
 import Loader from "components/Loader";
 import AuthLogin from "pages/AuthLogin";
 import AuthRegister from "pages/AuthRegister";
@@ -74,9 +74,9 @@ const routesConfig = [
   },
   {
     element: (
-      <GuardRoute isForAdmin>
+      <AuthGuard>
         <DashboardLayout />
-      </GuardRoute>
+      </AuthGuard>
     ),
     children: [
       {

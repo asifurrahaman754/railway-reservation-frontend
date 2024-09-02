@@ -1,4 +1,5 @@
 import apiSlice from "../api/apiSlice";
+import { setUserLoading } from "./authSlice";
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,6 +13,9 @@ const authApi = apiSlice.injectEndpoints({
 
     getLoggedInUser: builder.query({
       query: () => `/auth/user`,
+      onQueryStarted(_arg, { dispatch }) {
+        dispatch(setUserLoading());
+      },
     }),
 
     register: builder.mutation({

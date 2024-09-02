@@ -15,10 +15,11 @@ import { IMG_PATH } from "config/img_path";
 import navigation, { dropDownNavigation } from "config/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import routes from "routes/index";
 import { selectUser } from "store/features/auth/authSelector";
 import { removeUser } from "store/features/auth/authSlice";
+import { isAdmin } from "utils/authUser";
 import { removeUserFromCookie } from "utils/cookie";
 
 const style = {
@@ -39,6 +40,7 @@ const style = {
 
 export default function Navbar() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const authUser = useSelector(selectUser);
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -63,6 +65,11 @@ export default function Navbar() {
       dispatch(removeUser());
     }
     handleCloseUserMenu();
+  };
+
+  const handleAdminDashboard = () => {
+    const newTabUrl = `${window.location.origin}${routes.admin.dashboard}`;
+    window.open(newTabUrl, "_blank");
   };
 
   return (
@@ -133,6 +140,16 @@ export default function Navbar() {
                 sx={{ ...style.bigMenuItemStyle }}
               >
                 Login
+              </Button>
+            )}
+
+            {isAdmin(authUser) && (
+              <Button
+                onClick={handleAdminDashboard}
+                sx={{ ...style.bigMenuItemStyle, mr: 2 }}
+                variant="outlined"
+              >
+                Dashboard
               </Button>
             )}
           </Box>
